@@ -1,10 +1,6 @@
-import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
 import 'package:kobi/alarm/class_received_notification.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 import '../../main.dart';
 import '../Controller/notification_controller.dart';
@@ -17,8 +13,6 @@ void alarmInitializeFunction() async{
   const String navigationActionId = 'id_3';
   const String darwinNotificationCategoryText = 'textCategory';
   const String darwinNotificationCategoryPlain = 'plainCategory';
-
-  await _configureLocalTimeZone();
 
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('notification_icon');
@@ -107,10 +101,4 @@ void alarmInitializeFunction() async{
     },
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
   );
-}
-
-Future<void> _configureLocalTimeZone() async {
-  tz.initializeTimeZones();
-  final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timeZoneName!));
 }

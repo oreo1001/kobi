@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
 import 'package:kobi/Controller/notification_controller.dart';
 import 'Alarm/page_ringing.dart';
@@ -20,6 +23,7 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _configureLocalTimeZone();
   // needed if you intend to initialize in the `main` function
   //const MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');  //메소드 채널 이름 설정
   Get.put(NotificationController(),permanent: true);
@@ -88,4 +92,9 @@ class MyAppState extends State<MyApp> {
           home: AlarmPage(notificationAppLaunchDetails)),
     );
   }
+}
+Future<void> _configureLocalTimeZone() async {
+  tz.initializeTimeZones();
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName!));
 }

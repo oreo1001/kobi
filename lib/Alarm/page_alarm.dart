@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,16 +14,11 @@ import 'page_ringing.dart';
 
 class AlarmPage extends StatefulWidget {
   const AlarmPage(
-      this.notificationAppLaunchDetails, {
-        Key? key,
-      }) : super(key: key);
-
-  static const String routeName = '/';
+    this.notificationAppLaunchDetails, {
+    Key? key,
+  }) : super(key: key);
 
   final NotificationAppLaunchDetails? notificationAppLaunchDetails;
-
-  bool get didNotificationLaunchApp =>
-      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
 
   @override
   State<AlarmPage> createState() => _AlarmPageState();
@@ -36,15 +32,18 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   void initState() {
     super.initState();
-    _isAndroidPermissionGranted();
-    _requestPermissions();
-    _configureDidReceiveLocalNotificationSubject();
-    _configureSelectNotificationSubject();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _isAndroidPermissionGranted();
+      _requestPermissions();
+      _configureDidReceiveLocalNotificationSubject();
+      _configureSelectNotificationSubject();
+    });
   }
 
   Future<void> _isAndroidPermissionGranted() async {
     if (Platform.isAndroid) {
-      final bool granted = await notificationController.flutterLocalNotificationsPlugin
+      final bool granted = await notificationController
+              .flutterLocalNotificationsPlugin
               .resolvePlatformSpecificImplementation<
                   AndroidFlutterLocalNotificationsPlugin>()
               ?.areNotificationsEnabled() ??
@@ -76,8 +75,9 @@ class _AlarmPageState extends State<AlarmPage> {
           );
     } else if (Platform.isAndroid) {
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-      notificationController.flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+          notificationController.flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>();
 
       final bool? grantedNotificationPermission =
           await androidImplementation?.requestNotificationsPermission();
@@ -109,7 +109,8 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 
   void _configureSelectNotificationSubject() {
-    notificationController.selectNotificationStream.stream.listen((String? payload) async {
+    notificationController.selectNotificationStream.stream
+        .listen((String? payload) async {
       await Get.to(() => RingingPage(payload));
     });
   }
@@ -123,54 +124,109 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(crossAxisAlignment: CrossAxisAlignment.center,
+        body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-      SizedBox(
-        height: 200.h,
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-        child: ElevatedButton(
-          onPressed: () async {
-            await _showNotification();
-          },
-          child: Text('알람 바로 띄우기'),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-        child: ElevatedButton(
-          onPressed: () async {
-            await _scheduleDailyTenAMNotification();
-          },
-          child: Text('알람 시간 정하기'),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-        child: ElevatedButton(
-          onPressed: () async {
-            await _cancelAllNotifications();
-          },
-          child: Text('알람 취소'),
-        ),
-      ),
-    ]));
+          SizedBox(
+            height: 200.h,
+          ),
+          Text(_notificationsEnabled.toString()),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _showNotification();
+              },
+              child: Text('알람 바로 띄우기'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _schedule5Seconds();
+              },
+              child: Text('5초 뒤에 알람 띄우기'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _scheduleDailyTenAMNotification();
+              },
+              child: Text('알람 시간 정하기'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _repeatNotification();
+              },
+              child: Text('알람 1분마다 반복'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _getNotificationChannels();
+              },
+              child: Text('알람 채널 확인'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _deleteNotificationChannel('your channel id');
+              },
+              child: Text('알람 채널 삭제'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _cancelAllNotifications();
+              },
+              child: Text('알람 전체 취소'),
+            ),
+          ),
+        ]));
   }
 
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails('your channel id', 'your channel name',
-            channelDescription: 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker');
+        AndroidNotificationDetails('your channel id2', 'your channel name2',
+            channelDescription: 'your channel description2',
+            importance: Importance.high, priority: Priority.high);
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await notificationController.flutterLocalNotificationsPlugin.show(
         id++, 'plain title', 'plain body', notificationDetails,
         payload: 'item x');
+  }
+
+  Future<void> _schedule5Seconds() async {
+    print(tz.TZDateTime.now(tz.local));
+    await notificationController.flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        '5초뒤에 띄웁니다',
+        '5초뒤에 띄웁니다',
+        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+              'your channel id', 'your channel name',
+              channelDescription: 'your channel description',
+              importance: Importance.high, priority: Priority.high
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
   }
 
   Future<void> _scheduleDailyTenAMNotification() async {
@@ -180,9 +236,9 @@ class _AlarmPageState extends State<AlarmPage> {
         'daily scheduled notification body',
         _nextInstanceOfTenAM(),
         const NotificationDetails(
-          android: AndroidNotificationDetails('daily notification channel id',
-              'daily notification channel name',
-              channelDescription: 'daily notification description'),
+          android: AndroidNotificationDetails(
+              'your channel id', 'your channel name',
+              channelDescription: 'your channel description'),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
@@ -190,14 +246,111 @@ class _AlarmPageState extends State<AlarmPage> {
         matchDateTimeComponents: DateTimeComponents.time);
   }
 
+  Future<void> _getNotificationChannels() async {
+    final Widget notificationChannelsDialogContent =
+        await _getNotificationChannelsDialogContent();
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: notificationChannelsDialogContent,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Widget> _getNotificationChannelsDialogContent() async {
+    try {
+      final List<AndroidNotificationChannel>? channels =
+          await notificationController.flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()!
+              .getNotificationChannels();
+
+      return Container(
+        width: double.maxFinite,
+        child: ListView(
+          children: <Widget>[
+            const Text(
+              'Notifications Channels',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Divider(color: Colors.black),
+            if (channels?.isEmpty ?? true)
+              const Text('No notification channels')
+            else
+              for (final AndroidNotificationChannel channel in channels!)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('id: ${channel.id}\n'
+                        'name: ${channel.name}\n'
+                        'description: ${channel.description}\n'
+                        'groupId: ${channel.groupId}\n'
+                        'importance: ${channel.importance.value}\n'
+                        'playSound: ${channel.playSound}\n'
+                        'sound: ${channel.sound?.sound}\n'
+                        'enableVibration: ${channel.enableVibration}\n'
+                        'vibrationPattern: ${channel.vibrationPattern}\n'
+                        'showBadge: ${channel.showBadge}\n'
+                        'enableLights: ${channel.enableLights}\n'
+                        'ledColor: ${channel.ledColor}\n'),
+                    const Divider(color: Colors.black),
+                  ],
+                ),
+          ],
+        ),
+      );
+    } on PlatformException catch (error) {
+      return Text(
+        'Error calling "getNotificationChannels"\n'
+        'code: ${error.code}\n'
+        'message: ${error.message}',
+      );
+    }
+  }
+
+  Future<void> _repeatNotification() async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      'repeating channel id',
+      'repeating channel name',
+      channelDescription: 'repeating description',
+    );
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+    await notificationController.flutterLocalNotificationsPlugin
+        .periodicallyShow(
+      id++,
+      'repeating title',
+      'repeating body',
+      RepeatInterval.everyMinute,
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
+
   tz.TZDateTime _nextInstanceOfTenAM() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 17, 42);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 17, 31);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
+  }
+
+  Future<void> _deleteNotificationChannel(String channelId) async {
+    await notificationController.flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.deleteNotificationChannel(channelId);
   }
 
   Future<void> _cancelAllNotifications() async {
