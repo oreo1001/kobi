@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:kobi/page_main.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
@@ -49,7 +50,7 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _initNotificationDetails();
+    //_initNotificationDetails();
   }
 
   void _initNotificationDetails() async {
@@ -81,7 +82,7 @@ class MyAppState extends State<MyApp> {
             useMaterial3: true,
           ),
           getPages: [
-            // GetPage(name: '/', page:()=> MyHomePage(title: 'dd',)),
+            GetPage(name: '/', page:()=> MainPage()),
             GetPage(
                 name: '/alarm',
                 page: () => AlarmPage(notificationAppLaunchDetails)),
@@ -89,7 +90,7 @@ class MyAppState extends State<MyApp> {
                 name: '/ringing',
                 page: () => RingingPage(selectedNotificationPayload)),
           ],
-          home: AlarmPage(notificationAppLaunchDetails)),
+          home: MainPage()),
     );
   }
 }

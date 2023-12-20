@@ -124,85 +124,86 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-          SizedBox(
-            height: 200.h,
-          ),
-          Text(_notificationsEnabled.toString()),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: ElevatedButton(
-              onPressed: () async {
-                await _showNotification();
-              },
-              child: Text('알람 바로 띄우기'),
+        body: Center(
+          child: Column(
+              children: [
+            SizedBox(
+              height: 200.h,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: ElevatedButton(
-              onPressed: () async {
-                await _schedule5Seconds();
-              },
-              child: Text('5초 뒤에 알람 띄우기'),
+            Text(_notificationsEnabled.toString()),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _showNotification();
+                },
+                child: Text('알람 바로 띄우기'),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: ElevatedButton(
-              onPressed: () async {
-                await _scheduleDailyTenAMNotification();
-              },
-              child: Text('알람 시간 정하기'),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _schedule5Seconds();
+                },
+                child: Text('5초 뒤에 알람 띄우기'),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: ElevatedButton(
-              onPressed: () async {
-                await _repeatNotification();
-              },
-              child: Text('알람 1분마다 반복'),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _scheduleDailyTenAMNotification();
+                },
+                child: Text('알람 시간 정하기'),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: ElevatedButton(
-              onPressed: () async {
-                await _getNotificationChannels();
-              },
-              child: Text('알람 채널 확인'),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _repeatNotification();
+                },
+                child: Text('알람 1분마다 반복'),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: ElevatedButton(
-              onPressed: () async {
-                await _deleteNotificationChannel('your channel id');
-              },
-              child: Text('알람 채널 삭제'),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _getNotificationChannels();
+                },
+                child: Text('알람 채널 확인'),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: ElevatedButton(
-              onPressed: () async {
-                await _cancelAllNotifications();
-              },
-              child: Text('알람 전체 취소'),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _deleteNotificationChannel('your channel id2');
+                },
+                child: Text('알람 채널 삭제'),
+              ),
             ),
-          ),
-        ]));
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await _cancelAllNotifications();
+                },
+                child: Text('알람 전체 취소'),
+              ),
+            ),
+          ]),
+        ));
   }
 
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('your channel id2', 'your channel name2',
             channelDescription: 'your channel description2',
-            importance: Importance.high, priority: Priority.high);
+            //importance: Importance.high, priority: Priority.high
+        );
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await notificationController.flutterLocalNotificationsPlugin.show(
@@ -221,7 +222,6 @@ class _AlarmPageState extends State<AlarmPage> {
           android: AndroidNotificationDetails(
               'your channel id', 'your channel name',
               channelDescription: 'your channel description',
-              importance: Importance.high, priority: Priority.high
           ),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
