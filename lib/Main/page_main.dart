@@ -3,12 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Alarm/page_alarm.dart';
-import 'package:kobi/Calendar/calendar_app.dart';
+import 'package:kobi/Calendar/page_calendar.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'Assistant/page_assistant.dart';
-import 'Mail/page_email.dart';
-import 'User/page_user.dart';
+import '../Assistant/page_assistant.dart';
+import '../Mail/page_email.dart';
+import '../User/page_user.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -37,7 +38,7 @@ class _MainPageState extends State<MainPage> {
         length: _widgetOptions.length,
         child: Scaffold(
           body: Column(children: [
-            Expanded(child: TabBarView(children: _widgetOptions)),
+            Expanded(child: Container( color: Colors.transparent, child: TabBarView(children: _widgetOptions))),
             Divider(
               height: 2,
               color: Colors.grey.shade400,
@@ -48,7 +49,8 @@ class _MainPageState extends State<MainPage> {
               child: TabBar(
                 unselectedLabelColor: Colors.grey.shade400,
                 labelColor: Colors.black,
-                indicatorColor: Colors.white,
+                indicatorColor: Colors.transparent,
+                dividerColor: Colors.transparent,
                 tabs: [
                   Tab(icon: Icon(Icons.home,size: 28.sp,)),
                   Tab(icon: Icon(Icons.calendar_today,size: 28.sp,)),

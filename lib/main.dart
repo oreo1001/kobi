@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:kobi/page_main.dart';
+import 'package:kobi/Main/page_main.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
@@ -10,6 +11,9 @@ import 'package:kobi/Controller/notification_controller.dart';
 import 'Alarm/page_ringing.dart';
 import 'Alarm/function_alarm_initializer.dart';
 import 'Alarm/page_alarm.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
@@ -23,11 +27,14 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding =  WidgetsFlutterBinding.ensureInitialized();
   await _configureLocalTimeZone();
+
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  Firebase.initializeApp().whenComplete(() => FlutterNativeSplash.remove() );
   // needed if you intend to initialize in the `main` function
   //const MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');  //메소드 채널 이름 설정
-  Get.put(NotificationController(),permanent: true);
+  Get.put(NotificationController(), permanent: true);
   alarmInitializeFunction();
 
   runApp(const MyApp());
@@ -44,7 +51,7 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   NotificationController notificationController = Get.find();
-  String? selectedNotificationPayload;     //알람을 눌렀을 때
+  String? selectedNotificationPayload; //알람을 눌렀을 때
   NotificationAppLaunchDetails? notificationAppLaunchDetails;
 
   @override
@@ -56,7 +63,7 @@ class MyAppState extends State<MyApp> {
   void _initNotificationDetails() async {
     notificationAppLaunchDetails = await notificationController
         .flutterLocalNotificationsPlugin
-        .getNotificationAppLaunchDetails();   //알람 plugin이 mac, ios, android에서 오지않으면 didNotificationLaunchApp을 false로 만듬.
+        .getNotificationAppLaunchDetails(); //알람 plugin이 mac, ios, android에서 오지않으면 didNotificationLaunchApp을 false로 만듬.
     if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
       selectedNotificationPayload =
           notificationAppLaunchDetails!.notificationResponse?.payload;
@@ -78,11 +85,16 @@ class MyAppState extends State<MyApp> {
           title: 'WonMo Calendar',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan[300]!),
-            useMaterial3: true,
-          ),
+              useMaterial3: true,
+              scaffoldBackgroundColor: Colors.white,
+              scrollbarTheme: ScrollbarThemeData(
+                thumbVisibility: MaterialStateProperty.all(true),
+                thickness: MaterialStateProperty.all(10),
+                thumbColor: MaterialStateProperty.all(Colors.amber),
+                radius: const Radius.circular(10),
+              )),
           getPages: [
-            GetPage(name: '/', page:()=> MainPage()),
+            GetPage(name: '/', page: () => MainPage()),
             GetPage(
                 name: '/alarm',
                 page: () => AlarmPage(notificationAppLaunchDetails)),
@@ -94,6 +106,7 @@ class MyAppState extends State<MyApp> {
     );
   }
 }
+
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();
   final String timeZoneName = await FlutterTimezone.getLocalTimezone();
