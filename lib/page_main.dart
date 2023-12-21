@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Alarm/page_alarm.dart';
+import 'package:kobi/Assistant/ResponseWidgets/test_floating_action_button.dart';
 import 'package:kobi/Calendar/calendar_app.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
 
@@ -16,7 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  RecorderController recorderController = Get.put(RecorderController());
+  // RecorderController recorderController = Get.put(RecorderController());
 
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
@@ -36,7 +37,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    recorderController.onInit();
+    // recorderController.onInit();
   }
 
   @override
@@ -54,6 +55,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
+      floatingActionButton: TestFloatingActionButton(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.grey,
