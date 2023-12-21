@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../Class/email.dart';
+import 'class_email.dart';
 import '../theme.dart';
 import 'function_mail_date.dart';
 import 'function_parsing.dart';
@@ -16,19 +16,6 @@ class ThreadPage extends StatefulWidget {
 
 class _ThreadPageState extends State<ThreadPage> {
   bool isExpanded = false;
-  Email thisEmail = Email(
-    threadId: '12345',
-    emailAddress: 'example@example.com',
-    name: '테스트유저',
-    messages: [
-      {
-        'sentByUser': true,
-        'date': '2023-11-27',
-        'subject': 'Hello',
-        'body': 'This is the body of the message.',
-      },
-    ],
-  );
   List<Thread> threadList = [];
 
   @override
@@ -49,7 +36,7 @@ class _ThreadPageState extends State<ThreadPage> {
         appBar: AppBar(
             title: Column(
           children: [
-            Text(' ${thisEmail.name} 님과의 대화',
+            Text(' ${widget.currentEmail.name} 님과의 대화',
                 style: textTheme().displayMedium?.copyWith(fontSize: 15.sp)),
             Text(threadList[0].subject,
                 style: textTheme()

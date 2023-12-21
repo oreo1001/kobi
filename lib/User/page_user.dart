@@ -14,8 +14,8 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    String name = '동근';
-    String email = 'test@email.com';
+    String? name = '동근';
+    String? email = 'test@email.com';
     return Scaffold(
         body: ListView(
           children: [
