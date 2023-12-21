@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Alarm/page_alarm.dart';
 import 'package:kobi/Calendar/calendar_app.dart';
 
@@ -8,14 +9,12 @@ import 'User/page_user.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
-  // final NotificationAppLaunchDetails? notificationAppLaunchDetails;
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> _widgetOptions = const <Widget>[
     AssistantPage(),
     CalendarPage(),
     MailPage(),
@@ -23,58 +22,34 @@ class _MainPageState extends State<MainPage> {
     UserPage(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Flexible(
-            child: Center(
-              child: IndexedStack(
-                index: _selectedIndex,
-                children: _widgetOptions,
+    return DefaultTabController(
+        length: _widgetOptions.length,
+        child: Scaffold(
+          body: Column(children: [
+            Expanded(child: TabBarView(children: _widgetOptions)),
+            Divider(
+              height: 2,
+              color: Colors.grey.shade400,
+            ),
+            Container(
+              height: 70.h,
+              color: Colors.white,
+              child: TabBar(
+                unselectedLabelColor: Colors.grey.shade400,
+                labelColor: Colors.black,
+                indicatorColor: Colors.white,
+                tabs: [
+                  Tab(icon: Icon(Icons.home,size: 28.sp,)),
+                  Tab(icon: Icon(Icons.calendar_today,size: 28.sp,)),
+                  Tab(icon: Icon(Icons.mail,size: 28.sp,)),
+                  Tab(icon: Icon(Icons.alarm,size: 28.sp,)),
+                  Tab(icon: Icon(Icons.person,size: 28.sp,)),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: const Color(0xff8B2CF5),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.mail,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.alarm),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
-    );
+          ]),
+        ));
   }
 }

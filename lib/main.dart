@@ -71,7 +71,7 @@ class MyAppState extends State<MyApp> {
     print('기기의 가로 길이 : ${MediaQuery.of(context).size.width}');
     print('기기의 세로 길이 : ${MediaQuery.of(context).size.height}');
     return ScreenUtilInit(
-      designSize: const Size(390.0, 800.0),
+      designSize: const Size(395.0, 785.0),
       minTextAdapt: true,
       splitScreenMode: true,
       child: GetMaterialApp(
