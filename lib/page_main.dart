@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Alarm/page_alarm.dart';
 import 'package:kobi/Calendar/calendar_app.dart';
+import 'package:kobi/Controller/recorder_controller.dart';
 
 import 'Assistant/page_assistant.dart';
 import 'Mail/page_email.dart';
@@ -14,6 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  RecorderController recorderController = Get.put(RecorderController());
   final List<Widget> _widgetOptions = const <Widget>[
     AssistantPage(),
     CalendarPage(),
@@ -21,6 +25,11 @@ class _MainPageState extends State<MainPage> {
     AlarmPage(null),
     UserPage(),
   ];
+  @override
+  void initState() {
+    super.initState();
+    recorderController.onInit();
+  }
 
   @override
   Widget build(BuildContext context) {
