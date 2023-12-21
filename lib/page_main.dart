@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kobi/Alarm/page_alarm.dart';
 import 'package:kobi/Calendar/calendar_app.dart';
+import 'package:kobi/Controller/recorder_controller.dart';
 
 import 'Assistant/page_assistant.dart';
 import 'Mail/page_email.dart';
@@ -14,19 +16,27 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  RecorderController recorderController = Get.put(RecorderController());
+
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
-    AssistantPage(),
-    CalendarPage(),
-    MailPage(),
-    AlarmPage(null),
-    UserPage(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const AssistantPage(),
+    const CalendarPage(),
+    const MailPage(),
+    const AlarmPage(null),
+    const UserPage(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    recorderController.onInit();
   }
 
   @override
