@@ -5,7 +5,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Alarm/page_alarm.dart';
 import 'package:kobi/Calendar/page_calendar.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import '../Assistant/page_assistant.dart';
 import '../Mail/page_email.dart';
