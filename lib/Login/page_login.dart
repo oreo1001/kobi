@@ -42,16 +42,12 @@ class _LoginPageState extends State<LoginPage> {
         /// 맥 ios
         googleSignIn = GoogleSignIn(
             serverClientId:
-                "141390383697-decv3cc5gd5ua99kkgb32ilqelaijguo.apps.googleusercontent.com",
-            clientId:
-                "141390383697-d6k21l56sd13s4msfa7tone9cavbrdt1.apps.googleusercontent.com",
+            "372113464838-u26uo4p42fv3fvnknkk6on2ougfd0edq.apps.googleusercontent.com",
             scopes: scopes,
             forceCodeForRefreshToken: true);
       } else {
         /// 안드로이드
         googleSignIn = GoogleSignIn(
-            serverClientId:
-                "141390383697-decv3cc5gd5ua99kkgb32ilqelaijguo.apps.googleusercontent.com",
             scopes: scopes,
             forceCodeForRefreshToken: true);
       }
