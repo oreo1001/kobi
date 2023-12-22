@@ -17,7 +17,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // RecorderController recorderController = Get.put(RecorderController());
+  RecorderController recorderController = Get.put(RecorderController());
 
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[

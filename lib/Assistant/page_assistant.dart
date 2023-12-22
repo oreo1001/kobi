@@ -25,16 +25,15 @@ class _AssistantPageState extends State< AssistantPage> {
       print("testValue: ${testController.testValue.value}");
       int testValue  = testController.testValue.value;
       changeWidget(testValue);
-      return currentWidget;});
+      return SlideFromLeftAnimation(child: currentWidget);});
   }
 
   void changeWidget(int testValue) {
     if (testValue == 0) {
-      currentWidget = SlideFromLeftAnimation(
-          child: DefaultResponse());
+      currentWidget = DefaultResponse();
     }
     else if (testValue == 1) {
-      currentWidget = SlideFromLeftAnimation(child: Test1());
+      currentWidget = Test1();
     }
     else if (testValue == 2) {
       currentWidget = Test2();
