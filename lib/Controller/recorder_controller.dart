@@ -39,7 +39,7 @@ class RecorderController extends GetxController {
   }
 
   Future<void> _initRecorder() async {
-    // await Permission.microphone.request();
+    await Permission.microphone.request();
 
     if (Platform.isIOS) {
       final session = await AudioSession.instance;
@@ -78,11 +78,12 @@ class RecorderController extends GetxController {
     await _recorder.setSubscriptionDuration(const Duration(milliseconds: 100));
     _recorder.onProgress?.listen((event) {
       double decibels = event.decibels ?? 0;
+      print('decibels: $decibels');
 
       if (!recordingStarted) {
-        if (decibels > 30) recordingStarted = true;
+        if (decibels > 60) recordingStarted = true;
       } else {
-        if (decibels < 30) {
+        if (decibels < 60) {
           _startSilenceTimer();
         } else {
           _resetSilenceTimer();
@@ -175,6 +176,7 @@ class RecorderController extends GetxController {
     if (response.statusCode == 200) {
       String responseBody = await response.stream.bytesToString();
       Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
+      print('Response: $jsonResponse');
       return jsonResponse['text'];
     } else {
       print('Failed to send video to Whisper API: ${response.statusCode}');
@@ -208,11 +210,13 @@ class RecorderController extends GetxController {
   }
 
   // Function to invoke when hotword is detected
-  void hotwordHandler() {
+  void hotwordHandler() async {
     // Play sound
-    Audio.load('assets/ding.wav')
-      ..play()
-      ..dispose();
+    Audio beep = Audio.load('assets/ding.wav');
+    await beep.play();
+    await beep.dispose();
+    print("Hotword detected!");
+    await startRecording();
   }
 
   Future<void> configureAudioSession() async {
