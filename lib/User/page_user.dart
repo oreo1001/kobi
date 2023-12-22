@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../Class/secure_storage.dart';
+import '../Controller/auth_controller.dart';
 import '../theme.dart';
 
 class UserPage extends StatefulWidget {
@@ -11,11 +13,25 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  AuthController authController = Get.find();
+  final storage = SecureStorage();
+  Map<String, String> initialUser = {
+    'userId': '',
+    'displayName': '',
+    'email': '',
+    'photoUrl': '',
+  };
+
+  Future<void> _handleSignOut() async {
+    await storage.setUser(initialUser);
+    Get.offNamed('/login');
+  }
 
   @override
   Widget build(BuildContext context) {
-    String? name = '동근';
-    String? email = 'test@email.com';
+    String name = authController.name.value;
+    String email = authController.email.value;
+    String photoUrl = authController.photoUrl.value;
     return Scaffold(
         body: ListView(
           children: [
@@ -23,7 +39,7 @@ class _UserPageState extends State<UserPage> {
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(30.sp),
                 child: Image.network(
-                  'http://media-cdn.tripadvisor.com/media/photo-o/1b/e0/a0/0e/photo0jpg.jpg',
+                  photoUrl,
                   fit: BoxFit.fill,
                 ), // Text(key['title']),
               ),
@@ -33,7 +49,7 @@ class _UserPageState extends State<UserPage> {
                 width: 90.w,
                 child: ElevatedButton(
                   // style: ElevatedButton.styleFrom(minimumSize: Size(60.w,40.h)),
-                  onPressed: (){},
+                  onPressed: _handleSignOut,
                   child: Text('로그아웃',
                       style:
                       textTheme().displayMedium?.copyWith(fontSize: 12.sp)),

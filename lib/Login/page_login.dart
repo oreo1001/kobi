@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Center(
                       child: ClipRRect(
                         child: Image.asset(
-                          "assets/images/구글 로고.png",
+                          "assets/images/구글로고.png",
                           height: 25.h,
                         ),
                       ),
