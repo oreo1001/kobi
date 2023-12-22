@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body) async {
-  // String uri = 'https://back.wonmo.net$path';
-  String uri = 'https://back.wonmo.net$path'; /// https 안 되는 건지 확인해주세요
+  String uri = 'https://back.wonmo.net$path';
 
   // final storage = SecureStorage();
   // String user = await storage.getUserId() ?? '';
