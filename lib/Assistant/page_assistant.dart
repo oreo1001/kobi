@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Assistant/ResponseWidgets/default.dart';
 import 'package:kobi/Assistant/ResponseWidgets/response_animation.dart';
-import 'package:kobi/Assistant/ResponseWidgets/test1.dart';
-import 'package:kobi/Assistant/ResponseWidgets/test_controller.dart';
+import 'package:kobi/Controller/recorder_controller.dart';
 
-import 'ResponseWidgets/test2.dart';
-import 'ResponseWidgets/test3.dart';
+import '../Controller/assistant_controller.dart';
+import '../function_http_request.dart';
+import 'Class/API_response.dart';
+import 'Class/assistant_enum.dart';
+import 'Class/assistant_response.dart';
+import 'ResponseWidgets/completed_page.dart';
+import 'ResponseWidgets/create_email.dart';
+import 'ResponseWidgets/delete_event.dart';
+import 'ResponseWidgets/describe_user_query.dart';
+import 'ResponseWidgets/establish_strategy.dart';
+import 'ResponseWidgets/get_free_busy.dart';
+import 'ResponseWidgets/insert_event.dart';
+import 'ResponseWidgets/message_creation.dart';
+import 'ResponseWidgets/multiple_choice_query.dart';
+import 'ResponseWidgets/patch_event.dart';
+
 class AssistantPage extends StatefulWidget {
   const AssistantPage({super.key});
 
@@ -15,31 +29,142 @@ class AssistantPage extends StatefulWidget {
 }
 
 class _AssistantPageState extends State< AssistantPage> {
-  TestController testController = Get.put(TestController());
 
-  Widget currentWidget = DefaultResponse() ;
+  // Recorder 의존성 주입
+  RecorderController recorderController = Get.put(RecorderController());
+
+  // 화면에 보여줄 Widget 저장
+  Widget currentWidget = DefaultResponse();
+
+  // 이전의 transcription 값 저장
+  String previousTranscription = '';
+
+  // 이 widget에서 사용할 AssistantResponse
+  AssistantResponse assistantResponse =
+  AssistantResponse(assistantId: '',
+      threadId: '',
+      runId: '',
+      stepId: '',
+      status: 'initial',
+      type: '');
+
+  // 저장할 AssistantController
+  AssistantController assistantController = Get.put(AssistantController());
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      print("testValue: ${testController.testValue.value}");
-      int testValue  = testController.testValue.value;
-      changeWidget(testValue);
-      return SlideFromLeftAnimation(child: currentWidget);});
+      // transcription 의 변화를 감지하여 currentScreen을 변경
+      String transcription = recorderController.transcription.value;
+      print('transcription 값 : $transcription');
+      print('previousTranscription 값 : $previousTranscription');
+
+      if (transcription != previousTranscription) {
+        previousTranscription = transcription;
+        requestToBackEnd(transcription);
+      }
+      return SlideFromLeftAnimation(child: currentWidget);
+    });
   }
 
-  void changeWidget(int testValue) {
-    if (testValue == 0) {
-      currentWidget = DefaultResponse();
+  void requestToBackEnd(String transcription) async {
+    Map<String, dynamic> apiResponseMap = await sendToBackEnd(transcription);
+
+    /// BackEnd에서 받은 응답을 각각 이 Widget(assistantResponse) / assistantController에 저장
+    assistantController.loadAssistantFromJson(apiResponseMap);
+    assistantResponse.fromJson(apiResponseMap);
+
+    /// BackEnd에서 받은 응답을 가지고 화면에 보여줄 Widget을 결정
+
+  }
+
+
+  /// #1. 사용자의 입력을 받고 BackEnd에 전달
+  Future<Map<String, dynamic>> sendToBackEnd(String transcription) async {
+    Map<String, dynamic> apiRequestMap;
+    Map<String, dynamic> apiResponseMap;
+
+    if (assistantResponse.status != 'in_progress') {
+      /// assistant 에게 처음 요청
+
+      apiResponseMap =
+      await httpResponse('/assistant/run', {'userRequest': transcription});
+    } else {
+      /// assistant 사용 중에 요청
+
+      var toolCall = assistantResponse.stepDetails?.toolCalls?[0];
+      if (toolCall != null) {
+        /// before step이 tool_calls 일때
+        apiRequestMap = APIResponse(
+          assistantId: assistantResponse.assistantId,
+          runId: assistantResponse.runId,
+          stepId: assistantResponse.stepId,
+          beforeType: assistantResponse.type,
+          threadId: assistantResponse.threadId,
+          functionResponses: {
+            "tool_outputs": [
+              ToolOutput(toolCallId: toolCall.id,
+                  name: toolCall.function.name,
+                  output: {"message": transcription})
+                  .toJson()
+            ]
+          },
+        ).toJson();
+      } else {
+        /// before step 이 message_creation 일때
+        apiRequestMap = APIResponse(
+          assistantId: assistantResponse.assistantId,
+          runId: assistantResponse.runId,
+          stepId: assistantResponse.stepId,
+          beforeType: assistantResponse.type,
+          threadId: assistantResponse.threadId,
+        ).toJson();
+      }
+      apiResponseMap = await httpResponse('/assistant/step', apiRequestMap);
     }
-    else if (testValue == 1) {
-      currentWidget = Test1();
+
+    return apiResponseMap;
+  }
+
+  /// #3. BackEnd에서 받은 응답을 가지고 currentScreen을 변경
+  void switchWidget() {
+    String responseWidgetType = assistantResponse.type;
+    if (responseWidgetType == 'message_creation') {
+      currentWidget = MessageCreationUI();
+    } else {
+      String? type = assistantResponse.stepDetails?.toolCalls?[0].function.name;
+
+      if (type == AssistantFunction.createEmail.value) {
+        currentWidget = CreateEmail();
+      } else if (type == AssistantFunction.describeUserQuery.value) {
+        currentWidget = DescribeUserQuery();
+      } else if (type == AssistantFunction.multipleChoiceQuery.value) {
+        currentWidget = const MultipleChoiceQuery();
+      } else if (type == AssistantFunction.insertEvent.value) {
+        currentWidget = InsertEvent();
+      } else if (type == AssistantFunction.patchEvent.value) {
+        currentWidget = PatchEvent();
+      } else if (type == AssistantFunction.deleteEvent.value) {
+        currentWidget = DeleteEvent();
+      } else if (type == AssistantFunction.getFreeBusy.value) {
+        currentWidget = GetFreeBusy();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          requestToBackEnd("ok");
+        });
+      } else if (type == AssistantFunction.establishStrategy.value) {
+        currentWidget = EstablishStrategy();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          requestToBackEnd("ok");
+        });
+      } else {
+        currentWidget = CompletedPage();
+      }
     }
-    else if (testValue == 2) {
-      currentWidget = Test2();
-    }
-    else {
-      currentWidget = Test3();
-    }
+
   }
 }
