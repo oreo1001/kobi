@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Mail/page_thread.dart';
 
-import '../Class/email.dart';
+import 'class_email.dart';
 import '../function_http_request.dart';
 import '../theme.dart';
 import 'function_mail_date.dart';
@@ -29,7 +29,8 @@ class _MailPageState extends State<MailPage> {
   }
 
   Future getMail() async {
-    Map<String, dynamic> responseMap = await httpResponse('/email/emailList', {});
+    Map<String, dynamic> responseMap =
+        await httpResponse('/email/emailList', {});
     emailList = loadEmailsFromJson(responseMap['emailList']);
     return emailList;
   }
@@ -54,7 +55,11 @@ class _MailPageState extends State<MailPage> {
                     maxLines: 1,
                     softWrap: true,
                     text: TextSpan(children: [
-                      TextSpan(text: '내 메일함', style: textTheme().displayMedium?.copyWith(fontSize: 20.sp)),
+                      TextSpan(
+                          text: '내 메일함',
+                          style: textTheme()
+                              .displayMedium
+                              ?.copyWith(fontSize: 20.sp)),
                       WidgetSpan(
                         child: SizedBox(
                           width: 5.w,
@@ -62,22 +67,22 @@ class _MailPageState extends State<MailPage> {
                       ),
                       TextSpan(
                           text: emailList.length.toString(),
-                          style: textTheme().displaySmall?.copyWith(fontSize: 18.sp, color: Colors.blueGrey)),
+                          style: textTheme().displaySmall?.copyWith(
+                              fontSize: 18.sp, color: Colors.blueGrey)),
                     ])),
               ),
-              body: GestureDetector(
-                onTap: () {
-                  Get.to(() => ThreadPage(emailList[0]));
-                },
-                behavior: HitTestBehavior.opaque,
-                child: ListView.builder(
-                  itemCount: emailList.length,
-                  itemBuilder: (context, index) {
-                    final email = emailList[index];
-                    threadId = email.threadId;
-                    var threads = email.messages;
-                    getThreads(threads);
-                    return Column(
+              body: ListView.builder(
+                itemCount: emailList.length,
+                itemBuilder: (context, index) {
+                  final email = emailList[index];
+                  threadId = email.threadId;
+                  var threads = email.messages;
+                  getThreads(threads);
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(() => ThreadPage(emailList[index]));
+                    },
+                    child: Column(
                       children: [
                         Padding(
                           padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
@@ -92,24 +97,37 @@ class _MailPageState extends State<MailPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Text(email.name, style: textTheme().displayLarge?.copyWith(fontSize: 18.sp)),
+                                        Text(email.name,
+                                            style: textTheme()
+                                                .displayLarge
+                                                ?.copyWith(fontSize: 18.sp)),
                                         SizedBox(width: 5.w),
                                         Text(threadList.length.toString(),
-                                            style: textTheme().displayLarge?.copyWith(
-                                                color: Colors.blueGrey, fontWeight: FontWeight.w400, fontSize: 17.sp)),
+                                            style: textTheme()
+                                                .displayLarge
+                                                ?.copyWith(
+                                                    color: Colors.blueGrey,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 17.sp)),
                                       ],
                                     ),
                                     Text(threadList[threads.length - 1].subject,
-                                        style: textTheme().displaySmall?.copyWith(fontSize: 14.sp)),
+                                        style: textTheme()
+                                            .displaySmall
+                                            ?.copyWith(fontSize: 14.sp)),
                                     Text(threadList[threads.length - 1].body,
                                         maxLines: 1,
                                         softWrap: true,
-                                        style: textTheme().displaySmall?.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 13.sp,
-                                            overflow: TextOverflow.ellipsis)),
+                                        style: textTheme()
+                                            .displaySmall
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 13.sp,
+                                                overflow:
+                                                    TextOverflow.ellipsis)),
                                     // Text(email.emailAddress),
                                     // Text(email.threadId),
                                   ],
@@ -117,17 +135,21 @@ class _MailPageState extends State<MailPage> {
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.h),
-                                child: Text(mailDateString(threadList[threads.length - 1].date),
-                                    style: textTheme().bodyMedium?.copyWith(fontSize: 10.sp)),
+                                child: Text(
+                                    mailDateString(
+                                        threadList[threads.length - 1].date),
+                                    style: textTheme()
+                                        .bodyMedium
+                                        ?.copyWith(fontSize: 10.sp)),
                               )
                             ],
                           ),
                         ),
                         Divider(),
                       ],
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             );
           }

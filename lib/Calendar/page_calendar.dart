@@ -60,7 +60,9 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     futureEvents ??= getEvents();     //futureEvents null
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         // toolbarHeight: 70.h,
         title :Row(
           mainAxisAlignment: MainAxisAlignment.start,

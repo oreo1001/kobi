@@ -1,0 +1,14 @@
+flutter_native_splash:
+
+  color: "#FFFFFF"
+  image: assets/images/캘린더-로고.png
+
+  android_12:
+    image: assets/images/캘린더-로고.png
+    color: "#FFFFFF"
+
+  android: true
+  ios: true
+  web: false
+
+  fullscreen: true

@@ -1,4 +1,4 @@
-import '../Class/email.dart';
+import 'class_email.dart';
 
 List<Email> loadEmailsFromJson(List<dynamic> jsonList) {
   var newEmails = jsonList.map((json) {

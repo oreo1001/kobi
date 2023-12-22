@@ -25,7 +25,9 @@ class AlarmPage extends StatefulWidget {
 }
 
 class _AlarmPageState extends State<AlarmPage> {
+  static const mainChannel = 'main channel ';
   NotificationController notificationController = Get.find();
+  final textController = TextEditingController();
   int id = 0;
   bool _notificationsEnabled = false;
 
@@ -118,92 +120,101 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   void dispose() {
     super.dispose();
-    notificationController.onClose();
+    textController.dispose();
+    // notificationController.onClose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-          child: Column(
-              children: [
-            SizedBox(
-              height: 200.h,
+        body: SingleChildScrollView(
+      child: Center(
+        child: Column(children: [
+          SizedBox(
+            height: 100.h,
+          ),
+          Text(_notificationsEnabled.toString()),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 8.h),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _showNotification();
+              },
+              child: Text('알람 바로 띄우기'),
             ),
-            Text(_notificationsEnabled.toString()),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _showNotification();
-                },
-                child: Text('알람 바로 띄우기'),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _schedule5Seconds();
+              },
+              child: Text('5초 뒤에 알람 띄우기'),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _schedule5Seconds();
-                },
-                child: Text('5초 뒤에 알람 띄우기'),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _scheduleDailyTenAMNotification();
+              },
+              child: Text('알람 시간 정하기'),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _scheduleDailyTenAMNotification();
-                },
-                child: Text('알람 시간 정하기'),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _repeatNotification();
+              },
+              child: Text('알람 1분마다 반복'),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _repeatNotification();
-                },
-                child: Text('알람 1분마다 반복'),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _getNotificationChannels();
+              },
+              child: Text('알람 채널 확인'),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _getNotificationChannels();
-                },
-                child: Text('알람 채널 확인'),
-              ),
+          ),
+          SizedBox(
+            width: 100.w,
+            child: TextField(
+              controller: textController,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _deleteNotificationChannel('your channel id2');
-                },
-                child: Text('알람 채널 삭제'),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _deleteNotificationChannel(textController.text);
+              },
+              child: Text('알람 채널 삭제'),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _cancelAllNotifications();
-                },
-                child: Text('알람 전체 취소'),
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () async {
+                await _cancelAllNotifications();
+              },
+              child: Text('알람 전체 취소'),
             ),
-          ]),
-        ));
+          ),
+        ]),
+      ),
+    ));
   }
 
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails('your channel id2', 'your channel name2',
-            channelDescription: 'your channel description2',
-            //importance: Importance.high, priority: Priority.high
-        );
+        AndroidNotificationDetails(
+      '${mainChannel}id', '${mainChannel}name',
+      channelDescription: '${mainChannel}description',
+      //importance: Importance.high, priority: Priority.high
+    );
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await notificationController.flutterLocalNotificationsPlugin.show(
@@ -220,8 +231,9 @@ class _AlarmPageState extends State<AlarmPage> {
         tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
         const NotificationDetails(
           android: AndroidNotificationDetails(
-              'your channel id', 'your channel name',
-              channelDescription: 'your channel description',
+            '${mainChannel}id',
+            '${mainChannel}name',
+            channelDescription: '${mainChannel}description',
           ),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -237,8 +249,10 @@ class _AlarmPageState extends State<AlarmPage> {
         _nextInstanceOfTenAM(),
         const NotificationDetails(
           android: AndroidNotificationDetails(
-              'your channel id', 'your channel name',
-              channelDescription: 'your channel description'),
+            '${mainChannel}id',
+            '${mainChannel}name',
+            channelDescription: '${mainChannel}description',
+          ),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
@@ -273,7 +287,7 @@ class _AlarmPageState extends State<AlarmPage> {
                   AndroidFlutterLocalNotificationsPlugin>()!
               .getNotificationChannels();
 
-      return Container(
+      return SizedBox(
         width: double.maxFinite,
         child: ListView(
           children: <Widget>[
@@ -317,21 +331,19 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 
   Future<void> _repeatNotification() async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'repeating channel id',
-      'repeating channel name',
-      channelDescription: 'repeating description',
-    );
-    const NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
     await notificationController.flutterLocalNotificationsPlugin
         .periodicallyShow(
       id++,
       'repeating title',
       'repeating body',
       RepeatInterval.everyMinute,
-      notificationDetails,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          '${mainChannel}id',
+          '${mainChannel}name',
+          channelDescription: '${mainChannel}description',
+        ),
+      ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
