@@ -13,9 +13,6 @@ import 'Alarm/page_ringing.dart';
 import 'Alarm/function_alarm_initializer.dart';
 import 'Alarm/page_alarm.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'Class/secure_storage.dart';
 import 'Login/page_login.dart';
 import 'User/class_contact.dart';
@@ -38,9 +35,6 @@ void main() async {
 
   ///Native Splash를 위한 코드 (splash를 바인딩)
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  // Firebase.initializeApp().whenComplete(() => FlutterNativeSplash.remove() );
-
-  //const MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');  //메소드 채널 이름 설정
   Get.put(NotificationController(), permanent: true);
   alarmInitializeFunction();
 
@@ -66,21 +60,21 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    getUserProfile();
     //_initNotificationDetails();
   }
 
   Future<bool> checkIfLogin() async {
     String? userId = await storage.getUserId();
+    print('userId 값: $userId');
     if(userId == null || userId.isEmpty){
       return false;
     }
     return true;
   }
 
-  Future getUserProfile() async {
+  Future<bool> getUserProfile() async {
     bool isLoggedIn = await checkIfLogin();
-    if(isLoggedIn){
+    if (isLoggedIn) {
       String? token = await authController.getToken();
       await authController.loadUser();
 
@@ -89,6 +83,10 @@ class MyAppState extends State<MyApp> {
 
       authController.contactList.value = convertDynamicListToContactList(responseMap['contactList']);
       print('contactList: ${authController.contactList.toString()}');
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
@@ -136,7 +134,7 @@ class MyAppState extends State<MyApp> {
                 page: () => RingingPage(selectedNotificationPayload)),
           ],
           home: FutureBuilder<bool>(      //로그인 확인하여 페이지 라우팅
-            future: checkIfLogin(),
+            future: getUserProfile(),
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator(); // 로딩 중일 때 보여줄 위젯

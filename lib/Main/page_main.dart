@@ -18,7 +18,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  RecorderController recorderController = Get.put(RecorderController());
   final List<Widget> _widgetOptions = const <Widget>[
     AssistantPage(),
     CalendarPage(),
@@ -29,7 +28,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    recorderController.onInit();
   }
 
   @override

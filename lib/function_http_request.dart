@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body) async {
-  String uri = 'https://wonmo.zigdeal.shop$path';
+  // String uri = 'https://back.wonmo.net$path';
+  String uri = 'https://back.wonmo.net$path'; /// https 안 되는 건지 확인해주세요
 
   // final storage = SecureStorage();
   // String user = await storage.getUserId() ?? '';
@@ -24,10 +25,10 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
 
   print('-----------------HTTP API 리퀘스트 보내기--------------------');
   print('uri : $uri');
-  print('HTTP request body : ' + body.toString());
+  print('HTTP request body : $body');
   http.Response response = await http.post(Uri.parse(uri),
       headers: <String, String>{'Content-Type': "application/json"}, body: jsonEncode(body));
-  print('-----------------HTTP API 응답--------------------');
+  if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList') print('-----------------HTTP API 응답--------------------');
   Map<String, dynamic> responseMap;
   if (response.statusCode == 200) {
     // 서버가 요청을 성공적으로 수행한 경우
@@ -40,6 +41,6 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
     responseMap['statusCode'] = response.statusCode;
   }
 
-  if (uri != 'https://wonmo.zigdeal.shop/email/emailList' && uri != 'https://wonmo.zigdeal.shop/calendar/eventList') print('responseMap: $responseMap');
+  if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList') print('responseMap: $responseMap');
   return responseMap;
 }

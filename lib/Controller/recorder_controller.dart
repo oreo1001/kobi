@@ -81,9 +81,9 @@ class RecorderController extends GetxController {
       print('decibels: $decibels');
 
       if (!recordingStarted) {
-        if (decibels > 60) recordingStarted = true;
+        if (decibels > 55) recordingStarted = true;
       } else {
-        if (decibels < 60) {
+        if (decibels < 55) {
           _startSilenceTimer();
         } else {
           _resetSilenceTimer();
@@ -96,7 +96,7 @@ class RecorderController extends GetxController {
     if (_silenceTimer != null) return;
     _silenceTimer?.cancel();
     // 0.5초 뒤에 녹음 중지
-    _silenceTimer = Timer(const Duration(milliseconds: 500), () {
+    _silenceTimer = Timer(const Duration(milliseconds: 1000), () {
       stopRecording();
     });
   }
@@ -191,7 +191,7 @@ class RecorderController extends GetxController {
     detector = Snowboy();
     await detector.prepare(modelPath);
     detector.hotwordHandler = hotwordHandler;
-    await configureAudioSession();
+    // await configureAudioSession();
   }
 
   // Copy model from asset bundle to temp directory on the filesystem

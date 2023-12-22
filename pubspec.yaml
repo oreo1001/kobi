@@ -25,13 +25,16 @@ dependencies:
   audio_session: ^0.1.18
   flutter_sound: ^9.2.13
   permission_handler: ^11.1.0
-  flutter_snowboy: ">=0.1.2"       #시리
+  flutter_snowboy: ^0.1.2+1       #시리
   audiofileplayer: ^2.1.1
   flutter_native_splash: ^2.3.8    #splash 라이브러리
   firebase_core: ^2.24.2          #firebase
   firebase_messaging: ^14.7.9     #firebase 푸시알림
   flutter_secure_storage: ^9.0.0   #저장 공간
   google_sign_in: ^6.2.1           #구글 로그인(앞단)
+  flutter_tts: ^3.8.5
+  animated_text_kit: ^4.2.2
+  loading_animation_widget: ^1.2.0+4
 
 dev_dependencies:
   flutter_test:
