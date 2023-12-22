@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "372113464838",
+    "project_id": "compact-lacing-408503",
+    "storage_bucket": "compact-lacing-408503.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372113464838:android:e06615b1b6954efec8ad87",
+        "android_client_info": {
+          "package_name": "com.example.kobi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372113464838-g0sevataqgvg1nlgd2qbre8e216g4fgr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kobi",
+            "certificate_hash": "91265ff3079b3b4dc71019b2b0780130831175d0"
+          }
+        },
+        {
+          "client_id": "372113464838-u26uo4p42fv3fvnknkk6on2ougfd0edq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWCGJD4ueKGfno-vHh3dTEMSL42F8w10M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372113464838-u26uo4p42fv3fvnknkk6on2ougfd0edq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

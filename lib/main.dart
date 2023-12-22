@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -13,6 +15,11 @@ import 'Alarm/page_ringing.dart';
 import 'Alarm/function_alarm_initializer.dart';
 import 'Alarm/page_alarm.dart';
 
+import 'Controller/event_controller.dart';
+import 'Dialog/delete_dialog.dart';
+import 'Dialog/event_dialog.dart';
+import 'Dialog/update_event_dialog.dart';
+import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -31,6 +38,13 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
         'notification action tapped with input: ${notificationResponse.input}');
   }
 }
+//firebase_messaging에서 나온 방식 프래그마틱 방식으로 다트 컴파일러에게 진입점 임을 알려주어 우선적으로 실행되게 한다. */
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);   //백그라운드에서 초기화
+  print('메시지 아이디 : ${message.messageId}');
+  print('백그라운드 : ${message.data}');
+}
 
 void main() async {
   WidgetsBinding widgetsBinding =  WidgetsFlutterBinding.ensureInitialized();
@@ -38,11 +52,24 @@ void main() async {
 
   ///Native Splash를 위한 코드 (splash를 바인딩)
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  // Firebase.initializeApp().whenComplete(() => FlutterNativeSplash.remove() );
-
-  //const MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');  //메소드 채널 이름 설정
   Get.put(NotificationController(), permanent: true);
   alarmInitializeFunction();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseMessaging.instance.requestPermission(     /// 첫 빌드시, 권한 확인하기
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print(fcmToken);
+
+  Get.put(EventController());
 
   runApp(const MyApp());
 }
@@ -63,10 +90,23 @@ class MyAppState extends State<MyApp> {
   AuthController authController = Get.put(AuthController(),permanent: true);
   final storage = SecureStorage();
 
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final AndroidNotificationChannel firebaseChannel = const AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    description: 'This channel is used for important notifications.',
+    // importance: Importance.max,
+  );
+
+  /// 2. 그 채널을 우리 메인 채널로 정해줄 플러그인을 만들어준다.
+  final FlutterLocalNotificationsPlugin fireBasePlugin = FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
     super.initState();
     getUserProfile();
+    _onMessage();
+    showFirebaseDialog();
     //_initNotificationDetails();
   }
 
@@ -102,6 +142,104 @@ class MyAppState extends State<MyApp> {
       Get.off(() => RingingPage(selectedNotificationPayload));
     } else {
       Get.off(() => AlarmPage(notificationAppLaunchDetails));
+    }
+  }
+  void showFirebaseDialog(){
+    final EventController eventController = Get.find<EventController>();
+    print("type: ${eventController.type.value}");
+    if(eventController.type.value == 'insert_event'){
+      showEventDialog();
+    }else if(eventController.type.value == 'update_event'){
+      showUpdateEventDialog();
+    }else if(eventController.type.value == 'delete_event'){
+      showDeleteDialog();
+    }
+  }
+
+  void _onMessage() async {
+    /// * local_notification 관련한 플러그인 활용 *
+    /// 1. 위에서 생성한 channel 을 플러그인 통해 메인 채널로 설정한다.
+    await fireBasePlugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(firebaseChannel);
+
+    /// 2. 플러그인을 초기화하여 추가 설정을 해준다.
+    await fireBasePlugin.initialize(
+        const InitializationSettings(
+          android: AndroidInitializationSettings('notification_icon'),
+          iOS: DarwinInitializationSettings(
+            requestAlertPermission: true,
+            requestBadgePermission: true,
+            requestSoundPermission: true,
+          ),
+        ),
+        // onDidReceiveBackgroundNotificationResponse: backgroundHandler,
+        onDidReceiveNotificationResponse: (details) {
+          print('알림 : $details');
+        });
+
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      if (notification != null && android != null) {       //android일떄만 flutterLocalNotification
+        fireBasePlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(firebaseChannel.id, firebaseChannel.name, channelDescription: firebaseChannel.description),
+            ),
+            // 넘겨줄 데이터가 있으면 아래 코드를 써주면 됨.
+            payload: message.data['argument']);
+      }
+      print('메시지 아이디 : ${message.messageId}');
+      print('포그라운드 : ${message.data}');
+      setEvent(message.data);
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {  ///background -> foreground tap
+      print('백그라운드에서 탭했을때 포그라운드로 전환');
+      _handleMessage(message);
+    });
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) {  ///terminated
+      if (message != null) {
+        print('terminated 상태에서 메시지 확인: ${message.data}');
+        _handleMessage(message);
+      }
+    });
+  }
+
+  void setEvent(Map<String,dynamic> eventMap){
+    final EventController eventController = Get.find();
+    if (eventMap['type'] == 'insert_event') {
+      eventController.setCurrentEvent(eventMap);
+      showEventDialog();
+    } else if (eventMap['type'] == 'update_event') {
+      eventController.setBeforeEvent(json.decode(eventMap['before_event']));
+      eventController.setCurrentEvent(json.decode(eventMap['after_event']));
+      showUpdateEventDialog();
+    }else if (eventMap['type'] == 'delete_event'){
+      eventController.setDeleteEvent(eventMap);
+      showDeleteDialog();
+    }
+  }
+  void _handleMessage(RemoteMessage message) async {
+    String? userId = await storage.getUserId();
+    if (userId != '' && userId != null) {
+      Get.offAllNamed('/main');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setEvent(message.data);
+      });
+    } else {
+      Get.offAllNamed('/login');
     }
   }
 
