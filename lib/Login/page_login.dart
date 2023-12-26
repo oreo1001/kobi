@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
           authController.contactList.value =
               convertDynamicListToContactList(responseMap['contactList']);
         }
-        Get.offNamed('/');
+        Get.offNamed('/main');
         print('메인으로 갓나?');
       } else {
         print('error가 생성되었어요! 500 이거나 다른 오류');
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
               ),
-              onPressed: () async{
+              onPressed: () async {
                 _handleSignIn();
               },
               child: Container(

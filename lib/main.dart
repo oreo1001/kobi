@@ -137,7 +137,7 @@ class MyAppState extends State<MyApp> {
                 radius: const Radius.circular(10),
               )),
           getPages: [
-            GetPage(name: '/', page: () => MainPage()),
+            GetPage(name: '/main', page: () => MainPage()),
             GetPage(name: '/test', page:() => EventList()),
             GetPage(name: '/login', page: () => LoginPage()),
             GetPage(name: '/loading', page: () => LoadingPage()),
