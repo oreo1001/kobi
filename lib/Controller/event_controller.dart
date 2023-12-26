@@ -4,6 +4,7 @@ import '../Class/class_my_event.dart';
 class EventController extends GetxController {
   RxString type = ''.obs;
   Rx<MyEvent> beforeEvent = Rx<MyEvent>(MyEvent(
+    eventId: '',
     summary: '',
     startTime: '',
     endTime: '',
@@ -11,6 +12,7 @@ class EventController extends GetxController {
     description: '',
   ));
   Rx<MyEvent> currentEvent = Rx<MyEvent>(MyEvent(
+    eventId: '',
     summary: '',
     startTime: '',
     endTime: '',
@@ -18,6 +20,7 @@ class EventController extends GetxController {
     description: '',
   ));
   Rx<MyEvent> deleteEvent = Rx<MyEvent>(MyEvent(
+    eventId: '',
     summary: '',
     startTime: '',
     endTime: '',
