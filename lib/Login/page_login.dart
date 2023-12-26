@@ -76,10 +76,9 @@ class _LoginPageState extends State<LoginPage> {
 
       print('/auth/signIn 요청: $token, $serverAuthCode, $googleId');
 
-      Get.toNamed('/loading');
+      // Get.toNamed('/loading');
       Map<String, dynamic> responseMap = await httpResponse('/auth/signIn',
           {'fcmToken': token, 'authCode': serverAuthCode, 'user': googleId});
-
       if (responseMap['statusCode'] == 400) {
         if (responseMap.containsKey('message') &&
             responseMap['message'].contains('scope')) {
@@ -91,13 +90,14 @@ class _LoginPageState extends State<LoginPage> {
           Get.back();
         }
       } else if (responseMap['statusCode'] == 200) {
-        storage.setUser(accountMap); //로그인 되었을 때
         if (responseMap.containsKey('contactList')) {
           authController.contactList.value =
               convertDynamicListToContactList(responseMap['contactList']);
         }
-        Get.offNamed('/');
-        print('메인으로 갓나?');
+        storage.setUser(accountMap).then((response) {
+          Get.offNamed('/main');
+          print('메인으로 갓나?');
+        }); //로그인 되었을 때
       } else {
         print('error가 생성되었어요! 500 이거나 다른 오류');
       }
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
               ),
-              onPressed: () async{
+              onPressed: () {
                 _handleSignIn();
               },
               child: Container(
