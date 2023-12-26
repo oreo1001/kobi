@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:kobi/function_user_login.dart';
 
 import 'Class/secure_storage.dart';
 
@@ -9,7 +10,7 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   String uri = 'https://back.wonmo.net$path';
 
   final storage = SecureStorage();
-  String user = await storage.getUserId() ?? '';
+  String user = authController.userId.value;
   if (user != '') {
     body['user'] = user;
   }

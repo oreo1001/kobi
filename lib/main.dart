@@ -18,6 +18,7 @@ import 'Controller/event_controller.dart';
 import 'Dialog/delete_dialog.dart';
 import 'Dialog/event_dialog.dart';
 import 'Dialog/update_event_dialog.dart';
+import 'Login/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -139,6 +140,7 @@ class MyAppState extends State<MyApp> {
             GetPage(name: '/', page: () => MainPage()),
             GetPage(name: '/test', page:() => EventList()),
             GetPage(name: '/login', page: () => LoginPage()),
+            GetPage(name: '/loading', page: () => LoadingPage()),
             GetPage(
                 name: '/alarm',
                 page: () => AlarmPage(notificationAppLaunchDetails)),
