@@ -154,6 +154,7 @@ class MyAppState extends State<MyApp> {
               } else {
                 FlutterNativeSplash.remove();
                 final bool? isLogged = snapshot.data;
+                print('로그인 여부 : $isLogged');
                 if (isLogged == null || !isLogged) {
                   return LoginPage();
                 } else {
