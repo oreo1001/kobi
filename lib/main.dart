@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Main/page_main.dart';
+import 'package:kobi/Test/page_alarm_test.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ import 'Alarm/page_ringing.dart';
 import 'Alarm/function_alarm_initializer.dart';
 import 'Alarm/page_alarm.dart';
 
-import 'Alarm/page_test.dart';
+import 'Test/page_test.dart';
 import 'Controller/event_controller.dart';
 import 'Dialog/delete_dialog.dart';
 import 'Dialog/event_dialog.dart';
@@ -139,6 +140,7 @@ class MyAppState extends State<MyApp> {
           getPages: [
             GetPage(name: '/main', page: () => MainPage()),
             GetPage(name: '/test', page:() => EventList()),
+            GetPage(name: '/uiTest', page:() => AlarmUIPage()),
             GetPage(name: '/login', page: () => LoginPage()),
             GetPage(name: '/loading', page: () => LoadingPage()),
             GetPage(

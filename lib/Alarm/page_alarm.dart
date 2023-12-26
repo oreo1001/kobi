@@ -138,9 +138,9 @@ class _AlarmPageState extends State<AlarmPage> {
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
             child: ElevatedButton(
               onPressed: () {
-
+                Get.toNamed('/uiTest');
               },
-              child: Text('알람페이지'),
+              child: Text('ui테스트 페이지'),
             ),
           ),
           Padding(
