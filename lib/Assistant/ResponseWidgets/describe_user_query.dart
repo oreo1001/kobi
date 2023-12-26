@@ -30,7 +30,6 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
-    //Map<String, dynamic>? arguments = {"query": "고객님의 요구를 정확히 분석하기 힘듭니다. 다시 한번 말해 주세요."};
     String? query = arguments?['query'];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +39,7 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
           padding: EdgeInsets.fromLTRB(20.w, 0, 0, 10.h),
           child: query != null
               ? Text(query, style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700))
-              : Text(''),
+              : const Text(''),
         ),
         Container(
           height: 150.h,
@@ -52,7 +51,7 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
             minLines: 1,
             maxLines: 5,
             controller: textController,
-            decoration: InputDecoration(hintText: '커리비에게 요청사항', border: InputBorder.none),
+            decoration: const InputDecoration(hintText: '커리비에게 요청사항', border: InputBorder.none),
           ),
         ),
         Container(

@@ -97,10 +97,8 @@ class _LoginPageState extends State<LoginPage> {
               convertDynamicListToContactList(responseMap['contactList']);
         }
         print('/로 이동해야 합니다');
-          print(mounted);
-        WidgetsBinding.instance.addPostFrameCallback((_){
-          Get.offNamed('/'); /// TODO : 이거 수정해주세요. 임시로 toNamed로 바꿨습니다.
-        });
+        print(mounted);
+        Get.offNamed('/'); /// TODO : 이거 수정해주세요. 임시로 toNamed로 바꿨습니다.
 
         print('/로 이동했음!');
       } else {

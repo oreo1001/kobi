@@ -22,9 +22,6 @@ class EstablishStrategyState extends State<EstablishStrategy> {
   @override
   void initState() {
     super.initState();
-    // ToolCall? toolCall = assistantsController.stepDetails.value?.toolCalls?[0];
-    // String? ttsString = toolCall?.tts;
-    // ttsController.playTTS(ttsString ?? '');
   }
 
   @override

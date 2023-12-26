@@ -1,19 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
+import 'Class/secure_storage.dart';
 
 Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body) async {
   String uri = 'https://back.wonmo.net$path';
 
-  // final storage = SecureStorage();
-  // String user = await storage.getUserId() ?? '';
-  // if (user != '') {
-  //   body['user'] = user;
-  // }
-  body['user']= 'google-113720332858503328418';
-  // body['version'] = '2.0.3';  //& versionName
+  final storage = SecureStorage();
+  String user = await storage.getUserId() ?? '';
+  if (user != '') {
+    body['user'] = user;
+  }
+  body['version'] = '2.0.3';  //& versionName
   String platform = 'Android도, iOS도 아님';
   if (Platform.isAndroid) {
     platform = 'Android';
@@ -25,6 +25,7 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   print('-----------------HTTP API 리퀘스트 보내기--------------------');
   print('uri : $uri');
   print('HTTP request body : $body');
+  print('HTTP request time : ${DateTime.now().toString().substring(0, 19)}');
   http.Response response = await http.post(Uri.parse(uri),
       headers: <String, String>{'Content-Type': "application/json"}, body: jsonEncode(body));
   if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList') print('-----------------HTTP API 응답--------------------');

@@ -8,17 +8,19 @@ class SlideFromLeftAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-      key: UniqueKey(),
-      tween: Tween<Offset>(begin: Offset(-100, 0), end: Offset(0, 0)),
-      duration: Duration(seconds: durationSeconds),
-      child: child,
-      builder: (context, Offset value, Widget? child) {
-        return Transform.translate(
-          offset: value,
-          child: child,
-        );
-      },
+    return Expanded(
+      child: TweenAnimationBuilder(
+        key: UniqueKey(),
+        tween: Tween<Offset>(begin: Offset(-100, 0), end: Offset(0, 0)),
+        duration: Duration(seconds: durationSeconds),
+        child: child,
+        builder: (context, Offset value, Widget? child) {
+          return Transform.translate(
+            offset: value,
+            child: child,
+          );
+        },
+      ),
     );
   }
 }
