@@ -27,7 +27,8 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   print('HTTP request body : $body');
   http.Response response = await http.post(Uri.parse(uri),
       headers: <String, String>{'Content-Type': "application/json"}, body: jsonEncode(body));
-  if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList') print('-----------------HTTP API 응답--------------------');
+  if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList')
+    print('-----------------HTTP API 응답--------------------');
   Map<String, dynamic> responseMap;
   if (response.statusCode == 200) {
     // 서버가 요청을 성공적으로 수행한 경우
