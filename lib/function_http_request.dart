@@ -4,9 +4,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:kobi/Controller/auth_controller.dart';
-import 'package:kobi/function_user_login.dart';
-
-import 'Class/secure_storage.dart';
 
 Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body) async {
   String uri = 'https://back.wonmo.net$path';
