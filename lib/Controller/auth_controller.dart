@@ -14,11 +14,12 @@ class AuthController extends GetxController {
 
   Future<String?> getToken() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-    String? token = await messaging.getToken();
     try {
+      String? token = await messaging.getToken();
       print('디바이스의 fcmToken : $token');
       return token;
     } catch (e) {
+      print('디바이스 fcmToken 받아오기 실패 : $e');
       return null;
     }
   }

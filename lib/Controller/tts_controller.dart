@@ -1,0 +1,19 @@
+import 'dart:async';
+
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get/get.dart';
+
+class TtsController extends GetxController {
+  FlutterTts flutterTts = FlutterTts();
+
+  @override
+  void onInit() async {
+    super.onInit();
+    await flutterTts.awaitSpeakCompletion(true);
+    await flutterTts.setLanguage("ko-KR");
+  }
+
+  Future<void> playTTS(String text) async {
+    await flutterTts.speak(text);
+  }
+}

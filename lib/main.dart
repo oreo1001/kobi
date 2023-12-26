@@ -112,15 +112,16 @@ class MyAppState extends State<MyApp> {
 
   Future<bool> checkIfLogin() async {
     String? userId = await storage.getUserId();
+    print('userId 값: $userId');
     if(userId == null || userId.isEmpty){
       return false;
     }
     return true;
   }
 
-  Future getUserProfile() async {
+  Future<bool> getUserProfile() async {
     bool isLoggedIn = await checkIfLogin();
-    if(isLoggedIn){
+    if (isLoggedIn) {
       String? token = await authController.getToken();
       await authController.loadUser();
 
@@ -129,6 +130,10 @@ class MyAppState extends State<MyApp> {
 
       authController.contactList.value = convertDynamicListToContactList(responseMap['contactList']);
       print('contactList: ${authController.contactList.toString()}');
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
@@ -273,7 +278,7 @@ class MyAppState extends State<MyApp> {
                 page: () => RingingPage(selectedNotificationPayload)),
           ],
           home: FutureBuilder<bool>(      //로그인 확인하여 페이지 라우팅
-            future: checkIfLogin(),
+            future: getUserProfile(),
             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator(); // 로딩 중일 때 보여줄 위젯

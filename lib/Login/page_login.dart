@@ -41,17 +41,23 @@ class _LoginPageState extends State<LoginPage> {
       if (Platform.isIOS || Platform.isMacOS) {
         /// 맥 ios
         googleSignIn = GoogleSignIn(
+            clientId: '372113464838-6spk4rl61l9ahjn1a7pjdo0n7mgs3q5m.apps.googleusercontent.com', /// TODO : 이 부분 보고 필요할 시 수정해주세요
             serverClientId:
-            "372113464838-u26uo4p42fv3fvnknkk6on2ougfd0edq.apps.googleusercontent.com",
+                "372113464838-u26uo4p42fv3fvnknkk6on2ougfd0edq.apps.googleusercontent.com",
             scopes: scopes,
             forceCodeForRefreshToken: true);
       } else {
         /// 안드로이드
         googleSignIn = GoogleSignIn(
+            serverClientId:
+            "372113464838-u26uo4p42fv3fvnknkk6on2ougfd0edq.apps.googleusercontent.com",
             scopes: scopes,
             forceCodeForRefreshToken: true);
       }
+      print('로그인 시도');
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
+
+      print('로그인 완료');
       String? serverAuthCode = googleAccount?.serverAuthCode;
       String googleId = 'google-${googleAccount!.id}';
       Map<String, String> accountMap = {
@@ -61,14 +67,15 @@ class _LoginPageState extends State<LoginPage> {
         'photoUrl': googleAccount.photoUrl ?? '',
       };
 
-      Get.toNamed('/loading');
-
       authController.userId.value = googleId;
       authController.name.value = googleAccount.displayName ?? '';
       authController.email.value = googleAccount.email;
       authController.photoUrl.value = googleAccount.photoUrl ?? '';
 
-      String? token = await authController.getToken();
+      // String? token = await authController.getToken();
+      String? token = 'TODO : token 받아오기 추가해주세요';
+
+      print('/auth/signIn 요청: $token, $serverAuthCode, $googleId');
 
       Map<String, dynamic> responseMap = await httpResponse('/auth/signIn',
           {'fcmToken': token, 'authCode': serverAuthCode, 'user': googleId});
@@ -89,7 +96,13 @@ class _LoginPageState extends State<LoginPage> {
           authController.contactList.value =
               convertDynamicListToContactList(responseMap['contactList']);
         }
-        Get.offNamed('/');
+        print('/로 이동해야 합니다');
+          print(mounted);
+        WidgetsBinding.instance.addPostFrameCallback((_){
+          Get.offNamed('/'); /// TODO : 이거 수정해주세요. 임시로 toNamed로 바꿨습니다.
+        });
+
+        print('/로 이동했음!');
       } else {
         print('error가 생성되었어요! 500 이거나 다른 오류');
       }
