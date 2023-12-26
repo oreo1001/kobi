@@ -135,6 +135,24 @@ class _AlarmPageState extends State<AlarmPage> {
           ),
           Text(_notificationsEnabled.toString()),
           Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () {
+
+              },
+              child: Text('알람페이지'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: ElevatedButton(
+              onPressed: () {
+                Get.toNamed('/test');
+              },
+              child: Text('테스트페이지'),
+            ),
+          ),
+          Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 8.h),
             child: ElevatedButton(
               onPressed: () async {
