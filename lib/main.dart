@@ -151,7 +151,6 @@ class MyAppState extends State<MyApp> {
   }
   void showFirebaseDialog(){
     final EventController eventController = Get.find<EventController>();
-    print("type: ${eventController.type.value}");
     if(eventController.type.value == 'insert_event'){
       showEventDialog();
     }else if(eventController.type.value == 'update_event'){

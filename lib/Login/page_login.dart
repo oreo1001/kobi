@@ -72,8 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       authController.email.value = googleAccount.email;
       authController.photoUrl.value = googleAccount.photoUrl ?? '';
 
-      // String? token = await authController.getToken();
-      String? token = 'TODO : token 받아오기 추가해주세요';
+      String? token = await authController.getToken();
 
       print('/auth/signIn 요청: $token, $serverAuthCode, $googleId');
 
@@ -83,9 +82,9 @@ class _LoginPageState extends State<LoginPage> {
       if (responseMap['statusCode'] == 400) {
         if (responseMap.containsKey('message') &&
             responseMap['message'].contains('scope')) {
+          print('scope 오류');
           Get.offNamed('/login');
           showScopeDialog();
-          print('scope 오류');
         } else {
           print('400 다른 오류');
           Get.offNamed('/login');
@@ -96,13 +95,7 @@ class _LoginPageState extends State<LoginPage> {
           authController.contactList.value =
               convertDynamicListToContactList(responseMap['contactList']);
         }
-        print('/로 이동해야 합니다');
-          print(mounted);
-        WidgetsBinding.instance.addPostFrameCallback((_){
-          Get.offNamed('/'); /// TODO : 이거 수정해주세요. 임시로 toNamed로 바꿨습니다.
-        });
-
-        print('/로 이동했음!');
+        Get.toNamed('/');
       } else {
         print('error가 생성되었어요! 500 이거나 다른 오류');
       }
@@ -136,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
               ),
-              onPressed: () {
+              onPressed: () async{
                 _handleSignIn();
               },
               child: Container(
