@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
               ),
-              onPressed: () {
+              onPressed: () async{
                 _handleSignIn();
               },
               child: Container(
