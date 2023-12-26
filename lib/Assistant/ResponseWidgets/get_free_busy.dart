@@ -59,7 +59,7 @@ class GetFreeBusyState extends State<GetFreeBusy> {
                 softWrap: true,
                 text: TextSpan(children: [
                   TextSpan(
-                    text: '${authController.name}님께 가능한 일정을 찾는 중이에요',
+                    text: '${authController.name}님의 일정은 다음과 같아요!',
                     style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
                   ),
                   WidgetSpan(

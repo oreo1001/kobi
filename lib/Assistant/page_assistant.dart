@@ -6,6 +6,7 @@ import 'package:kobi/Assistant/ResponseWidgets/response_animation.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
 
 import '../Controller/assistant_controller.dart';
+import '../Controller/tts_controller.dart';
 import '../function_http_request.dart';
 import 'Class/API_response.dart';
 import 'Class/assistant_enum.dart';
@@ -32,6 +33,8 @@ class _AssistantPageState extends State< AssistantPage> {
 
   // Recorder 의존성 주입
   RecorderController recorderController = Get.put(RecorderController());
+  // Tts 의존성 주입
+  TtsController ttsController = Get.put(TtsController());
 
   // 화면에 보여줄 Widget 저장
   Widget currentWidget = DefaultResponse();
@@ -58,18 +61,20 @@ class _AssistantPageState extends State< AssistantPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      // transcription 의 변화를 감지하여 currentScreen을 변경
-      String transcription = recorderController.transcription.value;
-      print('transcription 값 : $transcription');
-      print('previousTranscription 값 : $previousTranscription');
+      return Column(children: [
+        Obx(() {
+          // transcription 의 변화를 감지하여 currentScreen을 변경
+          String transcription = recorderController.transcription.value;
+          print('transcription 값 : $transcription');
+          print('previousTranscription 값 : $previousTranscription');
+          print('requestToBackEnd 호출 여부 : ${transcription != previousTranscription}');
 
-      if (transcription != previousTranscription) {
-        previousTranscription = transcription;
-        requestToBackEnd(transcription);
-      }
-      return SlideFromLeftAnimation(child: currentWidget);
-    });
+          if (transcription != previousTranscription) {
+            previousTranscription = transcription;
+            requestToBackEnd(transcription);
+          }
+          return SizedBox();}),
+        SlideFromLeftAnimation(child: currentWidget)]);
   }
 
   void requestToBackEnd(String transcription) async {
@@ -80,7 +85,7 @@ class _AssistantPageState extends State< AssistantPage> {
     assistantResponse.fromJson(apiResponseMap);
 
     /// BackEnd에서 받은 응답을 가지고 화면에 보여줄 Widget을 결정
-
+    switchWidget();
   }
 
 
@@ -133,6 +138,7 @@ class _AssistantPageState extends State< AssistantPage> {
 
   /// #3. BackEnd에서 받은 응답을 가지고 currentScreen을 변경
   void switchWidget() {
+    setState(() {
     String responseWidgetType = assistantResponse.type;
     if (responseWidgetType == 'message_creation') {
       currentWidget = MessageCreationUI();
@@ -149,22 +155,26 @@ class _AssistantPageState extends State< AssistantPage> {
         currentWidget = InsertEvent();
       } else if (type == AssistantFunction.patchEvent.value) {
         currentWidget = PatchEvent();
-      } else if (type == AssistantFunction.deleteEvent.value) {
-        currentWidget = DeleteEvent();
-      } else if (type == AssistantFunction.getFreeBusy.value) {
-        currentWidget = GetFreeBusy();
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          requestToBackEnd("ok");
-        });
+      } else if (type == AssistantFunction.deleteEvent.value) { /// OK!
+        currentWidget = const DeleteEvent();
+      } else if (type == AssistantFunction.getFreeBusy.value) { /// OK!
+        currentWidget = const GetFreeBusy();
+        if (assistantResponse.status == 'in_progress') {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            requestToBackEnd("ok");
+          });
+        }
       } else if (type == AssistantFunction.establishStrategy.value) {
-        currentWidget = EstablishStrategy();
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          requestToBackEnd("ok");
-        });
+        currentWidget = const EstablishStrategy();
+        if (assistantResponse.status == 'in_progress') {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            requestToBackEnd("ok");
+          });
+        }
       } else {
         currentWidget = CompletedPage();
       }
     }
-
+    });
   }
 }

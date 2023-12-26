@@ -33,7 +33,6 @@ class CreateEmailState extends State<CreateEmail> {
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
 
-    //Map<String, dynamic>? arguments = {"reply": false, "emailAddress": "douglas@primer.kr", "title": "Meeting Request for Next Wednesday", "body": "Dear 권도균 대표님,I hope this message finds you well. I am reaching out to schedule an appointment for us to meet next Wednesday at 5pm. Please let me know if this time works for you or if we need to find an alternative.Looking forward to your confirmation.Best regards,김정원"};
     String? emailAddress = arguments?['emailAddress'];
     String title = arguments?['title'] ?? '';
     String body = arguments?['body'] ?? '';
@@ -68,7 +67,8 @@ class CreateEmailState extends State<CreateEmail> {
             ],
           ),
         ),
-        Row(
+        if (assistantController.status.value == 'in_progress')
+          Row(
           children: [
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
@@ -77,8 +77,6 @@ class CreateEmailState extends State<CreateEmail> {
                   onPressed: () {
                     recorderController.transcription.value = "don't send it";
                   },
-                  child: Text('취소',
-                      style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     surfaceTintColor: Colors.blueGrey.shade300,
                     backgroundColor: Colors.blueGrey.shade300,
@@ -86,19 +84,18 @@ class CreateEmailState extends State<CreateEmail> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
+                  child: Text('취소',
+                      style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
                 )),
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                 width: 190.w,
                 child: ElevatedButton(
                   onPressed: () async {
-                    Map<String, dynamic> responseMap = await httpResponse(
+                    await httpResponse(
                         '/email/send', {"reply": reply, "title": title, "body": body, "emailAddress": emailAddress});
-                    print("이메일 응답 받았냐? : " + responseMap.toString());
                     recorderController.transcription.value = 'ok';
                   },
-                  child: Text('이대로 보내기',
-                      style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     surfaceTintColor: Colors.lightBlue.shade300,
                     backgroundColor: Colors.lightBlue.shade300,
@@ -106,6 +103,8 @@ class CreateEmailState extends State<CreateEmail> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
+                  child: Text('이대로 보내기',
+                      style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
                 )),
           ],
         )

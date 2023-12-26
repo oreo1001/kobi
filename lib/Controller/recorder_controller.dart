@@ -34,8 +34,8 @@ class RecorderController extends GetxController {
   void onInit() async {
     super.onInit();
     await _initRecorder();
-    await initPlatformState();
-    await startDetection();
+    // await initPlatformState();
+    // await startDetection();
   }
 
   Future<void> _initRecorder() async {
@@ -135,7 +135,7 @@ class RecorderController extends GetxController {
 
   Future<String> sendToWhisperAPI(String filePath, String prompt) async {
     String apiKey = openAIKey;
-    String apiUrl = 'https://api.openai.com/v1/audio/translations';
+    String apiUrl = 'https://api.openai.com/v1/audio/transcriptions';
 
     print('prompt: $prompt');
 
@@ -166,8 +166,8 @@ class RecorderController extends GetxController {
     // Add the model parameter
     request.fields['model'] = 'whisper-1';
     request.fields['temperature'] = '0';
-    request.fields['prompt'] = prompt;
-    // request.fields['language'] = 'ko';
+    // request.fields['prompt'] = prompt;
+    request.fields['language'] = 'ko';
 
     // Send the request and get the response
     http.StreamedResponse response = await request.send();
@@ -186,6 +186,7 @@ class RecorderController extends GetxController {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
+    // final String modelPath = await copyModelToFilesystem("jarvis.umdl");
     final String modelPath = await copyModelToFilesystem("hi_embla.pmdl");
     // Create detector object and prepare it
     detector = Snowboy();

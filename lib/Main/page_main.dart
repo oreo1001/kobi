@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Alarm/page_alarm.dart';
 import 'package:kobi/Calendar/page_calendar.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
+import 'package:kobi/Main/microphone_button.dart';
 
 import '../Assistant/page_assistant.dart';
 import '../Mail/page_email.dart';
@@ -34,6 +35,7 @@ class _MainPageState extends State<MainPage> {
     return DefaultTabController(
         length: _widgetOptions.length,
         child: Scaffold(
+          floatingActionButton: MicroPhoneButton(),
           body: Column(children: [
             Expanded(child: Container( color: Colors.transparent, child: TabBarView(children: _widgetOptions))),
             Divider(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:kobi/Controller/tts_controller.dart';
 import '../../Calendar/function_event_date.dart';
 import '../../Controller/assistant_controller.dart';
 import '../../Controller/recorder_controller.dart';
@@ -18,6 +19,7 @@ class DeleteEvent extends StatefulWidget {
 class DeleteEventState extends State<DeleteEvent> {
   RecorderController recorderController = Get.find();
   final AssistantController assistantController = Get.find();
+  TtsController ttsController = Get.find<TtsController>();
   String? eventId = '';
 
   @override
@@ -25,7 +27,7 @@ class DeleteEventState extends State<DeleteEvent> {
     ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
-    //Map<String, dynamic>? arguments =  {"location" : "뚝섬역 4번출구 ","description": "hi hi djsodpgjsdpgojdsopgjosdgjposjdpgojposdgjopsdjopgjsdopjg","summary": "Meet with 권도균 대표님", "startTime": "2023-12-14T17:00:00+09:00", "endTime": "2023-12-14T18:00:00+09:00"};
+    ttsController.playTTS(ttsString ?? '');
     String? summary = arguments?['summary'];
     String? description = arguments?['description'];
     String? startTime = eventKSTDate(arguments?['startTime']);
@@ -112,20 +114,21 @@ class DeleteEventState extends State<DeleteEvent> {
               ],
             ),
           ),
-          Container(
+          if (assistantController.status.value == 'in_progress')
+            Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               width:400.w,
               child: ElevatedButton(onPressed: (){
                 recorderController.transcription.value = 'delete';
-              }, child: Text('확인',style: textTheme().bodySmall!.copyWith(
-                  fontWeight: FontWeight.w700,color:Colors.white
-              )
-              ),style: ElevatedButton.styleFrom(
+              },style: ElevatedButton.styleFrom(
                 surfaceTintColor: Color(0xff8B2CF5),
                 backgroundColor: Color(0xff8B2CF5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
+              ), child: Text('확인',style: textTheme().bodySmall!.copyWith(
+                  fontWeight: FontWeight.w700,color:Colors.white
+              )
               ),)
           )
         ],

@@ -15,12 +15,15 @@ class CompletedPageState extends State<CompletedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Text('Completed'),
-          Text('오류거나 끝난 페이지')
-        ],
+    return const Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Completed'),
+            Text('오류거나 끝난 페이지')
+          ],
+        ),
       ),
     );
   }
