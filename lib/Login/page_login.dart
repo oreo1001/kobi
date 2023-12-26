@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
 
       print('/auth/signIn 요청: $token, $serverAuthCode, $googleId');
 
+      Get.toNamed('/loading');
       Map<String, dynamic> responseMap = await httpResponse('/auth/signIn',
           {'fcmToken': token, 'authCode': serverAuthCode, 'user': googleId});
 
@@ -83,11 +84,11 @@ class _LoginPageState extends State<LoginPage> {
         if (responseMap.containsKey('message') &&
             responseMap['message'].contains('scope')) {
           print('scope 오류');
-          Get.offNamed('/login');
+          Get.back();
           showScopeDialog();
         } else {
           print('400 다른 오류');
-          Get.offNamed('/login');
+          Get.back();
         }
       } else if (responseMap['statusCode'] == 200) {
         storage.setUser(accountMap); //로그인 되었을 때
@@ -95,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
           authController.contactList.value =
               convertDynamicListToContactList(responseMap['contactList']);
         }
-        Get.toNamed('/');
+        Get.offNamed('/');
+        print('메인으로 갓나?');
       } else {
         print('error가 생성되었어요! 500 이거나 다른 오류');
       }
