@@ -92,6 +92,7 @@ class CreateEmailState extends State<CreateEmail> {
                 width: 190.w,
                 child: ElevatedButton(
                   onPressed: () async {
+                    reply = true;
                     await httpResponse(
                         '/email/send', {"reply": reply, "title": title, "body": body, "emailAddress": emailAddress});
                     recorderController.transcription.value = 'ok';

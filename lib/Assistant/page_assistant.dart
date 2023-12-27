@@ -11,7 +11,6 @@ import '../function_http_request.dart';
 import 'Class/API_response.dart';
 import 'Class/assistant_enum.dart';
 import 'Class/assistant_response.dart';
-import 'ResponseWidgets/completed_page.dart';
 import 'ResponseWidgets/create_email.dart';
 import 'ResponseWidgets/delete_event.dart';
 import 'ResponseWidgets/describe_user_query.dart';
@@ -37,7 +36,7 @@ class _AssistantPageState extends State< AssistantPage> {
   TtsController ttsController = Get.put(TtsController());
 
   // 화면에 보여줄 Widget 저장
-  Widget currentWidget = DefaultResponse();
+  Widget currentWidget = const DefaultResponse();
 
   // 이전의 transcription 값 저장
   String previousTranscription = '';
@@ -71,7 +70,7 @@ class _AssistantPageState extends State< AssistantPage> {
 
           if (transcription != previousTranscription) {
             previousTranscription = transcription;
-            requestToBackEnd(transcription);
+            requestToBackEnd(transcription); /// TODO 주석 해제
           }
           return SizedBox();}),
         SlideFromLeftAnimation(child: currentWidget)]);
@@ -172,7 +171,7 @@ class _AssistantPageState extends State< AssistantPage> {
           });
         }
       } else {
-        currentWidget = CompletedPage();
+         Future.delayed(const Duration(seconds: 3), () => currentWidget = const DefaultResponse());
       }
     }
     });
