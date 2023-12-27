@@ -59,7 +59,7 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
             width: 400.w,
             child: ElevatedButton(
               onPressed: () {
-                recorderController.transcription.value = textController.text;
+                recorderController.setTranscription(textController.text);
               },
               style: ElevatedButton.styleFrom(
                 surfaceTintColor: Color(0xff8B2CF5),

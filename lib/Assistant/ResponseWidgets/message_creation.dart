@@ -24,46 +24,48 @@ class MessageCreationState extends State<MessageCreationUI> {
     for (MessageCreation messageCreation in assistantController.stepDetails.value?.messageCreation ?? []) {
       ttsController.playTTS(messageCreation.tts ?? '');
     }
-    return Container(
-      width: 400.w,
-      padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          for (MessageCreation messageCreation in assistantController.stepDetails.value?.messageCreation ?? [])
-            AnimatedTextKit(
-              animatedTexts: [
-                TypewriterAnimatedText(
-                  messageCreation.text['value'].toString(),
-                  textStyle: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
-                  speed: const Duration(milliseconds: 100),
-                ),
-              ],
-              isRepeatingAnimation: false,
-              pause: const Duration(milliseconds: 1000),
-              displayFullTextOnTap: true,
-              stopPauseOnTap: true,
-            ),
-          // if(assistantsController.status.value =='completed')
-          // Container(
-          //     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-          //     width:400.w,
-          //     child: ElevatedButton(onPressed: (){
-          //       currentScreen = CalendarApp();
-          //       Get.offAllNamed('/main');
-          //     }, child: Text('돌아가기',style: textTheme().bodySmall!.copyWith(
-          //         fontWeight: FontWeight.w700,color:Colors.white
-          //     )
-          //     ),style: ElevatedButton.styleFrom(
-          //       surfaceTintColor: Color(0xff8B2CF5),
-          //       backgroundColor: Color(0xff8B2CF5),
-          //       shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(15),
-          //       ),
-          //     ),)
-          // )
-        ],
+    return Expanded(
+      child: Container(
+        width: 400.w,
+        padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            for (MessageCreation messageCreation in assistantController.stepDetails.value?.messageCreation ?? [])
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    messageCreation.text['value'].toString(),
+                    textStyle: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
+                    speed: const Duration(milliseconds: 100),
+                  ),
+                ],
+                isRepeatingAnimation: false,
+                pause: const Duration(milliseconds: 1000),
+                displayFullTextOnTap: true,
+                stopPauseOnTap: true,
+              ),
+            // if(assistantsController.status.value =='completed')
+            // Container(
+            //     padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            //     width:400.w,
+            //     child: ElevatedButton(onPressed: (){
+            //       currentScreen = CalendarApp();
+            //       Get.offAllNamed('/main');
+            //     }, child: Text('돌아가기',style: textTheme().bodySmall!.copyWith(
+            //         fontWeight: FontWeight.w700,color:Colors.white
+            //     )
+            //     ),style: ElevatedButton.styleFrom(
+            //       surfaceTintColor: Color(0xff8B2CF5),
+            //       backgroundColor: Color(0xff8B2CF5),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(15),
+            //       ),
+            //     ),)
+            // )
+          ],
+        ),
       ),
     );
   }

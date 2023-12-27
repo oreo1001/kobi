@@ -26,40 +26,42 @@ class EstablishStrategyState extends State<EstablishStrategy> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            LoadingAnimationWidget.inkDrop(
-              size: 100.sp, color: Color(0xff8B2CF5),
-            ),
-            SizedBox(height: 20.h),
-            RichText(
-                softWrap: true, text: TextSpan(children:[
-              TextSpan(
-                text: '고객님의 요구사항을 분석하는 중',
-                style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
+    return Expanded(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LoadingAnimationWidget.inkDrop(
+                size: 100.sp, color: Color(0xff8B2CF5),
               ),
-              WidgetSpan(
-                child: SizedBox(
-                  width: 5.w,
+              SizedBox(height: 20.h),
+              RichText(
+                  softWrap: true, text: TextSpan(children:[
+                TextSpan(
+                  text: '고객님의 요구사항을 분석하는 중',
+                  style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
                 ),
-              ),
-              WidgetSpan(child: AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    '...',
-                    textStyle: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
-                    speed: const Duration(milliseconds: 100),
+                WidgetSpan(
+                  child: SizedBox(
+                    width: 5.w,
                   ),
-                ],
-                isRepeatingAnimation: true,
-                displayFullTextOnTap: false,
-              )),
-            ])),
-          ],
+                ),
+                WidgetSpan(child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      '...',
+                      textStyle: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
+                      speed: const Duration(milliseconds: 100),
+                    ),
+                  ],
+                  isRepeatingAnimation: true,
+                  displayFullTextOnTap: false,
+                )),
+              ])),
+            ],
+          ),
         ),
       ),
     );

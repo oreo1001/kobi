@@ -38,64 +38,66 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
     List<dynamic> options = arguments?['options'];
     // print(query);
     // print(options);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(10.w, 50.h, 0, 0.h),
-          child: query != null
-              ? Text(query, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp))
-              : Text(''),
-        ),
-        Flexible(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: options.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                width: 350.w,
-                height: 100.h,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    surfaceTintColor: selectedItem == options[index] ? Colors.lightBlue.shade200 : Colors.white,
-                    backgroundColor: selectedItem == options[index] ? Colors.lightBlue.shade200 : Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      selectedItem = options[index];
-                    });
-                  },
-                  child: Text(options[index]),
-                ),
-              );
-            },
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(10.w, 50.h, 0, 0.h),
+            child: query != null
+                ? Text(query, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp))
+                : Text(''),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-          width: 400.w,
-          child: ElevatedButton(
-            onPressed: () {
-              recorderController.transcription.value = selectedItem;
-            },
-            child: Text('이대로 보내기',
-                style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
-            style: ElevatedButton.styleFrom(
-              surfaceTintColor: Colors.lightBlue.shade300,
-              backgroundColor: Colors.lightBlue.shade300,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: options.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                  width: 350.w,
+                  height: 100.h,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      surfaceTintColor: selectedItem == options[index] ? Colors.lightBlue.shade200 : Colors.white,
+                      backgroundColor: selectedItem == options[index] ? Colors.lightBlue.shade200 : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        selectedItem = options[index];
+                      });
+                    },
+                    child: Text(options[index]),
+                  ),
+                );
+              },
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            width: 400.w,
+            child: ElevatedButton(
+              onPressed: () {
+                recorderController.setTranscription(selectedItem);
+              },
+              child: Text('이대로 보내기',
+                  style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                surfaceTintColor: Colors.lightBlue.shade300,
+                backgroundColor: Colors.lightBlue.shade300,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

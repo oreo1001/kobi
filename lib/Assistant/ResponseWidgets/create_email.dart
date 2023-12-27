@@ -75,7 +75,7 @@ class CreateEmailState extends State<CreateEmail> {
                 width: 190.w,
                 child: ElevatedButton(
                   onPressed: () {
-                    recorderController.transcription.value = "don't send it";
+                    recorderController.setTranscription("don't send it");
                   },
                   style: ElevatedButton.styleFrom(
                     surfaceTintColor: Colors.blueGrey.shade300,
@@ -95,7 +95,7 @@ class CreateEmailState extends State<CreateEmail> {
                     reply = true;
                     await httpResponse(
                         '/email/send', {"reply": reply, "title": title, "body": body, "emailAddress": emailAddress});
-                    recorderController.transcription.value = 'ok';
+                    recorderController.setTranscription('ok');
                   },
                   style: ElevatedButton.styleFrom(
                     surfaceTintColor: Colors.lightBlue.shade300,
