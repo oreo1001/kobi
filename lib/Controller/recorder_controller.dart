@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:audiofileplayer/audiofileplayer.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_snowboy/flutter_snowboy.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +23,7 @@ class RecorderController extends GetxController {
 
   static const kSampleRate = 16000;
   static const kNumChannels = 1;
-  late Snowboy detector;
+  // late Snowboy detector;
   final FlutterSoundRecorder _micRecorder = FlutterSoundRecorder();
   StreamController? _recordingDataController;
   StreamSubscription? _recordingDataSubscription;
@@ -185,15 +184,15 @@ class RecorderController extends GetxController {
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    // final String modelPath = await copyModelToFilesystem("jarvis.umdl");
-    final String modelPath = await copyModelToFilesystem("hi_embla.pmdl");
-    // Create detector object and prepare it
-    detector = Snowboy();
-    await detector.prepare(modelPath);
-    detector.hotwordHandler = hotwordHandler;
-    // await configureAudioSession();
-  }
+  // Future<void> initPlatformState() async {
+  //   // final String modelPath = await copyModelToFilesystem("jarvis.umdl");
+  //   final String modelPath = await copyModelToFilesystem("hi_embla.pmdl");
+  //   // Create detector object and prepare it
+  //   detector = Snowboy();
+  //   await detector.prepare(modelPath);
+  //   detector.hotwordHandler = hotwordHandler;
+  //   // await configureAudioSession();
+  // }
 
   // Copy model from asset bundle to temp directory on the filesystem
   static Future<String> copyModelToFilesystem(String filename) async {
@@ -256,7 +255,7 @@ class RecorderController extends GetxController {
           if (buffer is FoodData) {
             Uint8List copy = new Uint8List.fromList(buffer.data!);
             // print("Got audio data (${buffer.data.lengthInBytes} bytes");
-            detector.detect(copy);
+            // detector.detect(copy);
           }
         });
 

@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
     AssistantPage(),
     CalendarPage(),
     MailPage(),
-    AlarmPage(null),
+    // AlarmPage(null),
     UserPage(),
   ];
   @override
@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
                   Tab(icon: Icon(Icons.home,size: 28.sp,)),
                   Tab(icon: Icon(Icons.calendar_today,size: 28.sp,)),
                   Tab(icon: Icon(Icons.mail,size: 28.sp,)),
-                  Tab(icon: Icon(Icons.alarm,size: 28.sp,)),
+                  // Tab(icon: Icon(Icons.alarm,size: 28.sp,)),
                   Tab(icon: Icon(Icons.person,size: 28.sp,)),
                 ],
               ),
