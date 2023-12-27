@@ -390,14 +390,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  flutter_snowboy:
-    dependency: "direct main"
-    description:
-      name: flutter_snowboy
-      sha256: e920c7350f23d06a4d83c570196850d89d78234f20b072f0ad480482a6da2e9d
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.2+1"
   flutter_sound:
     dependency: "direct main"
     description:
