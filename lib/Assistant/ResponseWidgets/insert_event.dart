@@ -37,95 +37,97 @@ class InsertEventState extends State<InsertEvent> {
     String? startTime = eventKSTDate(arguments?['startTime']);
     String? endTime = eventKSTDate(arguments?['endTime']);
     String? location = arguments?['location'];
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text('아래 일정을 추가할게요!', style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w500, fontSize: 18.sp)),
-        Container(
-          margin: EdgeInsets.fromLTRB(10.w, 20.h, 10.w, 10.h),
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(9.sp)), // 오른쪽 위 둥근 border
-          ),
-          width: 400.w,
-          height: 170.h,
-          child: Row(
-            children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 13.w, 0),
-                height: 200.h,
-                width: 7.w,
-                decoration: BoxDecoration(
-                  color: Color(0xffC665FD),
-                  borderRadius: BorderRadius.circular(5.sp),
-                ),
-              ),
-              SizedBox(
-                width: 330.w,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (summary != null)
-                      Text(summary,
-                          style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp)),
-                    SizedBox(height: 5.h),
-                    if (location != null)
-                      Text(location,
-                          style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 14.sp)),
-                    RichText(
-                        maxLines: 1,
-                        softWrap: true,
-                        text: TextSpan(children: [
-                          TextSpan(text: startTime, style: textTheme().displaySmall?.copyWith(fontSize: 12.sp)),
-                          WidgetSpan(
-                            child: SizedBox(
-                              width: 5.w,
-                            ),
-                          ),
-                          TextSpan(
-                              text: '-',
-                              style:
-                                  textTheme().displaySmall?.copyWith(fontSize: 12.sp, overflow: TextOverflow.ellipsis)),
-                          WidgetSpan(
-                            child: SizedBox(
-                              width: 5.w,
-                            ),
-                          ),
-                          TextSpan(
-                              text: endTime,
-                              style:
-                                  textTheme().displaySmall?.copyWith(fontSize: 12.sp, overflow: TextOverflow.ellipsis)),
-                        ])),
-                    SizedBox(height: 10.h),
-                    if (description != null)
-                      Text(description,
-                          style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w400, fontSize: 12.sp)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('아래 일정을 추가할게요!', style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w500, fontSize: 18.sp)),
+          Container(
+            margin: EdgeInsets.fromLTRB(10.w, 20.h, 10.w, 10.h),
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(9.sp)), // 오른쪽 위 둥근 border
+            ),
             width: 400.w,
-            child: ElevatedButton(
-              onPressed: () {
-                recorderController.transcription.value = 'ok';
-              },
-              child:
-                  Text('확인', style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                surfaceTintColor: Color(0xff8B2CF5),
-                backgroundColor: Color(0xff8B2CF5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+            height: 170.h,
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 13.w, 0),
+                  height: 200.h,
+                  width: 7.w,
+                  decoration: BoxDecoration(
+                    color: Color(0xffC665FD),
+                    borderRadius: BorderRadius.circular(5.sp),
+                  ),
                 ),
-              ),
-            ))
-      ],
+                SizedBox(
+                  width: 330.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (summary != null)
+                        Text(summary,
+                            style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp)),
+                      SizedBox(height: 5.h),
+                      if (location != null)
+                        Text(location,
+                            style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 14.sp)),
+                      RichText(
+                          maxLines: 1,
+                          softWrap: true,
+                          text: TextSpan(children: [
+                            TextSpan(text: startTime, style: textTheme().displaySmall?.copyWith(fontSize: 12.sp)),
+                            WidgetSpan(
+                              child: SizedBox(
+                                width: 5.w,
+                              ),
+                            ),
+                            TextSpan(
+                                text: '-',
+                                style:
+                                    textTheme().displaySmall?.copyWith(fontSize: 12.sp, overflow: TextOverflow.ellipsis)),
+                            WidgetSpan(
+                              child: SizedBox(
+                                width: 5.w,
+                              ),
+                            ),
+                            TextSpan(
+                                text: endTime,
+                                style:
+                                    textTheme().displaySmall?.copyWith(fontSize: 12.sp, overflow: TextOverflow.ellipsis)),
+                          ])),
+                      SizedBox(height: 10.h),
+                      if (description != null)
+                        Text(description,
+                            style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w400, fontSize: 12.sp)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+              width: 400.w,
+              child: ElevatedButton(
+                onPressed: () {
+                  recorderController.setTranscription('ok');
+                },
+                child:
+                    Text('확인', style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  surfaceTintColor: Color(0xff8B2CF5),
+                  backgroundColor: Color(0xff8B2CF5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ))
+        ],
+      ),
     );
   }
 }

@@ -1,8 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Assistant/ResponseWidgets/default.dart';
 import 'package:kobi/Assistant/ResponseWidgets/response_animation.dart';
+import 'package:kobi/Assistant/response_stack.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
 
 import '../Controller/assistant_controller.dart';
@@ -11,6 +12,8 @@ import '../function_http_request.dart';
 import 'Class/API_response.dart';
 import 'Class/assistant_enum.dart';
 import 'Class/assistant_response.dart';
+import 'Class/step_details.dart';
+import 'ResponseMethod/response_method.dart';
 import 'ResponseWidgets/create_email.dart';
 import 'ResponseWidgets/delete_event.dart';
 import 'ResponseWidgets/describe_user_query.dart';
@@ -36,10 +39,10 @@ class _AssistantPageState extends State< AssistantPage> {
   TtsController ttsController = Get.put(TtsController());
 
   // 화면에 보여줄 Widget 저장
-  Widget currentWidget = const DefaultResponse();
+  List<Widget> currentWidget = [const DefaultResponse()];
 
   // 이전의 transcription 값 저장
-  String previousTranscription = '';
+  List<String> previousTranscription = [''];
 
   // 이 widget에서 사용할 AssistantResponse
   AssistantResponse assistantResponse =
@@ -60,23 +63,29 @@ class _AssistantPageState extends State< AssistantPage> {
 
   @override
   Widget build(BuildContext context) {
-      return Column(children: [
-        Obx(() {
-          // transcription 의 변화를 감지하여 currentScreen을 변경
-          String transcription = recorderController.transcription.value;
-          print('transcription 값 : $transcription');
-          print('previousTranscription 값 : $previousTranscription');
-          print('requestToBackEnd 호출 여부 : ${transcription != previousTranscription}');
-
-          if (transcription != previousTranscription) {
-            previousTranscription = transcription;
-            requestToBackEnd(transcription); /// TODO 주석 해제
-          }
-          return SizedBox();}),
-        SlideFromLeftAnimation(child: currentWidget)]);
+      return Scaffold(
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Obx(() {
+              // transcription 의 변화를 감지하여 currentScreen을 변경
+              List<String> transcription = recorderController.transcription.map((rxStr) => rxStr.value).toList();
+              print('transcription 값 : $transcription');
+              print('previousTranscription 값 : $previousTranscription');
+              bool equal = const ListEquality().equals(previousTranscription, transcription);
+              print('requestToBackEnd 호출 여부 : $equal');
+          
+              if (!equal && readyToRequest(transcription)) {
+                previousTranscription = transcription;
+                requestToBackEnd(transcription);
+              }
+              return const SizedBox();}),
+            SlideFromLeftAnimation(child: MyStackWidget(currentWidget: currentWidget))
+          ]),
+        ),
+      );
   }
 
-  void requestToBackEnd(String transcription) async {
+  void requestToBackEnd(List<String> transcription) async {
     Map<String, dynamic> apiResponseMap = await sendToBackEnd(transcription);
 
     /// BackEnd에서 받은 응답을 각각 이 Widget(assistantResponse) / assistantController에 저장
@@ -89,7 +98,7 @@ class _AssistantPageState extends State< AssistantPage> {
 
 
   /// #1. 사용자의 입력을 받고 BackEnd에 전달
-  Future<Map<String, dynamic>> sendToBackEnd(String transcription) async {
+  Future<Map<String, dynamic>> sendToBackEnd(List<String> transcription) async {
     Map<String, dynamic> apiRequestMap;
     Map<String, dynamic> apiResponseMap;
 
@@ -97,12 +106,12 @@ class _AssistantPageState extends State< AssistantPage> {
       /// assistant 에게 처음 요청
 
       apiResponseMap =
-      await httpResponse('/assistant/run', {'userRequest': transcription});
+      await httpResponse('/assistant/run', {'userRequest': transcription[0]});
     } else {
       /// assistant 사용 중에 요청
 
-      var toolCall = assistantResponse.stepDetails?.toolCalls?[0];
-      if (toolCall != null) {
+      List<ToolCall>? toolCalls = assistantResponse.stepDetails?.toolCalls;
+      if (toolCalls != null) {
         /// before step이 tool_calls 일때
         apiRequestMap = APIResponse(
           assistantId: assistantResponse.assistantId,
@@ -111,12 +120,7 @@ class _AssistantPageState extends State< AssistantPage> {
           beforeType: assistantResponse.type,
           threadId: assistantResponse.threadId,
           functionResponses: {
-            "tool_outputs": [
-              ToolOutput(toolCallId: toolCall.id,
-                  name: toolCall.function.name,
-                  output: {"message": transcription})
-                  .toJson()
-            ]
+            "tool_outputs": toolCalls.asMap().map((key, value) => MapEntry(key, ToolOutput(toolCallId: value.id, name: value.function.name, output: {"message": transcription[key]}).toJson())).values.toList()
           },
         ).toJson();
       } else {
@@ -140,38 +144,43 @@ class _AssistantPageState extends State< AssistantPage> {
     setState(() {
     String responseWidgetType = assistantResponse.type;
     if (responseWidgetType == 'message_creation') {
-      currentWidget = MessageCreationUI();
+      currentWidget = [const MessageCreationUI()];
     } else {
-      String? type = assistantResponse.stepDetails?.toolCalls?[0].function.name;
 
-      if (type == AssistantFunction.createEmail.value) {
-        currentWidget = CreateEmail();
-      } else if (type == AssistantFunction.describeUserQuery.value) {
-        currentWidget = DescribeUserQuery();
-      } else if (type == AssistantFunction.multipleChoiceQuery.value) {
-        currentWidget = const MultipleChoiceQuery();
-      } else if (type == AssistantFunction.insertEvent.value) {
-        currentWidget = InsertEvent();
-      } else if (type == AssistantFunction.patchEvent.value) {
-        currentWidget = PatchEvent();
-      } else if (type == AssistantFunction.deleteEvent.value) { /// OK!
-        currentWidget = const DeleteEvent();
-      } else if (type == AssistantFunction.getFreeBusy.value) { /// OK!
-        currentWidget = const GetFreeBusy();
-        if (assistantResponse.status == 'in_progress') {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            requestToBackEnd("ok");
-          });
+      // toolCalls의 길이만큼 transcription을 초기화
+      int toolCallsLength = assistantResponse.stepDetails!.toolCalls!.length;
+      recorderController.transcription = List.generate(toolCallsLength, (index) => RxString(''));
+
+      for (int i = 0 ; i < toolCallsLength ; i++) {
+        String? type = assistantResponse.stepDetails?.toolCalls?[i].function.name;
+
+        if (type == AssistantFunction.createEmail.value) {
+          currentWidget.add(CreateEmail());
+        } else if (type == AssistantFunction.describeUserQuery.value) {
+          currentWidget.add(DescribeUserQuery());
+        } else if (type == AssistantFunction.multipleChoiceQuery.value) {
+          currentWidget.add(const MultipleChoiceQuery());
+        } else if (type == AssistantFunction.insertEvent.value) {
+          currentWidget.add(InsertEvent());
+        } else if (type == AssistantFunction.patchEvent.value) {
+          currentWidget.add(PatchEvent());
+        } else if (type == AssistantFunction.deleteEvent.value) { /// OK!
+          currentWidget.add(const DeleteEvent());
+        } else if (type == AssistantFunction.getFreeBusy.value) { /// OK!
+          currentWidget.add(const GetFreeBusy());
+          if (assistantResponse.status == 'in_progress') {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              requestToBackEnd(["ok"]);
+            });
+          }
+        } else if (type == AssistantFunction.establishStrategy.value) {
+          currentWidget.add(const EstablishStrategy());
+          if (assistantResponse.status == 'in_progress') {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              requestToBackEnd(["ok"]);
+            });
+          }
         }
-      } else if (type == AssistantFunction.establishStrategy.value) {
-        currentWidget = const EstablishStrategy();
-        if (assistantResponse.status == 'in_progress') {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            requestToBackEnd("ok");
-          });
-        }
-      } else {
-         Future.delayed(const Duration(seconds: 3), () => currentWidget = const DefaultResponse());
       }
     }
     });

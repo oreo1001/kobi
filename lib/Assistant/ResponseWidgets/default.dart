@@ -7,10 +7,7 @@ class DefaultResponse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-        body: Center(
-          child: Column(
+    return Column(
             children: [
               SizedBox(height: 87.h),
               Text('당신 곁에 언제나',
@@ -93,7 +90,6 @@ class DefaultResponse extends StatelessWidget {
                     )),
               ),
             ],
-          ),
-        ));
+          );
   }
 }

@@ -18,7 +18,7 @@ class RecorderController extends GetxController {
   RxBool isRecording = false.obs;
   Timer? _silenceTimer;
   bool recordingStarted = false;
-  RxString transcription = ''.obs;
+  List<RxString> transcription = [RxString('')];
   RxString prompt = ''.obs;
 
   static const kSampleRate = 16000;
@@ -35,6 +35,8 @@ class RecorderController extends GetxController {
     await _initRecorder();
     // await initPlatformState();
     // await startDetection();
+
+    print('recorder_controller.dart onInit() 시 transcription 값 : $transcription');
   }
 
   Future<void> _initRecorder() async {
@@ -114,8 +116,8 @@ class RecorderController extends GetxController {
     // AudioPlayer audioPlayer = AudioPlayer();
     // Directory tempDir = await getTemporaryDirectory();
     // audioPlayer.play(DeviceFileSource('${tempDir.path}/my_recording.mp4'));
-    //
-    transcription.value = await transcribe();
+
+    setTranscription(await transcribe());
   }
 
   @override
@@ -183,6 +185,14 @@ class RecorderController extends GetxController {
     }
   }
 
+  void setTranscription(String value) {
+    print('현재 transcription 값 : $transcription');
+    for (int i = transcription.length-1 ; i > 0 ; i--) {
+      print(i);
+      transcription[i] = RxString(value);
+    }
+  }
+
   // Platform messages are asynchronous, so we initialize in an async method.
   // Future<void> initPlatformState() async {
   //   // final String modelPath = await copyModelToFilesystem("jarvis.umdl");
@@ -194,83 +204,83 @@ class RecorderController extends GetxController {
   //   // await configureAudioSession();
   // }
 
-  // Copy model from asset bundle to temp directory on the filesystem
-  static Future<String> copyModelToFilesystem(String filename) async {
-    final String dir = (await getTemporaryDirectory()).path;
-    final String finalPath = "$dir/$filename";
-    if (await File(finalPath).exists() == true) {
-      // Don't overwrite existing file
-      return finalPath;
-    }
-    ByteData bytes = await rootBundle.load("assets/$filename");
-    final buffer = bytes.buffer;
-    await File(finalPath).writeAsBytes(
-        buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
-    return finalPath;
-  }
-
-  // Function to invoke when hotword is detected
-  void hotwordHandler() async {
-    // Play sound
-    Audio beep = Audio.load('assets/ding.wav');
-    await beep.play();
-    await beep.dispose();
-    print("Hotword detected!");
-    await startRecording();
-  }
-
-  Future<void> configureAudioSession() async {
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-      AVAudioSessionCategoryOptions.defaultToSpeaker |
-      AVAudioSessionCategoryOptions.allowBluetooth,
-      //     AVAudioSessionCategoryOptions.duckOthers,
-      // avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionMode: AVAudioSessionMode.defaultMode,
-      avAudioSessionRouteSharingPolicy:
-      AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-    await session.setActive(true);
-  }
-
-  Future<void> startDetection() async {
-    // Prep recording session
-    await _micRecorder.openRecorder();
-
-    // Create recording stream
-    _recordingDataController = StreamController<Food>();
-    _recordingDataSubscription =
-        _recordingDataController?.stream.listen((buffer) {
-          // When we get data, feed it into Snowboy detector
-          if (buffer is FoodData) {
-            Uint8List copy = new Uint8List.fromList(buffer.data!);
-            // print("Got audio data (${buffer.data.lengthInBytes} bytes");
-            // detector.detect(copy);
-          }
-        });
-
-    // Start recording
-    await _micRecorder.startRecorder(
-        toStream: _recordingDataController!.sink as StreamSink<Food>,
-        codec: Codec.pcm16,
-        numChannels: kNumChannels,
-        sampleRate: kSampleRate);
-  }
-
-  Future<void> stopDetection() async {
-    await _micRecorder.stopRecorder();
-    await _micRecorder.closeRecorder();
-    await _recordingDataSubscription?.cancel();
-    await _recordingDataController?.close();
-  }
+  // // Copy model from asset bundle to temp directory on the filesystem
+  // static Future<String> copyModelToFilesystem(String filename) async {
+  //   final String dir = (await getTemporaryDirectory()).path;
+  //   final String finalPath = "$dir/$filename";
+  //   if (await File(finalPath).exists() == true) {
+  //     // Don't overwrite existing file
+  //     return finalPath;
+  //   }
+  //   ByteData bytes = await rootBundle.load("assets/$filename");
+  //   final buffer = bytes.buffer;
+  //   await File(finalPath).writeAsBytes(
+  //       buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
+  //   return finalPath;
+  // }
+  //
+  // // Function to invoke when hotword is detected
+  // void hotwordHandler() async {
+  //   // Play sound
+  //   Audio beep = Audio.load('assets/ding.wav');
+  //   await beep.play();
+  //   await beep.dispose();
+  //   print("Hotword detected!");
+  //   await startRecording();
+  // }
+  //
+  // Future<void> configureAudioSession() async {
+  //   final session = await AudioSession.instance;
+  //   await session.configure(AudioSessionConfiguration(
+  //     avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+  //     avAudioSessionCategoryOptions:
+  //     AVAudioSessionCategoryOptions.defaultToSpeaker |
+  //     AVAudioSessionCategoryOptions.allowBluetooth,
+  //     //     AVAudioSessionCategoryOptions.duckOthers,
+  //     // avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+  //     avAudioSessionMode: AVAudioSessionMode.defaultMode,
+  //     avAudioSessionRouteSharingPolicy:
+  //     AVAudioSessionRouteSharingPolicy.defaultPolicy,
+  //     avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+  //     androidAudioAttributes: const AndroidAudioAttributes(
+  //       contentType: AndroidAudioContentType.speech,
+  //       flags: AndroidAudioFlags.none,
+  //       usage: AndroidAudioUsage.voiceCommunication,
+  //     ),
+  //     androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+  //     androidWillPauseWhenDucked: true,
+  //   ));
+  //   await session.setActive(true);
+  // }
+  //
+  // Future<void> startDetection() async {
+  //   // Prep recording session
+  //   await _micRecorder.openRecorder();
+  //
+  //   // Create recording stream
+  //   _recordingDataController = StreamController<Food>();
+  //   _recordingDataSubscription =
+  //       _recordingDataController?.stream.listen((buffer) {
+  //         // When we get data, feed it into Snowboy detector
+  //         if (buffer is FoodData) {
+  //           Uint8List copy = new Uint8List.fromList(buffer.data!);
+  //           // print("Got audio data (${buffer.data.lengthInBytes} bytes");
+  //           // detector.detect(copy);
+  //         }
+  //       });
+  //
+  //   // Start recording
+  //   await _micRecorder.startRecorder(
+  //       toStream: _recordingDataController!.sink as StreamSink<Food>,
+  //       codec: Codec.pcm16,
+  //       numChannels: kNumChannels,
+  //       sampleRate: kSampleRate);
+  // }
+  //
+  // Future<void> stopDetection() async {
+  //   await _micRecorder.stopRecorder();
+  //   await _micRecorder.closeRecorder();
+  //   await _recordingDataSubscription?.cancel();
+  //   await _recordingDataController?.close();
+  // }
 }

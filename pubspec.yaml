@@ -37,6 +37,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   audioplayers: ^5.2.1
   dotted_border: ^2.1.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
