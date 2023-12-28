@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       if (Platform.isIOS || Platform.isMacOS) {
         /// 맥 ios
         googleSignIn = GoogleSignIn(
-            clientId: '372113464838-6spk4rl61l9ahjn1a7pjdo0n7mgs3q5m.apps.googleusercontent.com', /// TODO : 이 부분 보고 필요할 시 수정해주세요
+            clientId: '372113464838-aq8pu1adst4d93qcnftapf3se8iqs7jg.apps.googleusercontent.com.apps.googleusercontent.com', /// TODO : 이 부분 보고 필요할 시 수정해주세요
             serverClientId:
                 "372113464838-u26uo4p42fv3fvnknkk6on2ougfd0edq.apps.googleusercontent.com",
             scopes: scopes,
