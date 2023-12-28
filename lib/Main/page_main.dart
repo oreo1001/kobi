@@ -18,13 +18,30 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final List<Widget> _widgetOptions = const <Widget>[
-    AssistantPage(),
-    CalendarPage(),
-    MailPage(),
-    // AlarmPage(null),
-    UserPage(),
-  ];
+
+  int _selectedIndex = 0;
+  Key _calendarPageKey = UniqueKey();
+  Key _mailPageKey = UniqueKey();
+
+  void _rebuildCalendarPage() {
+    setState(() {
+      _calendarPageKey = UniqueKey();
+    });
+  }
+
+  void _rebuildMailPageKey() {
+    setState(() {
+      _mailPageKey = UniqueKey();
+    });
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+
   @override
   void initState() {
     super.initState();
@@ -32,34 +49,57 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: _widgetOptions.length,
-        child: Scaffold(
-          floatingActionButton: MicroPhoneButton(),
-          body: Column(children: [
-            Expanded(child: Container( color: Colors.transparent, child: TabBarView(children: _widgetOptions))),
-            Divider(
-              height: 2,
-              color: Colors.grey.shade400,
-            ),
-            Container(
-              height: 70.h,
-              color: Colors.white,
-              child: TabBar(
-                unselectedLabelColor: Colors.grey.shade400,
-                labelColor: Colors.black,
-                indicatorColor: Colors.transparent,
-                dividerColor: Colors.transparent,
-                tabs: [
-                  Tab(icon: Icon(Icons.home,size: 28.sp,)),
-                  Tab(icon: Icon(Icons.calendar_today,size: 28.sp,)),
-                  Tab(icon: Icon(Icons.mail,size: 28.sp,)),
-                  // Tab(icon: Icon(Icons.alarm,size: 28.sp,)),
-                  Tab(icon: Icon(Icons.person,size: 28.sp,)),
+    return Scaffold(
+      body: Column(
+        children: [
+          Flexible(
+            child: Center(
+              child: IndexedStack(
+                index: _selectedIndex,
+                children: [
+                  const AssistantPage(),
+                  CalendarPage(key: _calendarPageKey,),
+                  MailPage(key: _mailPageKey,),
+                  // const AlarmPage(null),
+                  const UserPage(),
                 ],
               ),
             ),
-          ]),
-        ));
+          ),
+        ],
+      ),
+      floatingActionButton: MicroPhoneButton(),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: const Color(0xff8B2CF5),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.mail,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.alarm),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: '',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
+    );
   }
 }
