@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
-import 'package:audiofileplayer/audiofileplayer.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +16,7 @@ class RecorderController extends GetxController {
   RxBool isRecording = false.obs;
   Timer? _silenceTimer;
   bool recordingStarted = false;
-  List<RxString> transcription = [RxString('')];
+  RxList<String> transcription = [''].obs;
   RxString prompt = ''.obs;
 
   static const kSampleRate = 16000;
@@ -186,11 +184,12 @@ class RecorderController extends GetxController {
   }
 
   void setTranscription(String value) {
-    print('현재 transcription 값 : $transcription');
-    for (int i = transcription.length-1 ; i > 0 ; i--) {
-      print(i);
-      transcription[i] = RxString(value);
+    print('setTranscription 이전 값 : $transcription');
+
+    for (int i = transcription.length ; i > 0 ; i--) {
+      transcription[i-1] = value;
     }
+    print('setTranscription 이후 값 : $transcription');
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.

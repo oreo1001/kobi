@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
@@ -18,6 +19,8 @@ class _MyStackWidgetState extends State<MyStackWidget> with SingleTickerProvider
   late Animation<double> _animation;
 
   RecorderController recorderController = Get.put(RecorderController());
+
+  List<String> previousTranscription = [''];
 
   @override
   void initState() {
@@ -49,11 +52,17 @@ class _MyStackWidgetState extends State<MyStackWidget> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Obx(() {
-          List<String> responseList =  recorderController.transcription.map((rxStr) => rxStr.value).toList();
+          List<String> responseList =  recorderController.transcription;
+          print('response_stack$responseList');
 
-          removeTopWidget();
+          bool equal = !const ListEquality().equals(previousTranscription, responseList);
+          if (equal) {
+            previousTranscription = responseList;
+            removeTopWidget();
+          }
 
           return const SizedBox();
         }),

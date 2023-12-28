@@ -41,49 +41,47 @@ class GetFreeBusyState extends State<GetFreeBusy> {
     //Map<String, dynamic>? arguments = {"timeMin":"2023-12-14T15:00:00+09:00", "timeMax": "2023-12-14T17:00:00+09:00"};
     String? timeMin = arguments?['timeMin'];
     String? timeMax = arguments?['timeMax'];
-    return Expanded(
-      child: Container(
-        width: 400.w,
-        padding: EdgeInsets.fromLTRB(10.w, 0, 0, 10.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('${findBusyOrNot(timeMin)}에서',
-                style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700)),
-            Text('${findBusyOrNot(timeMax)} 까지',
-                style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700)),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.w),
-              child: RichText(
-                  softWrap: true,
-                  text: TextSpan(children: [
-                    TextSpan(
-                      text: '${authController.name}님의 일정은 다음과 같아요!',
-                      style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
+    return Container(
+      width: 400.w,
+      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 10.h),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('${findBusyOrNot(timeMin)}에서',
+              style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700)),
+          Text('${findBusyOrNot(timeMax)} 까지',
+              style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700)),
+          SizedBox(height: 20.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.w),
+            child: RichText(
+                softWrap: true,
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: '${authController.name}님의 일정은 다음과 같아요!',
+                    style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
+                  ),
+                  WidgetSpan(
+                    child: SizedBox(
+                      width: 5.w,
                     ),
-                    WidgetSpan(
-                      child: SizedBox(
-                        width: 5.w,
+                  ),
+                  WidgetSpan(
+                      child: AnimatedTextKit(
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        '...',
+                        textStyle: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
+                        speed: const Duration(milliseconds: 100),
                       ),
-                    ),
-                    WidgetSpan(
-                        child: AnimatedTextKit(
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          '...',
-                          textStyle: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
-                          speed: const Duration(milliseconds: 100),
-                        ),
-                      ],
-                      isRepeatingAnimation: true,
-                      displayFullTextOnTap: false,
-                    )),
-                  ])),
-            ),
-          ],
-        ),
+                    ],
+                    isRepeatingAnimation: true,
+                    displayFullTextOnTap: false,
+                  )),
+                ])),
+          ),
+        ],
       ),
     );
   }

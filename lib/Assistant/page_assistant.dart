@@ -68,13 +68,13 @@ class _AssistantPageState extends State< AssistantPage> {
           child: Column(children: [
             Obx(() {
               // transcription 의 변화를 감지하여 currentScreen을 변경
-              List<String> transcription = recorderController.transcription.map((rxStr) => rxStr.value).toList();
+              List<String> transcription = recorderController.transcription;
               print('transcription 값 : $transcription');
               print('previousTranscription 값 : $previousTranscription');
-              bool equal = const ListEquality().equals(previousTranscription, transcription);
+              bool equal = !const ListEquality().equals(previousTranscription, transcription);
               print('requestToBackEnd 호출 여부 : $equal');
           
-              if (!equal && readyToRequest(transcription)) {
+              if (equal && readyToRequest(transcription)) {
                 previousTranscription = transcription;
                 requestToBackEnd(transcription);
               }
@@ -142,6 +142,7 @@ class _AssistantPageState extends State< AssistantPage> {
   /// #3. BackEnd에서 받은 응답을 가지고 currentScreen을 변경
   void switchWidget() {
     setState(() {
+      currentWidget = [];
     String responseWidgetType = assistantResponse.type;
     if (responseWidgetType == 'message_creation') {
       currentWidget = [const MessageCreationUI()];
@@ -149,7 +150,7 @@ class _AssistantPageState extends State< AssistantPage> {
 
       // toolCalls의 길이만큼 transcription을 초기화
       int toolCallsLength = assistantResponse.stepDetails!.toolCalls!.length;
-      recorderController.transcription = List.generate(toolCallsLength, (index) => RxString(''));
+      recorderController.transcription = RxList( List.generate(toolCallsLength, (index) => ''));
 
       for (int i = 0 ; i < toolCallsLength ; i++) {
         String? type = assistantResponse.stepDetails?.toolCalls?[i].function.name;
