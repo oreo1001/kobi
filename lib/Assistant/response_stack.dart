@@ -41,7 +41,7 @@ class _MyStackWidgetState extends State<MyStackWidget> with SingleTickerProvider
   void removeTopWidget() {
     _controller.forward().then((_) {
       setState(() {
-        if (widget.currentWidget.isNotEmpty) {
+        if (widget.currentWidget.isNotEmpty && widget.currentWidget.length > 1) {
           widget.currentWidget.removeLast();
         }
       });
@@ -55,8 +55,9 @@ class _MyStackWidgetState extends State<MyStackWidget> with SingleTickerProvider
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Obx(() {
+          print('-----------------ResponseStack Obx 안-----------------');
           List<String> responseList =  recorderController.transcription;
-          print('response_stack$responseList');
+          print('response_stack 안에서의 transcription 값 : $responseList');
 
           bool equal = !const ListEquality().equals(previousTranscription, responseList);
           if (equal) {

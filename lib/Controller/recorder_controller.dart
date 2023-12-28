@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
+import 'package:audioplayers/audioplayers.dart' as audioplayers;
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -111,9 +112,9 @@ class RecorderController extends GetxController {
     _resetSilenceTimer();
 
     // TODO : 삭제해야 함
-    // AudioPlayer audioPlayer = AudioPlayer();
-    // Directory tempDir = await getTemporaryDirectory();
-    // audioPlayer.play(DeviceFileSource('${tempDir.path}/my_recording.mp4'));
+    audioplayers.AudioPlayer audioPlayer = audioplayers.AudioPlayer();
+    Directory tempDir = await getTemporaryDirectory();
+    audioPlayer.play(audioplayers.DeviceFileSource('${tempDir.path}/my_recording.mp4'));
 
     setTranscription(await transcribe());
   }
@@ -136,6 +137,7 @@ class RecorderController extends GetxController {
     String apiKey = openAIKey;
     String apiUrl = 'https://api.openai.com/v1/audio/transcriptions';
 
+    print('-----------------sendToWhisper 안-----------------');
     print('prompt: $prompt');
 
     // Read the audio file into memory as bytes
@@ -184,12 +186,16 @@ class RecorderController extends GetxController {
   }
 
   void setTranscription(String value) {
-    print('setTranscription 이전 값 : $transcription');
 
+    print('setTranscription 호출! : transcription 값 : $transcription');
     for (int i = transcription.length ; i > 0 ; i--) {
-      transcription[i-1] = value;
+      if (transcription[i-1] == '') {
+        transcription[i-1] = value;
+        break;
+      }
     }
-    print('setTranscription 이후 값 : $transcription');
+
+    print('setTranscription 호출! : transcription 값 : $transcription');
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.

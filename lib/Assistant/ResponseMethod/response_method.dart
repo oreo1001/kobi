@@ -1,7 +1,4 @@
 bool readyToRequest (List<String> transcription) {
-
-  print('readyToRequest : ');
-  print(!transcription.contains(''));
   if (!transcription.contains('')) {
     return true;
   }

@@ -17,6 +17,7 @@ class MicroPhoneButton extends StatelessWidget {
         if (recorderController.isRecording.value == true) {
           await recorderController.stopRecording();
         } else {
+          recorderController.transcription.value = [''];
           recorderController.startRecording();
         }
       },

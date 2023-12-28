@@ -8,6 +8,7 @@ class DefaultResponse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 87.h),
               Text('당신 곁에 언제나',

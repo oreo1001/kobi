@@ -64,23 +64,30 @@ class _AssistantPageState extends State< AssistantPage> {
   @override
   Widget build(BuildContext context) {
       return Scaffold(
-        body: SingleChildScrollView(
-          child: Column(children: [
-            Obx(() {
-              // transcription 의 변화를 감지하여 currentScreen을 변경
-              List<String> transcription = recorderController.transcription;
-              print('transcription 값 : $transcription');
-              print('previousTranscription 값 : $previousTranscription');
-              bool equal = !const ListEquality().equals(previousTranscription, transcription);
-              print('requestToBackEnd 호출 여부 : $equal');
-          
-              if (equal && readyToRequest(transcription)) {
-                previousTranscription = transcription;
-                requestToBackEnd(transcription);
-              }
-              return const SizedBox();}),
-            SlideFromLeftAnimation(child: MyStackWidget(currentWidget: currentWidget))
-          ]),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+              Obx(() {
+                // transcription 의 변화를 감지하여 currentScreen을 변경
+                List<String> transcription = recorderController.transcription;
+                print('-----------------AssistantPage Obx 안-----------------');
+                print('transcription 값 : $transcription');
+                print('previousTranscription 값 : $previousTranscription');
+                bool equal = !const ListEquality().equals(previousTranscription, transcription);
+                print('requestToBackEnd 호출 여부 : ${equal && readyToRequest(transcription)}');
+            
+                if (equal && readyToRequest(transcription)) {
+                  previousTranscription = List.from(transcription);
+                  print('previousTranscription 값 변경 : $previousTranscription');
+                  requestToBackEnd(transcription);
+                }
+                return const SizedBox();}),
+              SlideFromLeftAnimation(child: MyStackWidget(currentWidget: currentWidget))
+            ]),
+          ),
         ),
       );
   }
@@ -120,7 +127,11 @@ class _AssistantPageState extends State< AssistantPage> {
           beforeType: assistantResponse.type,
           threadId: assistantResponse.threadId,
           functionResponses: {
-            "tool_outputs": toolCalls.asMap().map((key, value) => MapEntry(key, ToolOutput(toolCallId: value.id, name: value.function.name, output: {"message": transcription[key]}).toJson())).values.toList()
+            "tool_outputs": toolCalls.asMap().map((key, value) {
+              print('key : $key, value : $value');
+              return MapEntry(key,
+                ToolOutput(toolCallId: value.id, name: value.function.name,
+                output: {"message": transcription[key]}).toJson());}).values.toList()
           },
         ).toJson();
       } else {
@@ -170,15 +181,13 @@ class _AssistantPageState extends State< AssistantPage> {
         } else if (type == AssistantFunction.getFreeBusy.value) { /// OK!
           currentWidget.add(const GetFreeBusy());
           if (assistantResponse.status == 'in_progress') {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              requestToBackEnd(["ok"]);
-            });
+              recorderController.setTranscription('OK');
           }
         } else if (type == AssistantFunction.establishStrategy.value) {
           currentWidget.add(const EstablishStrategy());
           if (assistantResponse.status == 'in_progress') {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              requestToBackEnd(["ok"]);
+              recorderController.setTranscription('ok');
             });
           }
         }
