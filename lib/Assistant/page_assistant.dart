@@ -78,7 +78,21 @@ class _AssistantPageState extends State< AssistantPage> {
                 print('previousTranscription 값 : $previousTranscription');
                 bool equal = !const ListEquality().equals(previousTranscription, transcription);
                 print('requestToBackEnd 호출 여부 : ${equal && readyToRequest(transcription)}');
-            
+
+
+                // /// @@@@@ 테스트 @@@@@
+                // if (equal) {
+                // Future.delayed(Duration(seconds: 1)).then((value) {
+                //   previousTranscription = List.from(transcription);
+                //   setState(() {
+                //     currentWidget = [];
+                //     currentWidget.add(const DeleteEvent());
+                //   });
+                //   print('테스트용 setState 완료');
+                // });
+                // }
+                // /// @@@@@ 테스트 @@@@@
+
                 if (equal && readyToRequest(transcription)) {
                   previousTranscription = List.from(transcription);
                   print('previousTranscription 값 변경 : $previousTranscription');

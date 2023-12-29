@@ -24,12 +24,6 @@ class _MailPageState extends State<MailPage> {
   List<Thread> threadList = [];
   String threadId = '';
 
-  @override
-  void initState() {
-    super.initState();
-    // getMail();
-  }
-
   Future getMail() async {
     Map<String, dynamic> responseMap =
         await httpResponse('/email/emailList', {});
