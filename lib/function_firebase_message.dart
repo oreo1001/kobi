@@ -69,20 +69,17 @@ void firebaseOnMessage() async {
     print('포그라운드 : ${message.data}');
     setEvent(message.data);
   });
+}
+
+Future<void> backgroundTerminate() async {
+  RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  if (initialMessage != null) setEvent(initialMessage.data);
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {  ///background -> foreground tap
     print('백그라운드에서 탭했을때 포그라운드로 전환');
-    _handleMessage(message);
-  });
-
-  FirebaseMessaging.instance.getInitialMessage().then((message) {  ///terminated
-    if (message != null) {
-      print('terminated 상태에서 메시지 확인: ${message.data}');
-      _handleMessage(message);
-    }
+    handleMessage(message);
   });
 }
-
 void setEvent(Map<String,dynamic> eventMap){
   final EventController eventController = Get.find();
   if (eventMap['type'] == 'insert_event') {
@@ -97,7 +94,7 @@ void setEvent(Map<String,dynamic> eventMap){
     showDeleteDialog();
   }
 }
-void _handleMessage(RemoteMessage message) async {
+void handleMessage(RemoteMessage message) async {
   String? userId = await storage.getUserId();
   if (userId != '' && userId != null) {
     Get.offAllNamed('/main');

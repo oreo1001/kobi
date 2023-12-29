@@ -19,7 +19,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  int _selectedIndex = 3;
+  int _selectedIndex = 1;
   Key _calendarPageKey = UniqueKey();
   Key _mailPageKey = UniqueKey();
 

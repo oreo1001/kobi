@@ -40,6 +40,7 @@ class _CalendarPageState extends State<CalendarPage> {
         isAllDay: isAllDay,
         notes: json['description'],
         location: json['location'],
+        color : json['color'] ?? Colors.lightBlue,
       );
     }).toList();
     return newAppointments;
@@ -60,7 +61,6 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     futureEvents ??= getEvents();     //futureEvents null
     return Scaffold(
-
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -131,9 +131,9 @@ class _CalendarPageState extends State<CalendarPage> {
                   ],
                   selectionDecoration: BoxDecoration(
                     color: Colors.transparent,
-                    border: Border.all(color: const Color(0xff8B2CF5), width: 2.w),
-                    borderRadius: BorderRadius.all(Radius.circular(4.sp)),
-                    shape: BoxShape.rectangle,
+                    // border: Border.all(color: const Color(0xff8B2CF5), width: 2.w),
+                    // borderRadius: BorderRadius.all(Radius.circular(4.sp)),
+                    // shape: BoxShape.rectangle,
                   ),
                   dataSource: _getCalendarDataSource(snapshot.data!),
                   monthViewSettings: MonthViewSettings(

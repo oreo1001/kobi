@@ -44,6 +44,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);   //백그라운드에서 초기화
   print('메시지 아이디 : ${message.messageId}');
   print('백그라운드 : ${message.data}');
+  // FirebaseMessaging.instance.getInitialMessage().then((message) {  ///terminated
+  //   if (message != null) {
+  //     print('terminated 상태에서 메시지 확인: ${message.data}');
+  //     handleMessage(message);
+  //   }
+  // });
 }
 
 void main() async {
@@ -90,7 +96,7 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     firebaseOnMessage();
-    showFirebaseDialog();
+    backgroundTerminate();
     //_initNotificationDetails();
   }
 
@@ -104,16 +110,6 @@ class MyAppState extends State<MyApp> {
       Get.off(() => RingingPage(selectedNotificationPayload));
     } else {
       Get.off(() => AlarmPage(notificationAppLaunchDetails));
-    }
-  }
-  void showFirebaseDialog(){
-    final EventController eventController = Get.find<EventController>();
-    if(eventController.type.value == 'insert_event'){
-      showEventDialog();
-    }else if(eventController.type.value == 'update_event'){
-      showUpdateEventDialog();
-    }else if(eventController.type.value == 'delete_event'){
-      showDeleteDialog();
     }
   }
 
