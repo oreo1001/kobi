@@ -19,7 +19,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 3;
   Key _calendarPageKey = UniqueKey();
   Key _mailPageKey = UniqueKey();
 
@@ -88,10 +88,10 @@ class _MainPageState extends State<MainPage> {
             ),
             label: '',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.alarm),
-            label: '',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.alarm),
+          //   label: '',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: '',

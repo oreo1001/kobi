@@ -60,8 +60,10 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     futureEvents ??= getEvents();     //futureEvents null
     return Scaffold(
+
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         // toolbarHeight: 70.h,
         title :Row(
@@ -112,6 +114,7 @@ class _CalendarPageState extends State<CalendarPage> {
               return Text('Error: ${snapshot.error}');
             } else {
               return SfCalendar(
+                  initialSelectedDate: DateTime.now(),
                   onTap: (CalendarTapDetails details) {
                     print(details.appointments);
                     // dynamic appointment = details.appointments;
@@ -123,8 +126,8 @@ class _CalendarPageState extends State<CalendarPage> {
                   },
                   allowedViews: const <CalendarView>[
                     CalendarView.month,
-                    CalendarView.week,
-                    CalendarView.day,
+                    // CalendarView.week,
+                    // CalendarView.day,
                   ],
                   selectionDecoration: BoxDecoration(
                     color: Colors.transparent,
