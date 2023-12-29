@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:kobi/Alarm/page_alarm.dart';
 import 'package:kobi/Calendar/page_calendar.dart';
-import 'package:kobi/Controller/recorder_controller.dart';
 import 'package:kobi/Assistant/microphone_button.dart';
 
 import '../Assistant/page_assistant.dart';
@@ -58,9 +53,8 @@ class _MainPageState extends State<MainPage> {
                 index: _selectedIndex,
                 children: [
                   const AssistantPage(),
-                  CalendarPage(key: _calendarPageKey,),
-                  MailPage(key: _mailPageKey,),
-                  // const AlarmPage(null),
+                  CalendarPage(),
+                  MailPage(),
                   const UserPage(),
                 ],
               ),
@@ -86,10 +80,6 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(
               Icons.mail,
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.alarm),
             label: '',
           ),
           BottomNavigationBarItem(
