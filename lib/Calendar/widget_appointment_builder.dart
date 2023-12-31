@@ -5,9 +5,6 @@ import '../theme.dart';
 
 Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails calendarAppointmentDetails) {
   final Appointment appointment = calendarAppointmentDetails.appointments.first;
-  // RichText의 높이 계산
-  final richTextHeight = calculateRichTextHeight(appointment.subject, 13.sp, 2);
-  final containerHeight = richTextHeight > 13.sp * 2 ? richTextHeight : 13.sp * 2;
 
   return Row(
     children: [

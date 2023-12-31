@@ -12,10 +12,6 @@ class TtsController extends GetxController {
     await flutterTts.awaitSpeakCompletion(true);
     await flutterTts.setLanguage("ko-KR");
     await flutterTts.setSpeechRate(0.6);
-    List<dynamic> voices = await flutterTts.getVoices;
-    for (dynamic voice in voices) {
-      print(voice);
-    }
     await flutterTts.setVoice({"name": "ko-kr-x-ism-local"});
   }
 

@@ -10,10 +10,13 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
 
   AuthController authController = Get.find();
   String user = authController.userId.value;
+
   if (user != '') {
     body['user'] = user;
   }
-  body['version'] = '2.0.3';  //& versionName
+
+  body['version'] = '2.0.3';
+
   String platform = 'Android도, iOS도 아님';
   if (Platform.isAndroid) {
     platform = 'Android';
@@ -31,17 +34,12 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList')
     print('-----------------HTTP API 응답--------------------');
   print('HTTP response time : ${DateTime.now().toString().substring(0, 19)}');
+
   Map<String, dynamic> responseMap;
-  if (response.statusCode == 200) {
-    // 서버가 요청을 성공적으로 수행한 경우
-    String responseBody = utf8.decode(response.bodyBytes);
-    responseMap = json.decode(responseBody);
-    responseMap['statusCode'] = response.statusCode;
-  } else {
-    String responseBody = utf8.decode(response.bodyBytes);
-    responseMap = json.decode(responseBody);
-    responseMap['statusCode'] = response.statusCode;
-  }
+
+  String responseBody = utf8.decode(response.bodyBytes);
+  responseMap = json.decode(responseBody);
+  responseMap['statusCode'] = response.statusCode;
 
   if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList') print('responseMap: $responseMap');
   return responseMap;

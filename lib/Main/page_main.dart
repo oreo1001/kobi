@@ -14,7 +14,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   Key _calendarPageKey = UniqueKey();
   Key _mailPageKey = UniqueKey();
 
@@ -55,7 +55,6 @@ class _MainPageState extends State<MainPage> {
                   const AssistantPage(),
                   CalendarPage(key: _calendarPageKey,),
                   MailPage(key: _mailPageKey,),
-                  // const AlarmPage(null),
                   const UserPage(),
                 ],
               ),

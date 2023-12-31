@@ -5,26 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Main/page_main.dart';
-import 'package:kobi/Test/page_alarm_test.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
-import 'package:kobi/Controller/notification_controller.dart';
-import 'Alarm/page_ringing.dart';
-import 'Alarm/function_alarm_initializer.dart';
-import 'Alarm/page_alarm.dart';
-
-import 'Test/page_test.dart';
 import 'Controller/event_controller.dart';
-import 'Dialog/delete_dialog.dart';
-import 'Dialog/event_dialog.dart';
-import 'Dialog/update_event_dialog.dart';
 import 'Login/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import 'Class/secure_storage.dart';
 import 'Login/page_login.dart';
 import 'function_firebase_message.dart';
 import 'function_user_login.dart';
@@ -58,8 +47,6 @@ void main() async {
 
   ///Native Splash를 위한 코드 (splash를 바인딩)
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  Get.put(NotificationController(), permanent: true);
-  alarmInitializeFunction();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance.requestPermission(     /// 첫 빌드시, 권한 확인하기
@@ -87,30 +74,12 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  NotificationController notificationController = Get.find();
-  String? selectedNotificationPayload; //알람을 눌렀을 때
-  NotificationAppLaunchDetails? notificationAppLaunchDetails;
-  final storage = SecureStorage();
 
   @override
   void initState() {
     super.initState();
     firebaseOnMessage();
     backgroundTerminate();
-    //_initNotificationDetails();
-  }
-
-  void _initNotificationDetails() async {
-    notificationAppLaunchDetails = await notificationController
-        .flutterLocalNotificationsPlugin
-        .getNotificationAppLaunchDetails(); //알람 plugin이 mac, ios, android에서 오지않으면 didNotificationLaunchApp을 false로 만듬.
-    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-      selectedNotificationPayload =
-          notificationAppLaunchDetails!.notificationResponse?.payload;
-      Get.off(() => RingingPage(selectedNotificationPayload));
-    } else {
-      Get.off(() => AlarmPage(notificationAppLaunchDetails));
-    }
   }
 
   @override
@@ -135,16 +104,8 @@ class MyAppState extends State<MyApp> {
               )),
           getPages: [
             GetPage(name: '/main', page: () => MainPage()),
-            GetPage(name: '/test', page:() => EventList()),
-            GetPage(name: '/uiTest', page:() => AlarmUIPage()),
             GetPage(name: '/login', page: () => LoginPage()),
             GetPage(name: '/loading', page: () => LoadingPage()),
-            GetPage(
-                name: '/alarm',
-                page: () => AlarmPage(notificationAppLaunchDetails)),
-            GetPage(
-                name: '/ringing',
-                page: () => RingingPage(selectedNotificationPayload)),
           ],
           home: FutureBuilder<bool>(      //로그인 확인하여 페이지 라우팅
             future: getUserProfile(),
@@ -154,7 +115,6 @@ class MyAppState extends State<MyApp> {
               } else {
                 FlutterNativeSplash.remove();
                 final bool? isLogged = snapshot.data;
-                print('로그인 여부 : $isLogged');
                 if (isLogged == null || !isLogged) {
                   return LoginPage();
                 } else {
@@ -171,5 +131,5 @@ class MyAppState extends State<MyApp> {
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();
   final String timeZoneName = await FlutterTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timeZoneName!));
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
 }

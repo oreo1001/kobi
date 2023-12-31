@@ -112,11 +112,6 @@ class RecorderController extends GetxController {
     isRecording.value = false;
     _resetSilenceTimer();
 
-    // TODO : 삭제해야 함
-    // audioplayers.AudioPlayer audioPlayer = audioplayers.AudioPlayer();
-    // Directory tempDir = await getTemporaryDirectory();
-    // audioPlayer.play(audioplayers.DeviceFileSource('${tempDir.path}/my_recording.mp4'));
-
     setTranscription(await transcribe());
   }
 

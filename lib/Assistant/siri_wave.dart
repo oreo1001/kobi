@@ -31,10 +31,6 @@ class _SiriWaveState extends State<SiriWave> {
             amplitude = 1;
             print('siri_wave.dart 에서 amplitude 값 : $amplitude');
             return SiriWaveform.ios9(
-              // controller: IOS9SiriWaveformController(
-              //   // amplitude: amplitude > 1 ? 1 : amplitude,
-              //   amplitude: 1
-              // ),
               options: IOS9SiriWaveformOptions(
                 height: 100.h,
                 width: 200.w

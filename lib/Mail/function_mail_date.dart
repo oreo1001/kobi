@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 
 DateTime changeStrToDate(String originalDateStr) {
-  String originalDateStr = "2023년 12월 7일 (목) 오전 1:07";
 
   // '년', '월', '일', '(', ')', '오전' 등을 제거하고 날짜와 시간 부분만 추출
   String yearStr = originalDateStr.split(' ')[0].replaceAll('년', '');

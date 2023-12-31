@@ -53,8 +53,8 @@ class _UserPageState extends State<UserPage> {
                           fit: BoxFit.fill,
                         ), // Text(key['title']),
                       ),
-                      title: Text(name ?? '',style: textTheme().bodySmall?.copyWith(fontSize: 20.sp, color: Colors.grey.shade800)),
-                      subtitle: Text(email ?? '',style: textTheme().bodySmall?.copyWith(fontSize: 14.sp, color: Colors.grey.shade500)),
+                      title: Text(name,style: textTheme().bodySmall?.copyWith(fontSize: 20.sp, color: Colors.grey.shade800)),
+                      subtitle: Text(email,style: textTheme().bodySmall?.copyWith(fontSize: 14.sp, color: Colors.grey.shade500)),
                     ),
                   ),
                 ],
@@ -127,7 +127,7 @@ class _UserPageState extends State<UserPage> {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.grey.shade800,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       )),
                   onPressed: () {},
