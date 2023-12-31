@@ -12,16 +12,21 @@ import '../theme.dart';
 import 'function_mail_date.dart';
 import 'function_parsing.dart';
 
-class MailPage extends StatelessWidget {
-  const MailPage({Key? key}) : super(key: key);
+class MailPage extends StatefulWidget {
+  const MailPage({super.key});
+
+  @override
+  State<MailPage> createState() => _MailPageState();
+}
+
+class _MailPageState extends State<MailPage> {
 
   static Future getMail() async {
     Map<String, dynamic> responseMap =
-        await httpResponse('/email/emailList', {});
+    await httpResponse('/email/emailList', {});
     var emailList = loadThreadListFromJson(responseMap['emailList']);
     return emailList;
   }
-
 
   static const List<Color> colors = [
     Color(0xffB1ECFF),
@@ -37,7 +42,6 @@ class MailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: getMail(),
         builder: (context, snapshot) {
@@ -76,6 +80,8 @@ class MailPage extends StatelessWidget {
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       Get.to(() => ThreadPage(thread));
+                      httpResponse('/email/read', {"threadId": thread.threadId, "messageId": messageList[messageList.length - 1].messageId});
+                      setState(() {});
                     },
                     child:
                     Padding(

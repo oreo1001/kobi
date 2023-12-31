@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../Assistant/siri_wave.dart';
+import '../Class/secure_storage.dart';
 import '../KEYS.dart';
 
 class RecorderController extends GetxController {
@@ -132,7 +133,7 @@ class RecorderController extends GetxController {
   Future<String> sendToWhisperAPI(String filePath, String prompt) async {
     String apiKey = openAIKey;
     // localhost test: flutter localhost == 10.0.2.2
-    String apiUrl = 'https://back.wonmo.net/stt/returnZero';
+    String apiUrl = 'http://13.209.152.32/stt/returnZero';
 
     print('-----------------sendToWhisper 안-----------------');
     print('prompt: $prompt');
@@ -162,7 +163,9 @@ class RecorderController extends GetxController {
         // contentType: MediaType.parse(mimeType!),
       ),
     );
-    request.fields["user"] = "google-108382021164431770971";
+    final storage = SecureStorage();
+    request.fields["user"] = await storage.getUserId() ?? '';
+
 
     // Add the model parameter
     // request.fields['model'] = 'whisper-1';
