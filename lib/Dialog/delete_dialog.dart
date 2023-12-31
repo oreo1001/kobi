@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Class/class_my_event.dart';
-import '../Controller/event_controller.dart';
 
-void showDeleteDialog() {
-  EventController eventController = Get.find<EventController>();
-  MyEvent event = eventController.deleteEvent.value;
+void showDeleteDialog(Event event) {
   Get.dialog(
       AlertDialog(
         title: Text(event.summary),

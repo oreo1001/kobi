@@ -42,17 +42,17 @@ class PatchEventState extends State<PatchEvent> {
       "endTime": "2023-12-14T19:00:00+09:00"
     };
 
-    MyEvent? beforeEvent;
-    MyEvent? afterEvent;
+    Event? beforeEvent;
+    Event? afterEvent;
     if (beforeEventMap != null) {
-      beforeEvent = MyEvent.fromMap(beforeEventMap);
+      beforeEvent = Event.fromMap(beforeEventMap);
     } else {
-      beforeEvent = MyEvent.fromMap(testBeforeEventMap);
+      beforeEvent = Event.fromMap(testBeforeEventMap);
     }
     if (afterEventMap != null) {
-      afterEvent = MyEvent.fromMap(afterEventMap);
+      afterEvent = Event.fromMap(afterEventMap);
     } else {
-      afterEvent = MyEvent.fromMap(testAfterEventMap);
+      afterEvent = Event.fromMap(testAfterEventMap);
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
