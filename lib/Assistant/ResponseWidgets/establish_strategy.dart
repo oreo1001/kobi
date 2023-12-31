@@ -37,7 +37,7 @@ class EstablishStrategyState extends State<EstablishStrategy> {
           RichText(
               softWrap: true, text: TextSpan(children:[
             TextSpan(
-              text: '고객님의 요구사항을 분석하는 중',
+              text: '커리비는 생각하는 중',
               style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
             ),
             WidgetSpan(

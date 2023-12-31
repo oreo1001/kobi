@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Assistant/ResponseWidgets/default.dart';
 import 'package:kobi/Assistant/ResponseWidgets/response_animation.dart';
@@ -107,6 +108,11 @@ class _AssistantPageState extends State< AssistantPage> {
   }
 
   void requestToBackEnd(List<String> transcription) async {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        currentWidget = [const EstablishStrategy()];
+      });
+    });
     Map<String, dynamic> apiResponseMap = await sendToBackEnd(transcription);
 
     /// BackEnd에서 받은 응답을 각각 이 Widget(assistantResponse) / assistantController에 저장
@@ -208,5 +214,14 @@ class _AssistantPageState extends State< AssistantPage> {
       }
     }
     });
+
+    /// assistantResponse.status == 'completed'의 경우
+    if (assistantResponse.status == 'completed') {
+      Future.delayed(const Duration(seconds: 5)).then((_) {
+        setState(() {
+          currentWidget = [const DefaultResponse()];
+        });
+      });
+    }
   }
 }

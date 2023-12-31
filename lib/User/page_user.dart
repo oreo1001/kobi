@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../Class/secure_storage.dart';
 import '../Controller/auth_controller.dart';
 import '../theme.dart';
+import 'Widgets/my_info_button.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -13,19 +14,20 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  AuthController authController = Get.find();
-  final storage = SecureStorage();
-  Map<String, String> initialUser = {
-    'userId': '',
-    'displayName': '',
-    'email': '',
-    'photoUrl': '',
-  };
 
   Future<void> _handleSignOut() async {
-    await storage.setUser(initialUser);
+    final storage = SecureStorage();
+
+    await storage.setUser({
+      'userId': '',
+      'displayName': '',
+      'email': '',
+      'photoUrl': '',
+    });
     Get.offNamed('/login');
   }
+
+  AuthController authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -61,48 +63,7 @@ class _UserPageState extends State<UserPage> {
               ),
             ),
             SizedBox(height : 10.h),
-            SizedBox(
-              height: buttonHeight,
-              child: TextButton(
-                  style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size(0, 0),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.grey.shade800,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      )),
-                  onPressed: () async {
-                    // FlutterClipboard.copy('mycode').then((value) => print('copied'));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: buttonPadding,vertical: 5.h),
-                    child: Row(
-                      children: [
-                        Text('나의 코드',
-                            style: textTheme().displaySmall!.copyWith(
-                                fontSize: 18.sp,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500)),
-                        SizedBox(width : 20.w),
-                        Text(
-                          'mycode',
-                          style: textTheme().displaySmall!.copyWith(
-                              fontSize: 16.sp,
-                              color: Colors.grey.shade500,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const Spacer(),
-                        const Icon(
-                          Icons.copy,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-            myTextButton(() {
+            myInfoButton(() {
               // Share.share('https://careebe.page.link/rKBn');
             },
                 "앱 공유하기",
@@ -110,7 +71,7 @@ class _UserPageState extends State<UserPage> {
                     fontSize: 18.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w500)),
-            myTextButton(
+            myInfoButton(
                     () {},
                 "개인정보 처리방침",
                 textTheme().displaySmall!.copyWith(
@@ -120,36 +81,25 @@ class _UserPageState extends State<UserPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal : buttonPadding,vertical: 5.h),
               height: buttonHeight,
-              child: TextButton(
-                  style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size(0, 0),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.grey.shade800,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      )),
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('버전 정보',
-                          style: textTheme().displaySmall!.copyWith(
-                              fontSize: 18.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500)),
-                      Text(
-                        '2.0.3',
-                        style: textTheme().displaySmall!.copyWith(
-                            fontSize: 18.sp,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  )),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('버전 정보',
+                      style: textTheme().displaySmall!.copyWith(
+                          fontSize: 18.sp,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500)),
+                  Text(
+                    '1.0.0',
+                    style: textTheme().displaySmall!.copyWith(
+                        fontSize: 18.sp,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
             ),
-            myTextButton(
+            myInfoButton(
                     () {
                   _handleSignOut();
                 },
@@ -160,32 +110,5 @@ class _UserPageState extends State<UserPage> {
                     fontWeight: FontWeight.w500)),
           ],
         ));
-  }
-
-  myTextButton(VoidCallback onPressed, String text, TextStyle textStyle) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30.w,vertical: 5.h),
-      child: SizedBox(
-        height: 50.h,
-        child: TextButton(
-            style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                minimumSize: Size(0.sp, 0.sp),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.grey.shade800,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                )),
-            onPressed: onPressed,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(text, style: textStyle),
-                const Spacer(),
-              ],
-            )),
-      ),
-    );
   }
 }

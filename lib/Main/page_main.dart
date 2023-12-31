@@ -106,25 +106,25 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: MicroPhoneButton(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: const Color(0xff8B2CF5),
+        unselectedItemColor: Colors.black12,
+        selectedItemColor: Colors.black,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
+            icon: Icon(Icons.calendar_today_outlined),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.mail,
+              Icons.mail_outlined,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outlined),
             label: '',
           ),
         ],
