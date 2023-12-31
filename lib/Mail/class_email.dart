@@ -1,10 +1,10 @@
-class Email {
+class Thread {
   final String threadId;
   final String emailAddress;
   final String name;
   final List<dynamic> messages;
 
-  Email({
+  Thread({
     required this.threadId,
     required this.emailAddress,
     required this.name,
@@ -12,18 +12,20 @@ class Email {
   });
 }
 
-class Thread {
-  bool isExpanded;
+class Message {
   final bool sentByUser;
   final String date;
   final String subject;
   final String body;
+  final String messageId;
+  final bool unread;
 
-  Thread({
-    required this.isExpanded,
+  Message({
     required this.sentByUser,
     required this.date,
     required this.subject,
     required this.body,
+    required this.messageId,
+    required this.unread,
   });
 }

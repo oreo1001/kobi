@@ -15,23 +15,27 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 0;
-  Key _calendarPageKey = UniqueKey();
-  Key _mailPageKey = UniqueKey();
+  final List <Widget> _pageList =  [
+    const AssistantPage(),
+    CalendarPage(),
+    MailPage(),
+    const UserPage(),
+  ];
 
-  void _rebuildCalendarPage() {
-    setState(() {
-      _calendarPageKey = UniqueKey();
-    });
-  }
-
-  void _rebuildMailPageKey() {
-    setState(() {
-      _mailPageKey = UniqueKey();
-    });
-  }
 
   void _onItemTapped(int index) {
     setState(() {
+      print("index : $index");
+      if (index == 1) {
+        // delete previous page
+
+        _pageList.removeAt(1);
+        _pageList.insert(1, CalendarPage(key: UniqueKey()));
+      }
+      if (index == 2) {
+        _pageList.removeAt(2);
+        _pageList.insert(2, MailPage(key: UniqueKey()));
+      }
       _selectedIndex = index;
     });
   }
@@ -51,12 +55,7 @@ class _MainPageState extends State<MainPage> {
             child: Center(
               child: IndexedStack(
                 index: _selectedIndex,
-                children: [
-                  const AssistantPage(),
-                  CalendarPage(key: _calendarPageKey,),
-                  MailPage(key: _mailPageKey,),
-                  const UserPage(),
-                ],
+                children: _pageList
               ),
             ),
           ),

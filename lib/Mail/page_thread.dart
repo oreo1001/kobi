@@ -7,26 +7,27 @@ import 'function_mail_date.dart';
 import 'function_parsing.dart';
 
 class ThreadPage extends StatefulWidget {
-  const ThreadPage(this.currentEmail, {super.key});
-  final Email currentEmail;
+  const ThreadPage(this.currentThread, {super.key});
+  final Thread currentThread;
 
   @override
-  _ThreadPageState createState() => _ThreadPageState();
+  State<ThreadPage> createState() => _ThreadPageState();
 }
 
 class _ThreadPageState extends State<ThreadPage> {
-  bool isExpanded = false;
-  List<Thread> threadList = [];
+  List<Message> messageList = [];
+  List<bool> isExpandedList = [];
 
   @override
   void initState() {
     super.initState();
-    threadList = parsingThreadsFromEmail(widget.currentEmail.messages);
+    messageList = parsingMessageListFromThread(widget.currentThread.messages);
+    isExpandedList = List.filled(messageList.length, false);
   }
 
   void toggleExpansion(int index) {
     setState(() {
-      threadList[index].isExpanded = !threadList[index].isExpanded;
+      isExpandedList[index] = !isExpandedList[index];
     });
   }
 
@@ -36,20 +37,20 @@ class _ThreadPageState extends State<ThreadPage> {
         appBar: AppBar(
             title: Column(
           children: [
-            Text(' ${widget.currentEmail.name} 님과의 대화',
+            Text(' ${widget.currentThread.name} 님과의 대화',
                 style: textTheme().displayMedium?.copyWith(fontSize: 15.sp)),
-            Text(threadList[0].subject,
-                style: textTheme()
-                    .displaySmall
-                    ?.copyWith(fontSize: 13.sp, color: Colors.blueGrey)),
+            // Text(messageList[0].subject,
+            //     style: textTheme()
+            //         .displaySmall
+            //         ?.copyWith(fontSize: 13.sp, color: Colors.blueGrey)),
           ],
         )),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: ListView.builder(
-              itemCount: threadList.length,
+              itemCount: messageList.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
+                return InkWell(
                   onTap: () => toggleExpansion(index),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -61,7 +62,7 @@ class _ThreadPageState extends State<ThreadPage> {
                           text: TextSpan(children: [
                             TextSpan(
                               text:
-                                  threadList[index].sentByUser ? '나   ' : '상대',
+                                  messageList[index].sentByUser ? '나   ' : widget.currentThread.name,
                               style: textTheme()
                                   .displayMedium
                                   ?.copyWith(fontSize: 18.sp),
@@ -72,14 +73,14 @@ class _ThreadPageState extends State<ThreadPage> {
                               ),
                             ),
                             TextSpan(
-                                text: threadDateString(threadList[index].date),
+                                text: threadDateString(messageList[index].date),
                                 style: textTheme()
                                     .bodySmall
                                     ?.copyWith(fontSize: 10.sp)),
                           ])),
-                      threadList[index].isExpanded
+                      isExpandedList[index]
                           ? Text(
-                              threadList[index].body,
+                              messageList[index].body,
                               style: textTheme().bodySmall?.copyWith(
                                     fontSize: 13.sp,
                                     fontWeight: FontWeight.w400,
@@ -87,7 +88,7 @@ class _ThreadPageState extends State<ThreadPage> {
                                   ),
                             )
                           : Text(
-                              removeNewlines(threadList[index].body),
+                              removeNewlines(messageList[index].body),
                               style: textTheme().bodySmall?.copyWith(
                                     fontSize: 13.sp,
                                     fontWeight: FontWeight.w400,
@@ -96,7 +97,7 @@ class _ThreadPageState extends State<ThreadPage> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
-                      Divider(),
+                      const Divider(),
                     ],
                   ),
                 );

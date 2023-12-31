@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:kobi/Controller/auth_controller.dart';
 
 Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body) async {
-  String uri = 'https://back.wonmo.net$path';
+  String uri = 'http://13.209.152.32$path';
 
   AuthController authController = Get.find();
   String user = authController.userId.value;
@@ -31,7 +31,7 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   print('HTTP request time : ${DateTime.now().toString().substring(0, 19)}');
   http.Response response = await http.post(Uri.parse(uri),
       headers: <String, String>{'Content-Type': "application/json"}, body: jsonEncode(body));
-  if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList')
+  if (uri != 'http://13.209.152.32/email/emailList' && uri != 'http://13.209.152.32/calendar/eventList')
     print('-----------------HTTP API 응답--------------------');
   print('HTTP response time : ${DateTime.now().toString().substring(0, 19)}');
 
@@ -41,6 +41,6 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   responseMap = json.decode(responseBody);
   responseMap['statusCode'] = response.statusCode;
 
-  if (uri != 'https://back.wonmo.net/email/emailList' && uri != 'https://back.wonmo.net/calendar/eventList') print('responseMap: $responseMap');
+  if (uri != 'http://13.209.152.32/email/emailList' && uri != 'http://13.209.152.32/calendar/eventList') print('responseMap: $responseMap');
   return responseMap;
 }
