@@ -94,6 +94,7 @@ class MyAppState extends State<MyApp> {
           title: 'WonMo Calendar',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            hoverColor: const Color(0xFFACCCFF),
               useMaterial3: true,
               scaffoldBackgroundColor: Colors.white,
               scrollbarTheme: ScrollbarThemeData(
