@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -8,7 +11,10 @@ import 'package:kobi/Main/page_main.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
-import 'Controller/event_controller.dart';
+import 'Class/class_my_event.dart';
+import 'Dialog/delete_dialog.dart';
+import 'Dialog/event_dialog.dart';
+import 'Dialog/update_event_dialog.dart';
 import 'Login/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,49 +24,25 @@ import 'Login/page_login.dart';
 import 'function_firebase_message.dart';
 import 'function_user_login.dart';
 
-@pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  print('notification(${notificationResponse.id}) action tapped: '
-      '${notificationResponse.actionId} with'
-      ' payload: ${notificationResponse.payload}');
-  if (notificationResponse.input?.isNotEmpty ?? false) {
-    print('notification action tapped with input: ${notificationResponse.input}');
-  }
-}
-//firebase_messaging에서 나온 방식 프래그마틱 방식으로 다트 컴파일러에게 진입점 임을 알려주어 우선적으로 실행되게 한다. */
+
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);   //백그라운드에서 초기화
-  print('메시지 아이디 : ${message.messageId}');
-  print('백그라운드 : ${message.data}');
-  // FirebaseMessaging.instance.getInitialMessage().then((message) {  ///terminated
-  //   if (message != null) {
-  //     print('terminated 상태에서 메시지 확인: ${message.data}');
-  //     handleMessage(message);
-  //   }
-  // });
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  // 잘은 모르는데 background Isolate라 한번 더 초기화 해줘야 하는듯
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
+
 
 void main() async {
   WidgetsBinding widgetsBinding =  WidgetsFlutterBinding.ensureInitialized();
-  await _configureLocalTimeZone();
-
   ///Native Splash를 위한 코드 (splash를 바인딩)
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
+  // 이거 두개는 최상단에서 해야 될듯
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseMessaging.instance.requestPermission(     /// 첫 빌드시, 권한 확인하기
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-  Get.put(AuthController(),permanent: true);
-  Get.put(EventController(),permanent: true);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  Get.put(AuthController(),permanent: true);
   runApp(const MyApp());
 }
 
@@ -78,8 +60,6 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    firebaseOnMessage();
-    backgroundTerminate();
   }
 
   @override
@@ -125,10 +105,4 @@ class MyAppState extends State<MyApp> {
       ),
     );
   }
-}
-
-Future<void> _configureLocalTimeZone() async {
-  tz.initializeTimeZones();
-  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timeZoneName));
 }

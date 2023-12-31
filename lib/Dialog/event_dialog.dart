@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Class/class_my_event.dart';
-import '../Controller/event_controller.dart';
 
-void showEventDialog() {
-  EventController eventController = Get.find<EventController>();
-  MyEvent event = eventController.currentEvent.value;
+void showEventDialog(Event event) {
   Get.dialog(
     AlertDialog(
         title: Text(event.summary),

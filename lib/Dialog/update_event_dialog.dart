@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Class/class_my_event.dart';
-import '../Controller/event_controller.dart';
-void showUpdateEventDialog() {  //Map<String, dynamic> beforeEvent, Map<String, dynamic> afterEvent
-  EventController eventController = Get.find<EventController>();
-  MyEvent beforeEvent = eventController.beforeEvent.value;
-  MyEvent afterEvent = eventController.currentEvent.value;
+void showUpdateEventDialog(Event beforeEvent, Event afterEvent) {  //Map<String, dynamic> beforeEvent, Map<String, dynamic> afterEvent
   Get.dialog(
     AlertDialog(
       title: Text('이벤트 업데이트'),
