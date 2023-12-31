@@ -33,11 +33,8 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
 
   @override
   Widget build(BuildContext context) {
-    //Map<String, dynamic>? arguments = {"query":"이거랑 이거중에 뭘 선택하시겠어요?","options":["1번 선택지","2번 선택지","3번 선택지","4번 선택지"]};
     String? query = arguments?['query'];
     List<dynamic> options = arguments?['options'];
-    // print(query);
-    // print(options);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,

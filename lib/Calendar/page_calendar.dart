@@ -116,7 +116,7 @@ class _CalendarPageState extends State<CalendarPage> {
               return SfCalendar(
                   initialSelectedDate: DateTime.now(),
                   onTap: (CalendarTapDetails details) {
-                    print(details.appointments);
+                    print(details.appointments); /// TODO 이거 뭐지?
                     // dynamic appointment = details.appointments;
                     // DateTime date = details.date!;
                     // CalendarElement element = details.targetElement;

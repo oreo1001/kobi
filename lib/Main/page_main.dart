@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kobi/Calendar/page_calendar.dart';
-import 'package:kobi/Assistant/microphone_button.dart';
+import 'package:kobi/Main/microphone_button.dart';
 
 import '../Assistant/page_assistant.dart';
 import '../Mail/page_email.dart';
@@ -25,7 +25,6 @@ class _MainPageState extends State<MainPage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      print("index : $index");
       if (index == 1) {
         // delete previous page
 
@@ -63,27 +62,32 @@ class _MainPageState extends State<MainPage> {
       ),
       floatingActionButton: MicroPhoneButton(),
       bottomNavigationBar: BottomNavigationBar(
+        iconSize: 32,
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.black12,
         selectedItemColor: Colors.black,
+
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
-            label: '',
+            label: 'home'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_outlined),
-            label: '',
+            label: 'calendar',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.mail_outlined,
             ),
-            label: '',
+            label: 'mail',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
-            label: '',
+            label: 'myInfo',
           ),
         ],
         currentIndex: _selectedIndex,

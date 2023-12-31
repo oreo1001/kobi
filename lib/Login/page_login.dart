@@ -54,10 +54,8 @@ class _LoginPageState extends State<LoginPage> {
             scopes: scopes,
             forceCodeForRefreshToken: true);
       }
-      print('로그인 시도');
       GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
 
-      print('로그인 완료');
       String? serverAuthCode = googleAccount?.serverAuthCode;
       String googleId = 'google-${googleAccount!.id}';
       Map<String, String> accountMap = {
@@ -74,8 +72,6 @@ class _LoginPageState extends State<LoginPage> {
 
       String? token = await authController.getToken();
 
-      print('/auth/signIn 요청: $token, $serverAuthCode, $googleId');
-
       Get.toNamed('/loading');
       Map<String, dynamic> responseMap = await httpResponse('/auth/signIn',
           {'fcmToken': token, 'authCode': serverAuthCode, 'user': googleId});
@@ -83,11 +79,9 @@ class _LoginPageState extends State<LoginPage> {
       if (responseMap['statusCode'] == 400) {
         if (responseMap.containsKey('message') &&
             responseMap['message'].contains('scope')) {
-          print('scope 오류');
           Get.back();
           showScopeDialog();
         } else {
-          print('400 다른 오류');
           Get.back();
         }
       } else if (responseMap['statusCode'] == 200) {
@@ -97,9 +91,6 @@ class _LoginPageState extends State<LoginPage> {
               convertDynamicListToContactList(responseMap['contactList']);
         }
         Get.offNamed('/main');
-        print('메인으로 갓나?');
-      } else {
-        print('error가 생성되었어요! 500 이거나 다른 오류');
       }
     } catch (error) {
       print(error);

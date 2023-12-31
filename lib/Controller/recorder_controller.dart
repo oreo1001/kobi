@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../Assistant/siri_wave.dart';
+import '../Main/siri_wave.dart';
 import '../Class/secure_storage.dart';
 import '../KEYS.dart';
 
@@ -28,7 +28,6 @@ class RecorderController extends GetxController {
   void onInit() async {
     super.onInit();
     await _initRecorder();
-    print('recorder_controller.dart onInit() 시 transcription 값 : $transcription');
   }
 
   Future<void> _initRecorder() async {
@@ -66,7 +65,6 @@ class RecorderController extends GetxController {
       backgroundColor: Colors.transparent,
       isDismissible: false,
     );
-    print('녹음 시작 : startRecording()');
     isRecording.value = true;
     _startMonitoring();
   }
@@ -78,7 +76,6 @@ class RecorderController extends GetxController {
     // stream으로 decibel 정보 받아올 주기 : 100 ms
     await _recorder.setSubscriptionDuration(const Duration(milliseconds: 100));
     _recorder.onProgress?.listen((event) {
-      print('decibel value :${event.decibels}');
       decibels.value = event.decibels == null ? 0.0 : event.decibels! < 0 ? 0.0 : event.decibels!;
 
       if (!recordingStarted) {
@@ -184,7 +181,6 @@ class RecorderController extends GetxController {
     if (response.statusCode == 200) {
       String responseBody = await response.stream.bytesToString();
       Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
-      print('Response: $jsonResponse');
       return jsonResponse['text'];
     } else {
       print('Failed to send video to Whisper API: ${response.statusCode}');
@@ -194,14 +190,11 @@ class RecorderController extends GetxController {
 
   void setTranscription(String value) {
 
-    print('setTranscription 호출! : transcription 값 : $transcription');
     for (int i = transcription.length ; i > 0 ; i--) {
       if (transcription[i-1] == '') {
         transcription[i-1] = value;
         break;
       }
     }
-
-    print('setTranscription 호출! : transcription 값 : $transcription');
   }
 }

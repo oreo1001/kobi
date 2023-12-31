@@ -10,7 +10,6 @@ AuthController authController = Get.find();
 
 Future<bool> checkIfLogin() async {
   String? userId = await storage.getUserId();
-  print('userId 값: $userId');
   if(userId == null || userId.isEmpty){
     return false;
   }
@@ -27,7 +26,6 @@ Future<bool> getUserProfile() async {
     Map<String, dynamic> responseMap = await httpResponse('/auth/login', {'fcmToken': token, 'user': userId});
 
     authController.contactList.value = convertDynamicListToContactList(responseMap['contactList']);
-    print('contactList: ${authController.contactList.toString()}');
     return true;
   }
   else{

@@ -57,7 +57,6 @@ class _MyStackWidgetState extends State<MyStackWidget> with SingleTickerProvider
         Obx(() {
           print('-----------------ResponseStack Obx 안-----------------');
           List<String> responseList =  recorderController.transcription;
-          print('response_stack 안에서의 transcription 값 : $responseList');
 
           bool equal = !const ListEquality().equals(previousTranscription, responseList);
           if (equal) {

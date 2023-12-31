@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-import 'package:kobi/Assistant/ResponseWidgets/default.dart';
+import 'package:kobi/Assistant/home_widget.dart';
 import 'package:kobi/Assistant/ResponseWidgets/response_animation.dart';
 import 'package:kobi/Assistant/response_stack.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
@@ -40,7 +40,7 @@ class _AssistantPageState extends State< AssistantPage> {
   TtsController ttsController = Get.put(TtsController());
 
   // 화면에 보여줄 Widget 저장
-  List<Widget> currentWidget = [const DefaultResponse()];
+  List<Widget> currentWidget = [const HomeWidget()];
 
   // 이전의 transcription 값 저장
   List<String> previousTranscription = [''];
@@ -75,10 +75,7 @@ class _AssistantPageState extends State< AssistantPage> {
                 // transcription 의 변화를 감지하여 currentScreen을 변경
                 List<String> transcription = recorderController.transcription;
                 print('-----------------AssistantPage Obx 안-----------------');
-                print('transcription 값 : $transcription');
-                print('previousTranscription 값 : $previousTranscription');
                 bool equal = !const ListEquality().equals(previousTranscription, transcription);
-                print('requestToBackEnd 호출 여부 : ${equal && readyToRequest(transcription)}');
 
 
                 // /// @@@@@ 테스트 @@@@@
@@ -96,7 +93,6 @@ class _AssistantPageState extends State< AssistantPage> {
 
                 if (equal && readyToRequest(transcription)) {
                   previousTranscription = List.from(transcription);
-                  print('previousTranscription 값 변경 : $previousTranscription');
                   requestToBackEnd(transcription);
                 }
                 return const SizedBox();}),
@@ -148,7 +144,6 @@ class _AssistantPageState extends State< AssistantPage> {
           threadId: assistantResponse.threadId,
           functionResponses: {
             "tool_outputs": toolCalls.asMap().map((key, value) {
-              print('key : $key, value : $value');
               return MapEntry(key,
                 ToolOutput(toolCallId: value.id, name: value.function.name,
                 output: {"message": transcription[key]}).toJson());}).values.toList()
@@ -219,7 +214,7 @@ class _AssistantPageState extends State< AssistantPage> {
     if (assistantResponse.status == 'completed') {
       Future.delayed(const Duration(seconds: 5)).then((_) {
         setState(() {
-          currentWidget = [const DefaultResponse()];
+          currentWidget = [const HomeWidget()];
         });
       });
     }

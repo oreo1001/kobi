@@ -40,6 +40,7 @@ dependencies:
   collection: ^1.18.0
   siri_wave: ^2.0.0+1
   intl: ^0.18.1
+  wrapped_korean_text: ^0.0.3
 
 dev_dependencies:
   flutter_test:

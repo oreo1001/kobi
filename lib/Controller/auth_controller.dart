@@ -29,7 +29,6 @@ class AuthController extends GetxController {
     final storage = SecureStorage();
     Map<String, String> storedUser = await storage.getUser(['displayName', 'email', 'userId', 'photoUrl']);
 
-    print('storedUser: $storedUser');
     if (storedUser['userId'] != null && storedUser['userId']!.isNotEmpty) {
       userId.value = storedUser['userId']!;
     }
