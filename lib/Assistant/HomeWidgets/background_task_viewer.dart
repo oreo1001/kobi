@@ -12,7 +12,6 @@ class BackgroundTaskViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15.h),
-      margin: EdgeInsets.symmetric(horizontal: 30.w),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(

@@ -1,4 +1,4 @@
-import 'class_email.dart';
+import '../class_email.dart';
 
 List<Thread> loadThreadListFromJson(List<dynamic> jsonList) {
   var threadList = jsonList.map((json) {

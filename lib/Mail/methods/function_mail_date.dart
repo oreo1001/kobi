@@ -2,14 +2,14 @@ import 'package:intl/intl.dart';
 
 DateTime parseDateTime(String dateString) {
   // 정확한 날짜 형식을 지정합니다.
-  final format = "EEE, dd MMM yyyy HH:mm:ss Z";
+  const format = "EEE, dd MMM yyyy HH:mm:ss Z";
   try {
     // 날짜를 파싱합니다.
     final result = DateFormat(format).parse(dateString, true);
     return result;
   } catch (e) {
     // 파싱 중 오류가 발생하면 적절한 처리를 합니다.
-    throw FormatException("Invalid date format");
+    throw const FormatException("Invalid date format");
   }
 }
 

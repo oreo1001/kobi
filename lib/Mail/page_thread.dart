@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'class_email.dart';
 import '../theme.dart';
-import 'function_mail_date.dart';
-import 'function_parsing.dart';
+import 'methods/function_mail_date.dart';
+import 'methods/function_parsing.dart';
 
 class ThreadPage extends StatefulWidget {
   const ThreadPage(this.currentThread, {super.key});

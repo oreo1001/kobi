@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../Calendar/function_event_date.dart';
+import '../../Calendar/methods/function_event_date.dart';
 import '../../Controller/assistant_controller.dart';
 import '../../Controller/recorder_controller.dart';
 import '../../Controller/tts_controller.dart';

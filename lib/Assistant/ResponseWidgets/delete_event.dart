@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/tts_controller.dart';
-import '../../Calendar/function_event_date.dart';
+import '../../Calendar/methods/function_event_date.dart';
 import '../../Controller/assistant_controller.dart';
 import '../../Controller/recorder_controller.dart';
 import '../../theme.dart';

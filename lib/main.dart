@@ -1,27 +1,15 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Main/page_main.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:get/get.dart';
-import 'Class/class_my_event.dart';
-import 'Dialog/delete_dialog.dart';
-import 'Dialog/event_dialog.dart';
-import 'Dialog/update_event_dialog.dart';
 import 'Login/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'Login/page_login.dart';
-import 'function_firebase_message.dart';
 import 'function_user_login.dart';
 
 
@@ -58,11 +46,6 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(395.0, 785.0),
@@ -82,22 +65,22 @@ class MyAppState extends State<MyApp> {
                 radius: const Radius.circular(10),
               )),
           getPages: [
-            GetPage(name: '/main', page: () => MainPage()),
-            GetPage(name: '/login', page: () => LoginPage()),
-            GetPage(name: '/loading', page: () => LoadingPage()),
+            GetPage(name: '/main', page: () => const MainPage()),
+            GetPage(name: '/login', page: () => const LoginPage()),
+            GetPage(name: '/loading', page: () => const LoadingPage()),
           ],
-          home: FutureBuilder<bool>(      //로그인 확인하여 페이지 라우팅
+          home: FutureBuilder(      //로그인 확인하여 페이지 라우팅
             future: getUserProfile(),
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator(); // 로딩 중일 때 보여줄 위젯
               } else {
                 FlutterNativeSplash.remove();
                 final bool? isLogged = snapshot.data;
                 if (isLogged == null || !isLogged) {
-                  return LoginPage();
+                  return const LoginPage();
                 } else {
-                  return MainPage();
+                  return const MainPage();
                 }
               }
             }

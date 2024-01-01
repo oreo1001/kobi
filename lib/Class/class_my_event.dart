@@ -1,4 +1,4 @@
-import '../Calendar/function_event_date.dart';
+import '../Calendar/methods/function_event_date.dart';
 
 class Event {
   final String eventId;
@@ -22,8 +22,8 @@ class Event {
       eventId: map['eventId'] ?? '',
       summary: map['summary'] ?? '',
       description: map['description'] ?? '',
-      startTime: eventKSTDate(map['startTime']) ?? '',
-      endTime: eventKSTDate(map['endTime']) ?? '',
+      startTime: eventKSTDate(map['startTime']),
+      endTime: eventKSTDate(map['endTime']),
       location: map['location'] ?? '',
     );
   }
