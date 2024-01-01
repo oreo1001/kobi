@@ -58,11 +58,6 @@ class _AssistantPageState extends State< AssistantPage> {
   AssistantController assistantController = Get.put(AssistantController());
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
       return Scaffold(
         body: Center(
@@ -76,20 +71,6 @@ class _AssistantPageState extends State< AssistantPage> {
                 List<String> transcription = recorderController.transcription;
                 print('-----------------AssistantPage Obx 안-----------------');
                 bool equal = !const ListEquality().equals(previousTranscription, transcription);
-
-
-                // /// @@@@@ 테스트 @@@@@
-                // if (equal) {
-                // Future.delayed(Duration(seconds: 1)).then((value) {
-                //   previousTranscription = List.from(transcription);
-                //   setState(() {
-                //     currentWidget = [];
-                //     currentWidget.add(const DeleteEvent());
-                //   });
-                //   print('테스트용 setState 완료');
-                // });
-                // }
-                // /// @@@@@ 테스트 @@@@@
 
                 if (equal && readyToRequest(transcription)) {
                   previousTranscription = List.from(transcription);

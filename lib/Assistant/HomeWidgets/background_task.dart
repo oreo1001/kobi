@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Assistant/Class/background_task_message.dart';
@@ -10,6 +12,15 @@ class BackgroundTask extends StatelessWidget {
 
   BackgroundTaskMessage backgroundTaskMessage;
 
+  Color getRandomColor() {
+    Random random = Random();
+    return Color.fromRGBO(
+        random.nextInt(256), // Red
+        random.nextInt(256), // Green
+        random.nextInt(256), // Blue
+        1 // Alpha
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +36,8 @@ class BackgroundTask extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.2)
               )
             ),
-              child: changeIconColor(backgroundTaskMessage.icon, const Color(0xFFACCCFF))
+              // child: changeIconColor(backgroundTaskMessage.icon, const Color(0xFFACCCFF))
+              child: changeIconColor(backgroundTaskMessage.icon, getRandomColor())
           ),
           SizedBox(width: 30.w,),
           Flexible(
