@@ -23,7 +23,8 @@ Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
             ),
           ),),
       ),
-      SizedBox(
+      Container(
+        padding: EdgeInsets.only(right: 2.w),
         width: 270.w,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -44,8 +45,8 @@ Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
                       mailDateString(
                           messageList[messageList.length - 1].date),
                       style: textTheme()
-                          .bodyMedium
-                          ?.copyWith(fontSize: 10.sp)),
+                          .bodySmall
+                          ?.copyWith(fontSize: 10.sp, color : Colors.grey.shade600)),
                 ),
               ],
             ),

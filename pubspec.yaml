@@ -33,16 +33,17 @@ dependencies:
   flutter_secure_storage: ^9.0.0   #저장 공간
   google_sign_in: ^6.2.1           #구글 로그인(앞단)
   flutter_tts: ^3.8.5
-  animated_text_kit: ^4.2.2
-  loading_animation_widget: ^1.2.0+4
+  animated_text_kit: ^4.2.2         #텍스트 애니메이션
+  loading_animation_widget: ^1.2.0+4  #로딩 애니메이션
   audioplayers: ^5.2.1
   dotted_border: ^2.1.0
   collection: ^1.18.0
-  siri_wave: ^2.0.0+1
+  siri_wave: ^2.0.0+1               #시리같은 스피커
   intl: ^0.18.1
-  wrapped_korean_text: ^0.0.3
-  flutter_localization: ^0.2.0
-  scroll_date_picker: ^3.7.3
+  wrapped_korean_text: ^0.0.3      #한글 띄어쓰기 라이브러리
+  flutter_localization: ^0.2.0    #우리나라로 로컬화
+  scroll_date_picker: ^3.7.3      #달력 년/월/일 스크롤로 선택
+  url_launcher: ^6.2.2            #url로 보내주는 라이브러리
 
 dev_dependencies:
   flutter_test:
