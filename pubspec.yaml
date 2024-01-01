@@ -44,6 +44,8 @@ dependencies:
   flutter_localization: ^0.2.0    #우리나라로 로컬화
   scroll_date_picker: ^3.7.3      #달력 년/월/일 스크롤로 선택
   url_launcher: ^6.2.2            #url로 보내주는 라이브러리
+  flutter_datetime_picker_plus: ^2.1.0
+  syncfusion_flutter_datepicker: ^24.1.43
 
 dev_dependencies:
   flutter_test:
