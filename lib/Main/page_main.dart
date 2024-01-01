@@ -90,17 +90,20 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Flexible(
-            child: Center(
-              child: IndexedStack(
-                index: _selectedIndex,
-                children: _pageList
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Flexible(
+              child: Center(
+                child: IndexedStack(
+                  index: _selectedIndex,
+                  children: _pageList
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: MicroPhoneButton(),
       bottomNavigationBar: BottomNavigationBar(

@@ -13,6 +13,7 @@ class HomeWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 30.w),
       child: Column(
         children: [
+          SizedBox(height: 50.h,),
           Align(
             alignment: Alignment.centerLeft,
               child: Text('적용 중인 Extension', style: textTheme().bodyMedium!.copyWith(),)

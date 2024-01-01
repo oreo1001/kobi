@@ -79,6 +79,9 @@ flutter:
           weight: 700
         - asset: assets/fonts/NotoSansKR-Black.otf
           weight: 900
+    - family: Jua
+      fonts:
+        - asset: assets/fonts/Jua-Regular.ttf
 
 flutter_icons:
   android: "notification_icon"

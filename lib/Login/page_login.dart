@@ -100,27 +100,45 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Kobi가 여러분의 일정 관리를 책임질게요!',
-            style: textTheme().displayLarge?.copyWith(fontSize: 20.sp),
-          ),
-          SizedBox(
-            height: 50.h,
-          ),
-          Text(
-            '간편하게 구글메일을 연동하여 일정을 관리해보세요.',
-            style: textTheme().displayMedium?.copyWith(fontSize: 15.sp),
-          ),
-          SizedBox(height: 200.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.w),
-            child: ElevatedButton(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text('커리비',style : textTheme().headlineMedium?.copyWith(fontSize: 50.sp, color: Color(0xff759CCC))),
+            SizedBox(height: 30.h),
+            SizedBox(
+              width: 270.w,
+              child: Image(
+                image: AssetImage('assets/images/앱소개.jpg'),
+              ),
+            ),
+            SizedBox(height: 60.h),
+            Text(
+              '메일·캘린더, 이제 커리비에서 한눈에',
+              style: textTheme().displayLarge?.copyWith(fontSize: 20.sp),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              '커리비는 메일을 분석하여 자동으로 일정을 등록해줘요.',
+              style: textTheme().displayMedium?.copyWith(fontSize: 15.sp),
+            ),
+            Text(
+              '구글 메일을 연동하여 시작해 보세요!',
+              style: textTheme().displayMedium?.copyWith(fontSize: 15.sp),
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+            ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
+                backgroundColor: Color(0xffACCCFF),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.sp), // 원하는 둥근 정도를 숫자로 입력하세요.
+                ),
+                minimumSize:  Size(350.w,50.h),
               ),
               onPressed: () async {
                 _handleSignIn();
@@ -144,17 +162,17 @@ class _LoginPageState extends State<LoginPage> {
                     width: 20.w,
                   ),
                   Text(
-                    "Google 로그인으로 시작하기",
+                    "Google 메일 연동하여 시작하기",
                     style: textTheme()
                         .displayLarge!
-                        .copyWith(fontSize: 16.sp, fontWeight: FontWeight.w700),
+                        .copyWith(fontSize: 18.sp, color: Colors.white,fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                   ),
                 ]),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

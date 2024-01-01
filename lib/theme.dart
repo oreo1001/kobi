@@ -18,7 +18,7 @@ TextTheme textTheme() {
     displaySmall: TextStyle(letterSpacing: -0.5.sp,fontFamily: 'NotoSansKR', fontSize: 12.sp, color: Colors.black, fontWeight: FontWeight.w500),
     displayMedium: TextStyle(letterSpacing: -0.5.sp,fontFamily: 'NotoSansKR', fontSize: 15.sp, color: Colors.black, fontWeight: FontWeight.w600),
     displayLarge: TextStyle(letterSpacing: -0.5.sp,fontFamily: 'NotoSansKR', fontSize: 20.sp, color: Colors.black, fontWeight: FontWeight.w700),
-    headlineMedium: TextStyle(fontFamily: 'NotoSansKR', fontSize: 15.sp, color: Colors.black, fontWeight: FontWeight.w300),
+    headlineMedium: TextStyle(fontFamily: 'Jua', fontSize: 25.sp, color: Colors.black),
     headlineSmall: TextStyle(fontFamily: 'NotoSansKR', fontSize: 15.sp, color: Colors.black, fontWeight: FontWeight.w100),
   );
 }
