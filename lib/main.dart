@@ -8,6 +8,7 @@ import 'Login/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'Login/page_login.dart';
 import 'function_user_login.dart';
@@ -52,6 +53,16 @@ class MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       child: GetMaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('ko'),
+          Locale('en'),
+        ],
+        locale: const Locale('ko'),
           title: 'WonMo Calendar',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

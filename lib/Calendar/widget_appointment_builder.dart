@@ -14,7 +14,7 @@ Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails calen
           height: 53.h,
           width: 5.w,
           decoration: BoxDecoration(
-            color: Color(0xffC665FD),
+            color: Colors.lightBlue,
             borderRadius: BorderRadius.circular(5.sp),
           ),
         ),
