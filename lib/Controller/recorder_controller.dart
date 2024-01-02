@@ -63,6 +63,7 @@ class RecorderController extends GetxController {
       SiriWave(),
       barrierColor: Colors.transparent,
       backgroundColor: Colors.transparent,
+      elevation: 0,
       isDismissible: false,
     );
     isRecording.value = true;
