@@ -7,7 +7,6 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../theme.dart';
 import 'methods/add_appointment_sheet.dart';
@@ -27,7 +26,6 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime _selectedDate = DateTime.now();
   Rx<DateTime> tempDate = DateTime.now().obs;
   String _headerText = '';
-  String _range = '';
 
   @override
   void initState() {

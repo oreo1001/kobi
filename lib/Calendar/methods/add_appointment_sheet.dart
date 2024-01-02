@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 import '../custom_time_picker.dart';
@@ -16,7 +15,6 @@ void addAppointmentSheet(BuildContext context, DateTime selectedDate,) {
   final descriptionController = TextEditingController();
 
   RxBool isVisible = false.obs;
-  //오전8시로 초기화
   DateTime endDateInitialize= selectedDate.add(const Duration(days: 2));
   DateTime atEightAM =
       DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 8);   //오전8시로 초기화
