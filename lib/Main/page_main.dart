@@ -10,7 +10,7 @@ import '../Class/class_my_event.dart';
 import '../Dialog/delete_dialog.dart';
 import '../Dialog/event_dialog.dart';
 import '../Dialog/update_event_dialog.dart';
-import '../Mail/page_email.dart';
+import '../Mail/page_mail.dart';
 import '../User/page_user.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
