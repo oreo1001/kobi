@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:kobi/Mail/page_send.dart';
 
 import 'class_email.dart';
 import '../theme.dart';
@@ -246,7 +247,9 @@ class _ThreadPageState extends State<ThreadPage> {
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.sp)))),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => SendPage(widget.currentThread.emailAddress));
+                  },
                   child: Text(
                     '메일 쓰기',
                     style: textTheme().bodySmall?.copyWith(
