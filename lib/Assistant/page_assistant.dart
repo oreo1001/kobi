@@ -1,10 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Assistant/home_widget.dart';
 import 'package:kobi/Assistant/ResponseWidgets/response_animation.dart';
-import 'package:kobi/Assistant/response_stack.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
 
 import '../Controller/assistant_controller.dart';
@@ -38,9 +36,6 @@ class _AssistantPageState extends State< AssistantPage> {
   RecorderController recorderController = Get.put(RecorderController());
   // Tts 의존성 주입
   TtsController ttsController = Get.put(TtsController());
-
-  // 화면에 보여줄 Widget 저장
-  List<Widget> currentWidget = [const HomeWidget()];
 
   // 이전의 transcription 값 저장
   List<String> previousTranscription = [''];
@@ -76,21 +71,20 @@ class _AssistantPageState extends State< AssistantPage> {
                 requestToBackEnd(transcription);
               }
               return const SizedBox();}),
-            SlideFromLeftAnimation(child: MyStackWidget(currentWidget: currentWidget))
+            const SlideFromLeftAnimation(child: HomeWidget())
           ]),
         ),
       );
   }
 
   void requestToBackEnd(List<String> transcription) async {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        currentWidget = [const EstablishStrategy()];
-      });
-    });
+
+    /// TODO
+    /// 마이크가 loading으로 변하도록
+
     Map<String, dynamic> apiResponseMap = await sendToBackEnd(transcription);
 
-    /// BackEnd에서 받은 응답을 각각 이 Widget(assistantResponse) / assistantController에 저장
+    /// #2. BackEnd에서 받은 응답을 각각 이 Widget(assistantResponse) / assistantController에 저장
     assistantController.loadAssistantFromJson(apiResponseMap);
     assistantResponse.fromJson(apiResponseMap);
 
@@ -145,14 +139,11 @@ class _AssistantPageState extends State< AssistantPage> {
   }
 
   /// #3. BackEnd에서 받은 응답을 가지고 currentScreen을 변경
-  void switchWidget() {
-    setState(() {
-      currentWidget = [];
+  void switchWidget() async {
     String responseWidgetType = assistantResponse.type;
     if (responseWidgetType == 'message_creation') {
-      currentWidget = [const MessageCreationUI()];
+      // Get.bottomSheet(const MessageCreationUI());
     } else {
-
       // toolCalls의 길이만큼 transcription을 초기화
       int toolCallsLength = assistantResponse.stepDetails!.toolCalls!.length;
       recorderController.transcription = RxList( List.generate(toolCallsLength, (index) => ''));
@@ -161,24 +152,24 @@ class _AssistantPageState extends State< AssistantPage> {
         String? type = assistantResponse.stepDetails?.toolCalls?[i].function.name;
 
         if (type == AssistantFunction.createEmail.value) {
-          currentWidget.add(CreateEmail());
+          // Get.bottomSheet(CreateEmail());
         } else if (type == AssistantFunction.describeUserQuery.value) {
-          currentWidget.add(DescribeUserQuery());
+          // Get.bottomSheet(DescribeUserQuery());
         } else if (type == AssistantFunction.multipleChoiceQuery.value) {
-          currentWidget.add(const MultipleChoiceQuery());
+          // Get.bottomSheet(const MultipleChoiceQuery());
         } else if (type == AssistantFunction.insertEvent.value) {
-          currentWidget.add(InsertEvent());
+          // Get.bottomSheet(InsertEvent());
         } else if (type == AssistantFunction.patchEvent.value) {
-          currentWidget.add(PatchEvent());
+          // Get.bottomSheet(PatchEvent());
         } else if (type == AssistantFunction.deleteEvent.value) { /// OK!
-          currentWidget.add(const DeleteEvent());
+          // Get.bottomSheet(const DeleteEvent());
         } else if (type == AssistantFunction.getFreeBusy.value) { /// OK!
-          currentWidget.add(const GetFreeBusy());
+          // Get.bottomSheet(const GetFreeBusy());
           if (assistantResponse.status == 'in_progress') {
               recorderController.setTranscription('OK');
           }
         } else if (type == AssistantFunction.establishStrategy.value) {
-          currentWidget.add(const EstablishStrategy());
+          // Get.bottomSheet(const EstablishStrategy());
           if (assistantResponse.status == 'in_progress') {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               recorderController.setTranscription('ok');
@@ -186,16 +177,5 @@ class _AssistantPageState extends State< AssistantPage> {
           }
         }
       }
-    }
-    });
-
-    /// assistantResponse.status == 'completed'의 경우
-    if (assistantResponse.status == 'completed') {
-      Future.delayed(const Duration(seconds: 5)).then((_) {
-        setState(() {
-          currentWidget = [const HomeWidget()];
-        });
-      });
-    }
   }
-}
+}}
