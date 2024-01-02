@@ -28,6 +28,9 @@ class _ThreadPageState extends State<ThreadPage> {
     super.initState();
     messageList = parsingMessageListFromThread(widget.currentThread.messages);
     isExpandedList = List.filled(messageList.length, false);
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent + 5);
+    });
   }
 
   @override
@@ -44,16 +47,13 @@ class _ThreadPageState extends State<ThreadPage> {
 
   @override
   Widget build(BuildContext context) {
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    });
     return Stack(
       children: [
         Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100.h),
+            preferredSize: Size.fromHeight(80.h),
             child: Container(
-              padding: EdgeInsets.fromLTRB(0, 50.h, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 50.h, 0, 10.h),
               child: AppBar(
                 backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
@@ -82,7 +82,7 @@ class _ThreadPageState extends State<ThreadPage> {
             ),
           ),
           body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            padding: EdgeInsets.fromLTRB(0,0,0,130.h),
             child: ListView.builder(
                 controller: _scrollController,
                 itemCount: messageList.length,
@@ -219,29 +219,42 @@ class _ThreadPageState extends State<ThreadPage> {
           left: 0,
           right: 0,
           child: Container(
+            height: 130.h,
             color: Colors.white,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                SizedBox(height: 10.h,),
                 TextButton(
                   style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
+                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.fromLTRB(0,0,0,10.h)),
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0)))),
+                          borderRadius: BorderRadius.circular(10.sp)))),
                   onPressed: () {},
-                  child: Text('커리비가 추천하는 답장 보내기',
+                  child: Text('커리비에게 답장 추천받기',
                       style: textTheme().bodySmall?.copyWith(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           )),
                 ),
+                SizedBox(height: 10.h),
                 TextButton(
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.sp)))),
                   onPressed: () {},
-                  child: Text('메일 쓰기',
-                      style: textTheme().bodySmall?.copyWith(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w400,
-                          )),
-                ),
+                  child: Text(
+                    '메일 쓰기',
+                    style: textTheme().bodySmall?.copyWith(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
               ],
             ),
           ),
