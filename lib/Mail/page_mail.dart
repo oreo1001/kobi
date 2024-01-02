@@ -26,7 +26,6 @@ class _MailPageState extends State<MailPage> {
   String email = '';
   String photoUrl = '';
 
-
   static Future getMail() async {
     Map<String, dynamic> responseMap =
     await httpResponse('/email/emailList', {});
