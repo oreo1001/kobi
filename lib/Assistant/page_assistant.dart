@@ -60,26 +60,24 @@ class _AssistantPageState extends State< AssistantPage> {
   @override
   Widget build(BuildContext context) {
       return Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-              Obx(() {
-                // transcription 의 변화를 감지하여 currentScreen을 변경
-                List<String> transcription = recorderController.transcription;
-                print('-----------------AssistantPage Obx 안-----------------');
-                bool equal = !const ListEquality().equals(previousTranscription, transcription);
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+            Obx(() {
+              // transcription 의 변화를 감지하여 currentScreen을 변경
+              List<String> transcription = recorderController.transcription;
+              print('-----------------AssistantPage Obx 안-----------------');
+              bool equal = !const ListEquality().equals(previousTranscription, transcription);
 
-                if (equal && readyToRequest(transcription)) {
-                  previousTranscription = List.from(transcription);
-                  requestToBackEnd(transcription);
-                }
-                return const SizedBox();}),
-              SlideFromLeftAnimation(child: MyStackWidget(currentWidget: currentWidget))
-            ]),
-          ),
+              if (equal && readyToRequest(transcription)) {
+                previousTranscription = List.from(transcription);
+                requestToBackEnd(transcription);
+              }
+              return const SizedBox();}),
+            SlideFromLeftAnimation(child: MyStackWidget(currentWidget: currentWidget))
+          ]),
         ),
       );
   }
