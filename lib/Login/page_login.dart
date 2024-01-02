@@ -115,18 +115,18 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 60.h),
             Text(
-              '메일·캘린더, 이제 커리비에서 한눈에',
+              '메일 · 캘린더 자동관리',
               style: textTheme().displayLarge?.copyWith(fontSize: 20.sp),
             ),
             SizedBox(
               height: 20.h,
             ),
             Text(
-              '커리비는 메일을 분석하여 자동으로 일정을 등록해줘요.',
+              '커리비는 메일을 분석해서 자동으로 관리해요.',
               style: textTheme().displayMedium?.copyWith(fontSize: 15.sp),
             ),
             Text(
-              '구글 메일을 연동하여 시작해 보세요!',
+              '지메일을 연동해보세요!',
               style: textTheme().displayMedium?.copyWith(fontSize: 15.sp),
             ),
             SizedBox(
@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: 20.w,
                   ),
                   Text(
-                    "Google 메일 연동하여 시작하기",
+                    "Gmail 연동하여 시작하기",
                     style: textTheme()
                         .displayLarge!
                         .copyWith(fontSize: 18.sp, color: Colors.white,fontWeight: FontWeight.w500),

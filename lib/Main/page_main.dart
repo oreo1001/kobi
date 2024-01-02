@@ -10,7 +10,7 @@ import '../Class/class_my_event.dart';
 import '../Dialog/delete_dialog.dart';
 import '../Dialog/event_dialog.dart';
 import '../Dialog/update_event_dialog.dart';
-import '../Mail/page_email.dart';
+import '../Mail/page_mail.dart';
 import '../User/page_user.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,7 +26,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
   final List <Widget> _pageList =  [
     const AssistantPage(),
     CalendarPage(),

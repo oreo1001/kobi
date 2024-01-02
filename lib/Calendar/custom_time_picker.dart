@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
-as picker;
+    as picker;
 
 class CustomPicker extends picker.CommonPickerModel {
-  String digits(int value, int length) {
-    return '$value'.padLeft(length, "0");
+  String? digits(int value, int length) {
+    return value.toString();
   }
 
   CustomPicker({DateTime? currentTime, picker.LocaleType? locale})
       : super(locale: locale) {
     this.currentTime = currentTime ?? DateTime.now();
-    this.setLeftIndex(this.currentTime.hour);
-    this.setMiddleIndex(this.currentTime.minute);
-    this.setRightIndex(this.currentTime.second);
+    this.setLeftIndex(this.currentTime.hour >= 12 ? 1 : 0);
+    this.setMiddleIndex(
+        this.currentTime.hour % 12 == 0 ? 12 : this.currentTime.hour % 12);
+    this.setRightIndex(this.currentTime.minute == 0
+        ? 12
+        : (this.currentTime.minute / 5).round());
   }
 
   @override
   String? leftStringAtIndex(int index) {
-    if (index >= 0 && index < 24) {
-      return this.digits(index, 2);
+    if (index == 0) {
+      return '오전';
+    } else if (index == 1) {
+      return '오후';
     } else {
       return null;
     }
@@ -26,53 +31,52 @@ class CustomPicker extends picker.CommonPickerModel {
 
   @override
   String? middleStringAtIndex(int index) {
-    if (index >= 0 && index < 60) {
-      return this.digits(index, 2);
-    } else {
-      return null;
-    }
+    int hour = index % 12 == 0 ? 12 : index % 12;
+    return this.digits(hour, 2);
   }
 
   @override
   String? rightStringAtIndex(int index) {
-    if (index >= 0 && index < 60) {
-      return this.digits(index, 2);
-    } else {
-      return null;
-    }
+    int minute = (index * 5) % 60;
+    return this.digits(minute, 2);
   }
 
   @override
   String leftDivider() {
-    return "|";
+    return " ";
   }
 
   @override
   String rightDivider() {
-    return "|";
+    return ":";
   }
 
   @override
   List<int> layoutProportions() {
-    return [1, 2, 1];
+    return [1, 1, 1];
   }
 
   @override
   DateTime finalTime() {
+    int hour = this.currentMiddleIndex() % 12;
+    int minute = this.currentRightIndex() == 12 ? 0 : this.currentRightIndex() * 5;
+
+    if (this.currentLeftIndex() == 1) {
+      hour += 12;
+    }
+
     return currentTime.isUtc
         ? DateTime.utc(
         currentTime.year,
         currentTime.month,
         currentTime.day,
-        this.currentLeftIndex(),
-        this.currentMiddleIndex(),
-        this.currentRightIndex())
+        hour,
+        minute)
         : DateTime(
         currentTime.year,
         currentTime.month,
         currentTime.day,
-        this.currentLeftIndex(),
-        this.currentMiddleIndex(),
-        this.currentRightIndex());
+        hour,
+        minute);
   }
 }
