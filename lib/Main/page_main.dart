@@ -26,7 +26,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   final List <Widget> _pageList =  [
     const AssistantPage(),
     CalendarPage(),
@@ -35,9 +35,6 @@ class _MainPageState extends State<MainPage> {
   ];
 
   void _handleMessage(RemoteMessage message) {
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    print('Handling a background message: ${message.messageId}');
-    print('Message data: ${message.data}');
     Map <String, dynamic> data = message.data;
     setState(() {
       _selectedIndex = 1;
@@ -54,7 +51,6 @@ class _MainPageState extends State<MainPage> {
         showDeleteDialog(Event.fromMap(data));
         break;
     }
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
   }
 
 
@@ -62,7 +58,6 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       if (index == 1) {
         // delete previous page
-
         _pageList.removeAt(1);
         _pageList.insert(1, CalendarPage(key: UniqueKey()));
       }

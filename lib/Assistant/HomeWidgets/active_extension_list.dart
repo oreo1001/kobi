@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kobi/Assistant/Class/background_task_message.dart';
-import 'package:kobi/Assistant/HomeWidgets/background_task.dart';
+import 'package:kobi/Assistant/Class/extension_class.dart';
 
-class BackgroundTaskViewer extends StatelessWidget {
-  BackgroundTaskViewer({super.key, required this.backgroundTaskMessages});
+import 'active_extension.dart';
 
-  List<BackgroundTaskMessage> backgroundTaskMessages;
+class ActiveExtensionList extends StatelessWidget {
+  ActiveExtensionList({super.key, required this.extensionDescriptionList});
+
+  List<ExtensionDescription> extensionDescriptionList;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15.h),
+      padding: EdgeInsets.symmetric(vertical: 5.h),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: Colors.white70
+            color: Colors.white70
         ),
         boxShadow: [
           BoxShadow(
@@ -28,8 +29,8 @@ class BackgroundTaskViewer extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
-        children: backgroundTaskMessages.map((backgroundTaskMessage) =>
-            BackgroundTask(backgroundTaskMessage: backgroundTaskMessage)).toList()
+          children: extensionDescriptionList.map((extensionDescription) =>
+              ActiveExtension(extensionDescription: extensionDescription,)).toList()
       ),
     );
   }
