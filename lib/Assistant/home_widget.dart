@@ -15,24 +15,6 @@ class HomeWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 30.w),
       child: Column(
         children: [
-          SizedBox(height: 50.h,),
-          Align(
-            alignment: Alignment.centerLeft,
-              child: Text('사용 가능 기능', style: textTheme().bodyMedium!.copyWith(),)
-          ),
-          SizedBox(height: 10.h,),
-          ActiveExtensionList(
-            extensionDescriptionList: [
-              ExtensionDescription(
-                  icon: const Icon(Icons.file_open_outlined),
-                  iconColor: const Color(0xFF5FA0E2),
-                  message: '메일 작성 비서'),
-              ExtensionDescription(
-                  icon: const Icon(Icons.mic),
-                  iconColor: const Color(0xFFACCCFF),
-                  message: '음성 비서'),
-            ],
-        ),
           SizedBox(height: 40.h,),
           Align(
               alignment: Alignment.centerLeft,
@@ -51,9 +33,9 @@ class HomeWidget extends StatelessWidget {
           SizedBox(height: 10.h,),
           ExtensionReport(extensionReportInfo: ExtensionReportInfo(
               extensionDescription: ExtensionDescription(
-                  icon: const Icon(Icons.email_outlined),
-                  iconColor: const Color(0xFFFF7177),
-                  message: '이메일 자동 분류'),
+                  icon: const Icon(Icons.edit_calendar_outlined),
+                  iconColor: const Color(0xFFFFA053),
+                  message: '메일에서 일정 자동 등록'),
               extensionLogInfoList: [
                 ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
                 ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
@@ -64,27 +46,21 @@ class HomeWidget extends StatelessWidget {
           SizedBox(height: 10.h,),
           ExtensionReport(extensionReportInfo: ExtensionReportInfo(
               extensionDescription: ExtensionDescription(
-                  icon: const Icon(Icons.email_outlined),
-                  iconColor: const Color(0xFFFF7177),
-                  message: '이메일 자동 분류'),
+                  icon: const Icon(Icons.task_outlined),
+                  iconColor: const Color(0xFF5FA0E2),
+                  message: '메일 작성 비서'),
               extensionLogInfoList: [
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
+                ExtensionLogInfo(date: '', log: 'TODO : 사용법을 적어주세요'),
               ]),),
 
           SizedBox(height: 10.h,),
           ExtensionReport(extensionReportInfo: ExtensionReportInfo(
               extensionDescription: ExtensionDescription(
-                  icon: const Icon(Icons.email_outlined),
-                  iconColor: const Color(0xFFFF7177),
-                  message: '이메일 자동 분류'),
+                  icon: const Icon(Icons.search_outlined),
+                  iconColor: const Color(0xFF965DD9),
+                  message: '음성 비서'),
               extensionLogInfoList: [
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
+                ExtensionLogInfo(date: '', log: 'TODO : 사용법을 적어주세요'),
               ]),),
 
         ],
