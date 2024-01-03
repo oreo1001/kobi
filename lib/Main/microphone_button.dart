@@ -10,26 +10,39 @@ class MicroPhoneButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {return AnimatedScale(
-      scale: recorderController.isRecording.value ? 0.0 : 1.0,
+    return Obx(() {
+      bool isRecording = recorderController.isRecording.value;
+      bool waitingForResponse = recorderController.waitingForResponse.value;
+
+      return AnimatedScale(
+      scale: isRecording ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 300),
       child: SizedBox(
         width: 70.w,
         height: 70.h,
-        child: FloatingActionButton(
+        child: waitingForResponse == true ? FloatingActionButton(
+            shape: const CircleBorder(),
+            heroTag : 'waitingResponse',
+            onPressed: () {},
+          backgroundColor: const Color(0xFFACCCFF),
+          child: const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          )
+        ) :
+        FloatingActionButton(
           shape: const CircleBorder(),
           heroTag : 'microphone',
-          backgroundColor: recorderController.isRecording.value == true ? Colors.red : const Color(0xFFACCCFF),
+          backgroundColor: isRecording == true ? Colors.red : const Color(0xFFACCCFF),
           onPressed: () async {
             // toggle recording
-            if (recorderController.isRecording.value == true) {
+            if (isRecording == true) {
               await recorderController.stopRecording();
             } else {
               recorderController.transcription.value = [''];
               recorderController.startRecording();
             }
           },
-          child: recorderController.isRecording.value ? const Icon(Icons.stop, color: Colors.white,) : const Icon(Icons.mic, size:50, color: Colors.white),),
+          child: isRecording ? const Icon(Icons.stop, color: Colors.white,) : const Icon(Icons.mic, size:50, color: Colors.white),),
       ),
     );});
   }

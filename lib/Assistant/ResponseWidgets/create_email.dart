@@ -22,6 +22,8 @@ class CreateEmailState extends State<CreateEmail> {
 
   @override
   void dispose() {
+
+
     super.dispose();
     textController.dispose();
   }
@@ -51,19 +53,17 @@ class CreateEmailState extends State<CreateEmail> {
             borderRadius: BorderRadius.all(Radius.circular(9.sp)), // 오른쪽 위 둥근 border
           ),
           width: 400.w,
-          height: 300.h,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 5.h),
-              if (title != null)
-                Text(title, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp)),
+              Text(title, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp)),
               SizedBox(height: 5.h),
               if (emailAddress != null)
                 Text('To : $emailAddress',
                     style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w500, fontSize: 15.sp)),
               SizedBox(height: 15.h),
-              Text(body ?? '', style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w400, fontSize: 13.sp))
+              Text(body, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w400, fontSize: 13.sp))
             ],
           ),
         ),

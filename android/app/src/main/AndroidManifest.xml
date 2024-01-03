@@ -14,7 +14,7 @@
 <application
     android:name="${applicationName}"
     android:icon="@mipmap/ic_launcher"
-    android:label="kobi">
+    android:label="커리비">
     <receiver
         android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver"
         android:exported="false" />
