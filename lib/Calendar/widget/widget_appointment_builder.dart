@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../theme.dart';
+import '../../theme.dart';
 
 Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails calendarAppointmentDetails) {
   final Appointment appointment = calendarAppointmentDetails.appointments.first;

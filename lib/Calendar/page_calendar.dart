@@ -5,14 +5,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:intl/intl.dart';
+import 'package:kobi/Calendar/widget/widget_appointment_builder.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../theme.dart';
-import 'methods/add_appointment_sheet.dart';
+import 'widget/appointment_sheet.dart';
 import 'methods/get_calendar_source.dart';
 import 'methods/json_to_appointment.dart';
-import 'widget_appointment_builder.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -73,8 +73,11 @@ class _CalendarPageState extends State<CalendarPage> {
                 SizedBox(width: 150.w),
                 TextButton(
                     onPressed: () {
-                      addAppointmentSheet(
-                          context, _selectedDate);
+                      Get.bottomSheet(
+                        isScrollControlled : true,
+                          FractionallySizedBox(
+                              heightFactor: 0.8,
+                              child : AppointmentSheet(selectedDate: _selectedDate)));
                     },
                     style: TextButton.styleFrom(
                       minimumSize: Size.zero,

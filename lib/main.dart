@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Main/page_main.dart';
 import 'package:get/get.dart';
-import 'Calendar/page_test.dart';
+import 'Dialog/test_page.dart';
 import 'Login/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';

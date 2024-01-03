@@ -6,6 +6,11 @@ String eventKSTDate(String exDate){
   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(kstDate);
   return formattedDate;
 }
+DateTime dateStrToKSTDate(String exDate){
+  DateTime utcDate = DateTime.parse(exDate).toUtc();
+  DateTime kstDate = utcDate.add(Duration(hours: 9));
+  return kstDate;
+}
 
 String appointKSTDate(String exDate, bool isAllDay){
   DateTime kstDate;
@@ -17,4 +22,12 @@ String appointKSTDate(String exDate, bool isAllDay){
   }
   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(kstDate);
   return formattedDate;
+}
+
+bool checkIfSameDay(DateTime startDate, DateTime endDate){
+  if(startDate.day == endDate.day){
+    return true;
+  }else {
+    return false;
+  }
 }
