@@ -29,7 +29,6 @@ class _SiriWaveState extends State<SiriWave> {
           child: Obx(() {
             double amplitude = recorderController.decibels.value/50;
             amplitude = 1;
-            print('siri_wave.dart 에서 amplitude 값 : $amplitude');
             return SiriWaveform.ios9(
               options: IOS9SiriWaveformOptions(
                 height: 100.h,

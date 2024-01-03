@@ -67,23 +67,22 @@ class _AssistantPageState extends State< AssistantPage> {
 
                 print('@@@@@@@@@@@@@@@@@@@@ Obx 내부 @@@@@@@@@@@@@@@@@@@@');
 
-                /// 다음 InAppNotification을 보여줄 준비가 되었는지 확인
-                InAppNotification.dismiss(context: context);
-                /// 이전에 보여준 InAppNotification을 제거
                 if (recorderController.responseWidgets.isNotEmpty) {
-                  InAppNotification.show(
-                      child: Container(margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(color: Colors.grey[300]!),
-                          ),
-                          width: 400.w,
-                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                          child : recorderController.responseWidgets.last
-                      ),
-                      duration: const Duration(seconds: 60), context: context);
-                  recorderController.responseWidgets.removeLast();
+                  Future.delayed(Duration.zero).then((_) {
+                    InAppNotification.show(
+                        child: Container(margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(color: Colors.grey[300]!),
+                            ),
+                            width: 400.w,
+                            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                            child : recorderController.responseWidgets.last
+                        ),
+                        duration: const Duration(seconds: 60), context: context);
+                    recorderController.responseWidgets.removeLast();
+                  });
                 }
 
                 /// BE 로 요청 보내는 조건
