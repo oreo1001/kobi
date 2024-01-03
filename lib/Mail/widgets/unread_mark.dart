@@ -9,9 +9,11 @@ Widget unreadMark (List<Message> messageList) {
   return Visibility(
     visible: unreadMessageCount(messageList)==0 ? false : true,
     child: Positioned(
-      bottom: 5.h,
-      right: 5.h,
+      bottom: 10.h,
+      right: 20.h,
       child: Container(
+        width: 25.w,
+        height: 25.h,
         padding: EdgeInsets.fromLTRB(7.w,5.h,7.w,7.h),
         decoration: BoxDecoration(
           color: Colors.red,
@@ -24,7 +26,7 @@ Widget unreadMark (List<Message> messageList) {
                   .displayLarge
                   ?.copyWith(
                   color: Colors.white,
-                  fontSize: 14.sp)
+                  fontSize: 10.sp)
           ),
         ),
       ),

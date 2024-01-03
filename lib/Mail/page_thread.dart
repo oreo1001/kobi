@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:kobi/Controller/recorder_controller.dart';
 import 'package:kobi/Mail/page_send.dart';
 
 import 'class_email.dart';
@@ -23,11 +24,14 @@ class _ThreadPageState extends State<ThreadPage> {
   List<Message> messageList = [];
   List<bool> isExpandedList = [];
   final ScrollController _scrollController = ScrollController();
+  RecorderController recorderController = Get.find();
+  List<GlobalKey> keys = [];
 
   @override
   void initState() {
     super.initState();
     messageList = parsingMessageListFromThread(widget.currentThread.messages);
+    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
     isExpandedList = List.filled(messageList.length, false);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -52,9 +56,9 @@ class _ThreadPageState extends State<ThreadPage> {
       children: [
         Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(90.h),
+            preferredSize: Size.fromHeight(70.h),
             child: Container(
-              padding: EdgeInsets.fromLTRB(0, 50.h, 0, 10.h),
+              padding: EdgeInsets.fromLTRB(0, 30.h, 0, 10.h),
               child: AppBar(
                 backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
@@ -89,8 +93,22 @@ class _ThreadPageState extends State<ThreadPage> {
                 itemCount: messageList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () => toggleExpansion(index),
+                    onTap: () {
+                      toggleExpansion(index);
+                      final key = keys[index];
+                      final RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
+                      final Offset? position = box?.localToGlobal(Offset.zero);
+
+                      if (position != null) {
+                        _scrollController.animateTo(
+                          position.dy,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.ease,
+                        );
+                      }
+                      },
                     child: Padding(
+                      key: keys[index],
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 10.w),
                       child: Column(
@@ -233,7 +251,9 @@ class _ThreadPageState extends State<ThreadPage> {
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.sp)))),
-                  onPressed: () {},
+                  onPressed: () {
+                    recorderController.setTranscription('${widget.currentThread.emailAddress} 메일 주소로 메일 작성해서 보내줄래?');
+                  },
                   child: Text('커리비에게 답장 추천받기',
                       style: textTheme().bodySmall?.copyWith(
                             fontSize: 13.sp,

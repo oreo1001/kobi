@@ -25,20 +25,20 @@ class _CalendarPageState extends State<CalendarPage> {
   final CalendarController _calendarController = CalendarController();
   DateTime _selectedDate = DateTime.now();
   Rx<DateTime> tempDate = DateTime.now().obs;
-  String _headerText = '';
+  RxString _headerText = ''.obs;
 
   @override
   void initState() {
     super.initState();
     var now = DateTime.now();
-    _headerText = DateFormat('yyyy년 M월').format(now);
+    _headerText.value = DateFormat('yyyy년 M월').format(now);
   }
 
   @override
   Widget build(BuildContext context) {
     _calendarController.displayDate = _selectedDate; //달력 보여주는 날짜
     _calendarController.selectedDate = _selectedDate; //달력에서 선택된 날짜
-    _headerText = DateFormat('yyyy년 M월').format(_selectedDate); //2023년 12월
+    _headerText.value = DateFormat('yyyy년 M월').format(_selectedDate); //2023년 12월
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -59,10 +59,10 @@ class _CalendarPageState extends State<CalendarPage> {
                     },
                     child: Row(
                       children: [
-                        Text(_headerText,
+                        Obx(()=>Text(_headerText.value,
                             style: textTheme()
                                 .displaySmall
-                                ?.copyWith(fontSize: 23.sp)),
+                                ?.copyWith(fontSize: 23.sp))),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
                           child: Icon(Icons.expand_more,
@@ -70,7 +70,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                       ],
                     )),
-                SizedBox(width: 150.w),
+                SizedBox(width: 140.w),
                 TextButton(
                     onPressed: () {
                       Get.bottomSheet(
@@ -108,6 +108,9 @@ class _CalendarPageState extends State<CalendarPage> {
                           // CalendarView.week,
                           // CalendarView.day,
                         ],
+                        onViewChanged: (ViewChangedDetails details) {
+                          _headerText.value =DateFormat('yyyy년 M월').format(details.visibleDates[0]);
+                        },
                         selectionDecoration: BoxDecoration(
                           color: const Color(0x88ACCCFF),
                           borderRadius: BorderRadius.all(Radius.circular(4.sp)),
