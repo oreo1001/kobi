@@ -44,7 +44,7 @@ void addAppointmentSheet(BuildContext context, DateTime selectedDate,) {
             onTap: (){isVisible.value = false;},
             child: SingleChildScrollView(
               child: Column(
-                // mainAxisSize: MainAxisSize.min,
+                //mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

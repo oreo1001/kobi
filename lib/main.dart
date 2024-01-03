@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Main/page_main.dart';
 import 'package:get/get.dart';
-import 'Calendar/page_test.dart';
 import 'Login/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -80,7 +79,7 @@ class MyAppState extends State<MyApp> {
             GetPage(name: '/main', page: () => const MainPage()),
             GetPage(name: '/login', page: () => const LoginPage()),
             GetPage(name: '/loading', page: () => const LoadingPage()),
-            GetPage(name: '/test', page:()=> TestPage()),
+            // GetPage(name: '/test', page:()=> TestPage()),
           ],
           home: FutureBuilder(      //로그인 확인하여 페이지 라우팅
             future: getUserProfile(),

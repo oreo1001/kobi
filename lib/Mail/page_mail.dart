@@ -51,7 +51,6 @@ class _MailPageState extends State<MailPage> {
             return const Center(child: Text('데이터를 불러오는 중에 오류가 발생했습니다.'));
           } else {
             var threadList = snapshot.data as List<Thread>;
-            print(threadList[0].messages);
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,

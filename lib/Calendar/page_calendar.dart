@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../Dialog/event_dialog.dart';
+import '../Dialog/event_dialog.dart';
 import '../theme.dart';
 import 'methods/add_appointment_sheet.dart';
 import 'methods/get_calendar_source.dart';
@@ -73,8 +75,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 SizedBox(width: 150.w),
                 TextButton(
                     onPressed: () {
-                      addAppointmentSheet(
-                          context, _selectedDate);
+                      addAppointmentSheet(context, _selectedDate);
                     },
                     style: TextButton.styleFrom(
                       minimumSize: Size.zero,
