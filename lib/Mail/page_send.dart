@@ -174,6 +174,7 @@ class _SendPageState extends State<SendPage> {
               TextFormField(
                 cursorColor: const Color(0xff759CCC),
                 controller: bodyController,
+                maxLines: null,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,

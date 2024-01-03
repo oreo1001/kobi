@@ -30,7 +30,7 @@ class _ThreadPageState extends State<ThreadPage> {
     messageList = parsingMessageListFromThread(widget.currentThread.messages);
     isExpandedList = List.filled(messageList.length, false);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent + 5);
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
   }
 
@@ -52,7 +52,7 @@ class _ThreadPageState extends State<ThreadPage> {
       children: [
         Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(80.h),
+            preferredSize: Size.fromHeight(90.h),
             child: Container(
               padding: EdgeInsets.fromLTRB(0, 50.h, 0, 10.h),
               child: AppBar(

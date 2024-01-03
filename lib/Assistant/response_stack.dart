@@ -19,7 +19,6 @@ class _MyStackWidgetState extends State<MyStackWidget> with SingleTickerProvider
   late Animation<double> _animation;
 
   RecorderController recorderController = Get.put(RecorderController());
-
   List<String> previousTranscription = [''];
 
   @override
