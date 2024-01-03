@@ -79,8 +79,9 @@ void addAppointmentSheet(BuildContext context, DateTime selectedDate,) {
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
                       child: TextFormField(
-                        cursorColor: Color(0xff759CCC),
+                        cursorColor: const Color(0xff759CCC),
                         controller : summaryController,
+                        maxLines: null,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -147,6 +148,7 @@ void addAppointmentSheet(BuildContext context, DateTime selectedDate,) {
                       child: TextFormField(
                         cursorColor: Color(0xff759CCC),
                         controller : locationController,
+                        maxLines: null,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -164,6 +166,7 @@ void addAppointmentSheet(BuildContext context, DateTime selectedDate,) {
                       child: TextFormField(
                         cursorColor: Color(0xff759CCC),
                         controller : descriptionController,
+                        maxLines: null,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,

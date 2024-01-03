@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kobi/Dialog/page_dialog.dart';
+import 'package:kobi/Dialog/page_auto_dialog.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
