@@ -25,10 +25,7 @@ String appointKSTDate(String exDate, bool isAllDay){
 }
 
 bool checkIfSameDay(DateTime startDate, DateTime endDate){
-  print('test1:${startDate.day}');
-  print('test2:${endDate.day}');
   if(startDate.day == endDate.day){
-    print('맞는데?');
     return true;
   }else {
     return false;

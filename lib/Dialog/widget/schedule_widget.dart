@@ -25,7 +25,7 @@ class ScheduleWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.sp),
           border: Border.all(
-            width: 1,
+            width: 1.w,
             color: Colors.grey.shade200,
           ),
         ),
