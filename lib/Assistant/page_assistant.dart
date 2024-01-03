@@ -1,9 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Assistant/home_widget.dart';
-import 'package:kobi/Assistant/ResponseWidgets/response_animation.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
+import 'package:kobi/in_app_notification/in_app_notification.dart';
 
 import '../Controller/assistant_controller.dart';
 import '../Controller/tts_controller.dart';
@@ -61,17 +62,35 @@ class _AssistantPageState extends State< AssistantPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
             Obx(() {
-              // transcription 의 변화를 감지하여 currentScreen을 변경
               List<String> transcription = recorderController.transcription;
-              print('-----------------AssistantPage Obx 안-----------------');
               bool equal = !const ListEquality().equals(previousTranscription, transcription);
 
+              /// 다음 InAppNotification을 보여줄 준비가 되었는지 확인
+              InAppNotification.dismiss(context: context);
+              /// 이전에 보여준 InAppNotification을 제거
+              if (recorderController.responseWidgets.isNotEmpty) {
+                InAppNotification.show(
+                    child: Container(margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border.all(color: Colors.grey[300]!),
+                        ),
+                        width: 400.w,
+                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                        child : recorderController.responseWidgets.last
+                    ),
+                    duration: const Duration(seconds: 60), context: context);
+                recorderController.responseWidgets.removeLast();
+              }
+
+              /// BE 로 요청 보내는 조건
               if (equal && readyToRequest(transcription)) {
                 previousTranscription = List.from(transcription);
                 requestToBackEnd(transcription);
               }
               return const SizedBox();}),
-            const SlideFromLeftAnimation(child: HomeWidget())
+            const HomeWidget()
           ]),
         ),
       );
@@ -97,6 +116,9 @@ class _AssistantPageState extends State< AssistantPage> {
   Future<Map<String, dynamic>> sendToBackEnd(List<String> transcription) async {
     Map<String, dynamic> apiRequestMap;
     Map<String, dynamic> apiResponseMap;
+
+    /// 마이크 loading으로 변하도록
+    recorderController.waitingForResponse.value = true;
 
     if (assistantResponse.status != 'in_progress') {
       /// assistant 에게 처음 요청
@@ -135,16 +157,24 @@ class _AssistantPageState extends State< AssistantPage> {
       apiResponseMap = await httpResponse('/assistant/step', apiRequestMap);
     }
 
+
+    /// 마이크 대기 상태로 변하도록
+    recorderController.waitingForResponse.value = false;
+
     return apiResponseMap;
   }
 
   /// #3. BackEnd에서 받은 응답을 가지고 currentScreen을 변경
   void switchWidget() async {
+
+    /// recorderController의 responseWidgets 초기화
+    recorderController.responseWidgets.clear();
+
     String responseWidgetType = assistantResponse.type;
     if (responseWidgetType == 'message_creation') {
-      // Get.bottomSheet(const MessageCreationUI());
+      recorderController.responseWidgets.add(const MessageCreationUI());
     } else {
-      // toolCalls의 길이만큼 transcription을 초기화
+      /// toolCalls의 길이만큼 transcription을 초기화
       int toolCallsLength = assistantResponse.stepDetails!.toolCalls!.length;
       recorderController.transcription = RxList( List.generate(toolCallsLength, (index) => ''));
 
@@ -152,24 +182,24 @@ class _AssistantPageState extends State< AssistantPage> {
         String? type = assistantResponse.stepDetails?.toolCalls?[i].function.name;
 
         if (type == AssistantFunction.createEmail.value) {
-          // Get.bottomSheet(CreateEmail());
+          recorderController.responseWidgets.add(CreateEmail());
         } else if (type == AssistantFunction.describeUserQuery.value) {
-          // Get.bottomSheet(DescribeUserQuery());
+          recorderController.responseWidgets.add(DescribeUserQuery());
         } else if (type == AssistantFunction.multipleChoiceQuery.value) {
-          // Get.bottomSheet(const MultipleChoiceQuery());
+          recorderController.responseWidgets.add(const MultipleChoiceQuery());
         } else if (type == AssistantFunction.insertEvent.value) {
-          // Get.bottomSheet(InsertEvent());
+          recorderController.responseWidgets.add(InsertEvent());
         } else if (type == AssistantFunction.patchEvent.value) {
-          // Get.bottomSheet(PatchEvent());
-        } else if (type == AssistantFunction.deleteEvent.value) { /// OK!
-          // Get.bottomSheet(const DeleteEvent());
-        } else if (type == AssistantFunction.getFreeBusy.value) { /// OK!
-          // Get.bottomSheet(const GetFreeBusy());
+          recorderController.responseWidgets.add(PatchEvent());
+        } else if (type == AssistantFunction.deleteEvent.value) {
+          recorderController.responseWidgets.add(const DeleteEvent());
+        } else if (type == AssistantFunction.getFreeBusy.value) {
+          recorderController.responseWidgets.add(const GetFreeBusy());
           if (assistantResponse.status == 'in_progress') {
               recorderController.setTranscription('OK');
           }
         } else if (type == AssistantFunction.establishStrategy.value) {
-          // Get.bottomSheet(const EstablishStrategy());
+          recorderController.responseWidgets.add(const EstablishStrategy());
           if (assistantResponse.status == 'in_progress') {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               recorderController.setTranscription('ok');
@@ -177,5 +207,5 @@ class _AssistantPageState extends State< AssistantPage> {
           }
         }
       }
-  }
+    }
 }}
