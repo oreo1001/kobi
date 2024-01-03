@@ -65,6 +65,7 @@ void addAppointmentSheet(BuildContext context, DateTime selectedDate,) {
                           print(summaryController.text);
                           print(locationController.text);
                           print(descriptionController.text);
+                          Get.back();
                         },
                         child: Text(
                           '저장',
@@ -117,6 +118,7 @@ void addAppointmentSheet(BuildContext context, DateTime selectedDate,) {
                       )),
                   Obx(()=>Visibility(
                     visible: isVisible.value,
+                    maintainSize: false,
                     child: Column(
                       children: [
                         Divider(),

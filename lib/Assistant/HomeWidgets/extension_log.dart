@@ -13,14 +13,14 @@ class ExtensionLog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 3.h),
+      padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 3.h),
       child: Row(
         children: [
           SizedBox(
-              width: 39.5.w,
+              width: 50.w,
               height: 39.5.h,
-              child: Text(extensionLogInfo.date, style: textTheme().bodySmall!.copyWith(fontSize: 10.sp),)),
-          SizedBox(width: 30.w,),
+              child: Center(child: Text(extensionLogInfo.date, style: textTheme().bodySmall!.copyWith(fontSize: 10.sp),))),
+          SizedBox(width: 20.w,),
           Flexible(
               child: WrappedKoreanText(extensionLogInfo.log,
                 style: textTheme().displaySmall!.copyWith(fontSize: 12.sp),

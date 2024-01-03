@@ -4,6 +4,7 @@ import 'package:kobi/Assistant/HomeWidgets/active_extension_list.dart';
 import 'package:kobi/Assistant/HomeWidgets/extension_report.dart';
 import 'package:kobi/theme.dart';
 
+import '../Mail/methods/function_mail_date.dart';
 import 'Class/extension_class.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -37,12 +38,11 @@ class HomeWidget extends StatelessWidget {
                   iconColor: const Color(0xFFFFA053),
                   message: '메일에서 일정 자동 등록'),
               extensionLogInfoList: [
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: '2024.01.02', log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
+                ExtensionLogInfo(date: homeDateString('2024-01-03T14:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
+                ExtensionLogInfo(date: homeDateString('2024-01-03T12:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
+                ExtensionLogInfo(date: homeDateString('2024-01-02T14:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
+                ExtensionLogInfo(date: homeDateString('2024-01-02T13:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
               ]),),
-
           SizedBox(height: 10.h,),
           ExtensionReport(extensionReportInfo: ExtensionReportInfo(
               extensionDescription: ExtensionDescription(
