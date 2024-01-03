@@ -25,7 +25,7 @@ Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
       ),
       Container(
         padding: EdgeInsets.only(right: 2.w),
-        width: 270.w,
+        width: 280.w,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,10 +34,14 @@ Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(thread.name,
-                    style: textTheme()
-                        .displayLarge
-                        ?.copyWith(fontSize: 18.sp)),
+                SizedBox(
+                  width:215.w,
+                  child: Text(thread.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme()
+                          .displayLarge
+                          ?.copyWith(fontSize: 17.sp)),
+                ),
                 const Spacer(),
                 SizedBox(
                   width: 50.w,
@@ -50,20 +54,28 @@ Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
                 ),
               ],
             ),
-            Text(messageList[messageList.length - 1].subject,
-                style: textTheme()
-                    .displaySmall
-                    ?.copyWith(fontSize: 14.sp)),
-            Text(messageList[messageList.length - 1].body,
-                maxLines: 1,
-                softWrap: true,
-                style: textTheme()
-                    .displaySmall
-                    ?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13.sp,
-                    overflow:
-                    TextOverflow.ellipsis)),
+            SizedBox(
+              width: 225.w,
+              child: Text(messageList[messageList.length - 1].subject,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme()
+                      .displaySmall
+                      ?.copyWith(fontSize: 13.sp)),
+            ),
+            SizedBox(
+              width: 225.w,
+              child: Text(messageList[messageList.length - 1].body,
+                  maxLines: 1,
+                  softWrap: true,
+                  style: textTheme()
+                      .displaySmall
+                      ?.copyWith(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      overflow:
+                      TextOverflow.ellipsis)),
+            ),
             // Text(email.emailAddress),
           ],
         ),

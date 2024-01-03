@@ -50,7 +50,7 @@ class HomeWidget extends StatelessWidget {
                   iconColor: const Color(0xFF5FA0E2),
                   message: '메일 작성 비서'),
               extensionLogInfoList: [
-                ExtensionLogInfo(date: '', log: 'TODO : 사용법을 적어주세요'),
+                ExtensionLogInfo(date: '', log: '오른쪽 아래 마이크 버튼을 눌러주세요.\n\'○○○에게 메일 보내줘.\'라고 말해보세요.'),
               ]),),
 
           SizedBox(height: 10.h,),
@@ -60,7 +60,7 @@ class HomeWidget extends StatelessWidget {
                   iconColor: const Color(0xFF965DD9),
                   message: '음성 비서'),
               extensionLogInfoList: [
-                ExtensionLogInfo(date: '', log: 'TODO : 사용법을 적어주세요'),
+                ExtensionLogInfo(date: '', log: '오른쪽 아래 마이크 버튼을 눌러주세요.\n\'이번주 내 일정 알려줄래?\'라고 말해보세요.'),
               ]),),
 
         ],

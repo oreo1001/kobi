@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Class/secure_storage.dart';
 import '../Controller/auth_controller.dart';
@@ -18,6 +19,7 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> _handleSignOut() async {
     final storage = SecureStorage();
+    GoogleSignIn googleSignIn = GoogleSignIn();
 
     await storage.setUser({
       'userId': '',
@@ -25,6 +27,7 @@ class _UserPageState extends State<UserPage> {
       'email': '',
       'photoUrl': '',
     });
+    await googleSignIn.signOut();
     Get.offNamed('/login');
   }
 
