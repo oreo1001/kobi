@@ -24,6 +24,10 @@ class RecorderController extends GetxController {
 
   RxDouble decibels = 0.0.obs;
 
+  RxList responseWidgets = RxList<Widget>();
+
+  RxBool waitingForResponse = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
@@ -134,7 +138,6 @@ class RecorderController extends GetxController {
     String apiUrl = 'http://13.209.152.32/stt/returnZero';
 
     print('-----------------sendToWhisper 안-----------------');
-    print('prompt: $prompt');
     // API를 통해 음성 파일을 보내는데 걸리는 시간을 측정
     Stopwatch stopwatch = Stopwatch()..start();
 

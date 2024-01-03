@@ -1,15 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:kobi/firebase_options.dart';
-import 'Class/class_my_event.dart';
-import 'Class/secure_storage.dart';
-import 'Dialog/delete_dialog.dart';
-import 'Dialog/event_dialog.dart';
-import 'Dialog/update_event_dialog.dart';
 
 Future<void> setupInteractedMessage(void Function(RemoteMessage) handleMessage) async {
   // Get any messages which caused the application to open from
@@ -80,7 +70,7 @@ Future<void> initializeAndroidForegroundMessaging(void Function(RemoteMessage) h
   /// 2. 플러그인을 초기화하여 추가 설정을 해준다.
   await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('notification_icon'),
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: DarwinInitializationSettings(
           requestAlertPermission: true,
           requestBadgePermission: true,

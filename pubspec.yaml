@@ -46,11 +46,30 @@ dependencies:
   url_launcher: ^6.2.2            #url로 보내주는 라이브러리
   flutter_datetime_picker_plus: ^2.1.0
   syncfusion_flutter_datepicker: ^24.1.43
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/logo.png"
 
 
 flutter:
@@ -59,11 +78,6 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
-#    - assets/audio/
-#    - assets/json/
-    - assets/hi_embla.pmdl
-    - assets/ding.wav
-    - assets/jarvis.umdl
 
 
   fonts:
@@ -84,21 +98,3 @@ flutter:
     - family: Jua
       fonts:
         - asset: assets/fonts/Jua-Regular.ttf
-
-flutter_icons:
-  android: "notification_icon"
-  ios: true
-  image_path: "assets/images/알림.jpg"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-  web:
-    generate: true
-    image_path: "assets/images/알림.jpg"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
-  windows:
-    generate: true
-    image_path: "assets/images/알림.jpg"
-    icon_size: 48 # min:48, max:256, default: 48
-  macos:
-    generate: true
-    image_path: "assets/images/알림.jpg"
