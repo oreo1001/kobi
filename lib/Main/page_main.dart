@@ -26,7 +26,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   final List <Widget> _pageList =  [
     const AssistantPage(),
     CalendarPage(),
