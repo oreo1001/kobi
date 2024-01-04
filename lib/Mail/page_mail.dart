@@ -146,7 +146,7 @@ class _MailPageState extends State<MailPage> {
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       Get.to(() => ThreadPage(thread));
-                      httpResponse('/email/read', {"threadId": thread.threadId, "messageId": messageList[messageList.length - 1].messageId});
+                      httpResponse('/email/read', {"messageIdList": unreadMessageIdList(messageList)});
                       setState(() {});
                     },
                     child:

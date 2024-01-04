@@ -37,6 +37,16 @@ int unreadMessageCount(List<Message> messageList) {
   return count;
 }
 
+List <String> unreadMessageIdList(List<Message> messageList) {
+  List <String> unreadMessageIdList = [];
+  for (var message in messageList) {
+    if (message.unread) {
+      unreadMessageIdList.add(message.messageId);
+    }
+  }
+  return unreadMessageIdList;
+}
+
 List <Thread> filterThreadListByFilter(List<Thread> threadList, String filter) {
   List <Thread> filteredThreadList = [];
   for (var thread in threadList) {
