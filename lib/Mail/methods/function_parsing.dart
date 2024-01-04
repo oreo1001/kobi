@@ -7,6 +7,7 @@ List<Thread> loadThreadListFromJson(List<dynamic> jsonList) {
       emailAddress: json['emailAddress'],
       name: json['name'],
       messages: json['messages'],
+      labelList: json['labelList'],
     );
   }).toList();
   return threadList;
@@ -34,4 +35,22 @@ int unreadMessageCount(List<Message> messageList) {
     }
   }
   return count;
+}
+
+List <Thread> filterThreadListByFilter(List<Thread> threadList, String filter) {
+  List <Thread> filteredThreadList = [];
+  for (var thread in threadList) {
+    if (filter == '전체 메일함') {
+      filteredThreadList.add(thread);
+    } else if (filter == 'WonMoMeeting 메일함') {
+      if (thread.labelList.contains('WonMoMeeting')) {
+        filteredThreadList.add(thread);
+      }
+  } else if (filter == '프로모션 메일함') {
+      if (!thread.labelList.contains('WonMoMeeting')) {
+        filteredThreadList.add(thread);
+      }
+    }
+  }
+  return filteredThreadList;
 }

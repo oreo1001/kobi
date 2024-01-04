@@ -25,6 +25,7 @@ class _MailPageState extends State<MailPage> {
   String name = '';
   String email = '';
   String photoUrl = '';
+  String filter = 'WonMoMeeting 메일함';
 
   static Future getMail() async {
     Map<String, dynamic> responseMap =
@@ -51,6 +52,8 @@ class _MailPageState extends State<MailPage> {
             return const Center(child: Text('데이터를 불러오는 중에 오류가 발생했습니다.'));
           } else {
             var threadList = snapshot.data as List<Thread>;
+            threadList = filterThreadListByFilter(threadList, filter);
+            print(threadList);
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,
@@ -61,7 +64,7 @@ class _MailPageState extends State<MailPage> {
                       SizedBox(height : 30.h),
                       Padding(
                         padding: EdgeInsets.fromLTRB(10.w,0,0,0),
-                        child: Text('스마트 메일함',
+                        child: Text(filter,
                             style: textTheme()
                                 .displayMedium
                                 ?.copyWith(fontSize: 23.sp)),
@@ -104,16 +107,32 @@ class _MailPageState extends State<MailPage> {
                     SizedBox(height:17.h),
                     ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
-                      title: Text('Wonmo Meeting',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
+                      title: Text('WonMoMeeting 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
+                      onTap: () {
+                        setState(() {
+                          filter = 'WonMoMeeting 메일함';
+                        });
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
-                      title: Text('Wonmo Meeting2',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
+                      title: Text('전체 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
+                      onTap: () {
+                        setState(() {
+                          filter = '전체 메일함';
+                        });
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
-                      title: Text('Wonmo Meeting3',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
+                      title: Text('프로모션 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
+                      onTap: () {
+                        setState(() {
+                          filter = '프로모션 메일함';
+                        });
+                      },
                     ),
+
                     // 추가적인 프로필 정보를 여기에 넣으세요.
                   ],
                 ),

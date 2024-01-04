@@ -2,18 +2,20 @@ class Thread {
   final String threadId;
   final String emailAddress;
   final String name;
+  final List<dynamic> labelList;
   final List<dynamic> messages;
 
   Thread({
     required this.threadId,
     required this.emailAddress,
     required this.name,
+    required this.labelList,
     required this.messages,
   });
 
   @override
   String toString() {
-    return 'Thread(threadId: $threadId, emailAddress: $emailAddress, name: $name, messages: $messages)';
+    return 'Thread(threadId: $threadId, emailAddress: $emailAddress, name: $name, messages: $messages, labelList: $labelList)';
   }
 }
 
