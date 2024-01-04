@@ -30,9 +30,11 @@ class InsertEventState extends State<InsertEvent> {
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
-    Event event = Event.fromMap(arguments !);
+    print('arguments $arguments');
+    Event event = Event.fromMap(arguments!);
+    print(event);
     //Event event = Event(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00');
-
+    //Event event = Event( summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00');
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +50,7 @@ class InsertEventState extends State<InsertEvent> {
               )),
         ),
         ScheduleWidget(myEvent : event),
-        if (assistantController.status.value != 'in_progress')
+        if (assistantController.status.value == 'in_progress')
           Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               width:400.w,

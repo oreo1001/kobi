@@ -1,7 +1,7 @@
 import '../Calendar/methods/function_event_date.dart';
 
 class Event {
-  final String eventId;
+  final String? eventId;
   final String summary;
   final String startTime;
   final String endTime;
@@ -9,7 +9,7 @@ class Event {
   final String? location;
 
   Event({
-    required this.eventId,
+    this.eventId,
     required this.summary,
     required this.startTime,
     required this.endTime,
@@ -22,8 +22,8 @@ class Event {
       eventId: map['eventId'] ?? '',
       summary: map['summary'] ?? '',
       description: map['description'] ?? '',
-      startTime: eventKSTDate(map['startTime']),
-      endTime: eventKSTDate(map['endTime']),
+      startTime: eventKSTDate(map['startTime'] ?? ''),
+      endTime: eventKSTDate(map['endTime']) ?? '',
       location: map['location'] ?? '',
     );
   }
