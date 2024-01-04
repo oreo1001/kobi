@@ -6,6 +6,8 @@ import 'package:kobi/Assistant/HomeWidgets/active_extension_list.dart';
 import 'package:kobi/Assistant/HomeWidgets/extension_report.dart';
 import 'package:kobi/theme.dart';
 
+import '../Class/class_my_event.dart';
+import '../Mail/class_email.dart';
 import '../Mail/methods/function_mail_date.dart';
 import 'Class/extension_class.dart';
 
@@ -40,10 +42,14 @@ class HomeWidget extends StatelessWidget {
                   iconColor: const Color(0xFFFFA053),
                   message: '메일에서 일정 자동 등록'),
               extensionLogInfoList: [
-                ExtensionLogInfo(date: homeDateString('2024-01-03T14:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: homeDateString('2024-01-03T12:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: homeDateString('2024-01-02T14:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
-                ExtensionLogInfo(date: homeDateString('2024-01-02T13:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!'),
+                ExtensionLogInfo(date: homeDateString('2024-01-03T14:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',testMail: TestMail(title: 'test',body:'내용입니다.',emailAddress: 'ohsimon77@naver.com',reply: false),
+                    event : MyEvent(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00')),
+                ExtensionLogInfo(date: homeDateString('2024-01-03T12:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',testMail: TestMail(title: 'test',body:'내용입니다.',emailAddress: 'ohsimon77@naver.com',reply: false),
+                    event : MyEvent(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00')),
+                ExtensionLogInfo(date: homeDateString('2024-01-02T14:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',testMail: TestMail(title: 'test',body:'내용입니다.',emailAddress: 'ohsimon77@naver.com',reply: false),
+                    event : MyEvent(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00')),
+                ExtensionLogInfo(date: homeDateString('2024-01-02T13:00:00+09:00'), log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',testMail: TestMail(title: 'test',body:'내용입니다.',emailAddress: 'ohsimon77@naver.com',reply: false),
+                    event : MyEvent(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00')),
               ]),),
           SizedBox(height: 10.h,),
           ExtensionReport(extensionReportInfo: ExtensionReportInfo(
@@ -54,7 +60,6 @@ class HomeWidget extends StatelessWidget {
               extensionLogInfoList: [
                 ExtensionLogInfo(date: '', log: '오른쪽 아래 마이크 버튼을 눌러주세요.\n\'○○○에게 메일 보내줘.\'라고 말해보세요.'),
               ]),),
-
           SizedBox(height: 10.h,),
           ExtensionReport(extensionReportInfo: ExtensionReportInfo(
               extensionDescription: ExtensionDescription(
@@ -64,7 +69,6 @@ class HomeWidget extends StatelessWidget {
               extensionLogInfoList: [
                 ExtensionLogInfo(date: '', log: '오른쪽 아래 마이크 버튼을 눌러주세요.\n\'이번주 내 일정 알려줄래?\'라고 말해보세요.'),
               ]),),
-          TextButton(onPressed: (){Get.toNamed('/test');}, child: Text('테스트'))
         ],
       ),
     );

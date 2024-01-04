@@ -30,7 +30,7 @@ class DeleteEventState extends State<DeleteEvent> {
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
-    Event event = Event.fromMap(arguments !);
+    MyEvent event = MyEvent.fromMap(arguments !);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -47,15 +47,15 @@ class DeleteEventState extends State<DeleteEvent> {
                 )),
           ),
           ScheduleWidget(myEvent : event),
-          if (assistantController.status.value == 'in_progress')
+          // if (assistantController.status.value == 'in_progress')
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               width:400.w,
               child: ElevatedButton(onPressed: (){
                 recorderController.setTranscription('delete');
               },style: ElevatedButton.styleFrom(
-                surfaceTintColor: Color(0xff8B2CF5),
-                backgroundColor: Color(0xff8B2CF5),
+                surfaceTintColor: const Color(0xffACCCFF),
+                backgroundColor: const Color(0xffACCCFF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),

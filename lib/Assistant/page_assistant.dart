@@ -72,7 +72,7 @@ class _AssistantPageState extends State< AssistantPage> {
                     InAppNotification.show(
                         child: Container(
                             decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.grey[50],
                               borderRadius: BorderRadius.circular(10.r),
                               border: Border.all(color: Colors.grey[100]!),
                             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kobi/Dialog/page_auto_dialog.dart';
 import 'package:kobi/theme.dart';
 import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 
@@ -25,7 +26,11 @@ class ExtensionLog extends StatelessWidget {
               child: WrappedKoreanText(extensionLogInfo.log,
                 style: textTheme().displaySmall!.copyWith(fontSize: 12.sp),
               )
-          )
+          ),
+          if(extensionLogInfo.testMail!=null && extensionLogInfo.event!=null)
+            SizedBox(width:30.w,child: IconButton(onPressed: (){
+              showAutoDialog(extensionLogInfo.testMail!, extensionLogInfo.event!);
+            }, icon: Icon(Icons.arrow_forward_ios,size:15.sp, color:Colors.grey.shade400)))
         ],
       ),
     );

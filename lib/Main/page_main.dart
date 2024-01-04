@@ -42,13 +42,13 @@ class _MainPageState extends State<MainPage> {
     String type = data['type'];
     switch (type) {
       case 'insert_event':
-        showEventDialog(Event.fromMap(data));
+        showEventDialog(MyEvent.fromMap(data));
         break;
       case 'update_event':
-        showUpdateEventDialog(Event.fromMap(jsonDecode(data["before_event"])), Event.fromMap(jsonDecode(data["after_event"])));
+        showUpdateEventDialog(MyEvent.fromMap(jsonDecode(data["before_event"])), MyEvent.fromMap(jsonDecode(data["after_event"])));
         break;
       case 'delete_event':
-        showDeleteDialog(Event.fromMap(data));
+        showDeleteDialog(MyEvent.fromMap(data));
         break;
     }
   }

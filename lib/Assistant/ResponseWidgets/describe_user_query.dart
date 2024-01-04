@@ -62,8 +62,8 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
                 recorderController.setTranscription(textController.text);
               },
               style: ElevatedButton.styleFrom(
-                surfaceTintColor: Color(0xff8B2CF5),
-                backgroundColor: Color(0xff8B2CF5),
+                surfaceTintColor: const Color(0xffACCCFF),
+                backgroundColor: const Color(0xffACCCFF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),

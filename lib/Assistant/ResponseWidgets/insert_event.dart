@@ -30,9 +30,8 @@ class InsertEventState extends State<InsertEvent> {
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
-    Event event = Event.fromMap(arguments !);
+    MyEvent event = MyEvent.fromMap(arguments!);
     //Event event = Event(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00');
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -48,15 +47,15 @@ class InsertEventState extends State<InsertEvent> {
               )),
         ),
         ScheduleWidget(myEvent : event),
-        if (assistantController.status.value != 'in_progress')
+        // if (assistantController.status.value == 'in_progress')
           Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               width:400.w,
               child: ElevatedButton(onPressed: (){
-                recorderController.setTranscription('delete');
+                recorderController.setTranscription('ok');
               },style: ElevatedButton.styleFrom(
-                surfaceTintColor: Color(0xff8B2CF5),
-                backgroundColor: Color(0xff8B2CF5),
+                surfaceTintColor: const Color(0xffACCCFF),
+                backgroundColor: const Color(0xffACCCFF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),

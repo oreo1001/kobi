@@ -7,7 +7,7 @@ import '../../theme.dart';
 
 class ScheduleWidget extends StatelessWidget {
   const ScheduleWidget({Key? key,required this.myEvent}) : super(key: key);
-  final Event myEvent;
+  final MyEvent myEvent;
 
   @override
   Widget build(BuildContext context) {
