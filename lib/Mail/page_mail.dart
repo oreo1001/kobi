@@ -30,7 +30,7 @@ class _MailPageState extends State<MailPage> {
     Map<String, dynamic> responseMap =
     await httpResponse('/email/emailList', {});
     var emailList = loadThreadListFromJson(responseMap['emailList']);
-    print('mail 받은 시간 : ${DateTime.now().toString().substring(0, 19)}');
+    print('mail 받은 시간 : ${DateTime.now().toString()}');
     return emailList;
   }
   @override
@@ -124,7 +124,7 @@ class _MailPageState extends State<MailPage> {
                 itemBuilder: (context, index) {
                   final thread = threadList[index];
                   final messageList = parsingMessageListFromThread(thread.messages);
-                  print('messageList 받은 시간 : ${DateTime.now().toString().substring(0, 19)}');
+                  print('messageList 받은 시간 : ${DateTime.now().toString()}');
                   return GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
