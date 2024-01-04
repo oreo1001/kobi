@@ -5,7 +5,7 @@ import 'package:kobi/Dialog/widget/schedule_widget.dart';
 import '../Class/class_my_event.dart';
 import '../theme.dart';
 
-void showDeleteDialog(Event event) {
+void showDeleteDialog(MyEvent event) {
   Get.dialog(AlertDialog(
     surfaceTintColor: Colors.white,
     backgroundColor: Colors.white,

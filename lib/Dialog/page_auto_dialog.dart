@@ -5,18 +5,19 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Dialog/widget/schedule_widget.dart';
 import '../Class/class_my_event.dart';
 
+import '../Mail/class_email.dart';
 import '../theme.dart';
 
 class AutoDialog extends StatefulWidget {
-  const AutoDialog({super.key});
+  AutoDialog({super.key,required this.testMail, required this.event});
+  TestMail testMail;
+  MyEvent event;
 
   @override
   State<AutoDialog> createState() => _AutoDialogState();
 }
 
 class _AutoDialogState extends State<AutoDialog> {
-  String sendMailAddress = 'careebee@wonmo.net';
-
   @override
   void initState() {
     super.initState();
@@ -24,9 +25,6 @@ class _AutoDialogState extends State<AutoDialog> {
 
   @override
   Widget build(BuildContext context) {
-    //Event event
-    //보내는 사람 이메일이랑 contactList
-    //subject body
     return Dialog(
       surfaceTintColor: Colors.white,
       backgroundColor: Colors.white,
@@ -85,7 +83,7 @@ class _AutoDialogState extends State<AutoDialog> {
                                 borderRadius: BorderRadius.all(
                                     Radius.circular(13.sp)),
                               ),
-                              child: Text(sendMailAddress,
+                              child: Text(widget.testMail.emailAddress,
                                   style: textTheme()
                                       .bodySmall
                                       ?.copyWith(
@@ -99,7 +97,7 @@ class _AutoDialogState extends State<AutoDialog> {
                       Container(
                         padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
                         alignment: Alignment.centerLeft,
-                        child: Text('RE : 12월 28일 아침 10시 미팅에 대한 응답',style: textTheme()
+                        child: Text(widget.testMail.title,style: textTheme()
                             .bodySmall
                             ?.copyWith(
                           fontSize: 13.sp,
@@ -111,7 +109,7 @@ class _AutoDialogState extends State<AutoDialog> {
                       Container(
                         padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
                         alignment: Alignment.centerLeft,
-                        child: Text("안녕하세요 이준서 과장님, \n\n네 알겠습니다. \n12월 28일 아침 10시에 뵙겠습니다.\n관련 사항에 대한 추가 정보가",style: textTheme()
+                        child: Text(widget.testMail.body,style: textTheme()
                             .bodySmall
                             ?.copyWith(
                           fontSize: 13.sp,
@@ -131,7 +129,7 @@ class _AutoDialogState extends State<AutoDialog> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: ScheduleWidget(myEvent: Event(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00'),),
+            child: ScheduleWidget(myEvent: widget.event),
           ),
           TextButton(
             child: Row(
@@ -158,10 +156,10 @@ class _AutoDialogState extends State<AutoDialog> {
   }
 }
 
-void showAutoDialog() {
+void showAutoDialog(TestMail testMail,MyEvent event) {
   Get.dialog(
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.3),
-      AutoDialog()
+      AutoDialog(event : event, testMail: testMail,)
   );
 }

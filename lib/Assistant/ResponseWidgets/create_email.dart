@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 
 import '../../Controller/assistant_controller.dart';
 import '../../Controller/recorder_controller.dart';
@@ -48,7 +49,7 @@ class CreateEmailState extends State<CreateEmail> {
             children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(10.w,30.h,10.w,20.h),
-                child: Text('고객님의 상황에 맞게 메일을 작성하였어요. 이대로 보낼까요?',
+                child: WrappedKoreanText('고객님의 상황에 맞게 메일을 작성하였어요. 이대로 보낼까요?',
                     style: textTheme().bodySmall?.copyWith(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
@@ -107,7 +108,7 @@ class CreateEmailState extends State<CreateEmail> {
                     Container(
                       padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
                       alignment: Alignment.centerLeft,
-                      child: Text(title,style: textTheme()
+                      child: WrappedKoreanText(title,style: textTheme()
                           .bodySmall
                           ?.copyWith(
                         fontSize: 13.sp,
@@ -119,7 +120,7 @@ class CreateEmailState extends State<CreateEmail> {
                     Container(
                       padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
                       alignment: Alignment.centerLeft,
-                      child: Text(body,style: textTheme()
+                      child: WrappedKoreanText(body,style: textTheme()
                           .bodySmall
                           ?.copyWith(
                         fontSize: 13.sp,
@@ -133,7 +134,7 @@ class CreateEmailState extends State<CreateEmail> {
             ],
           ),
         ),
-        if (assistantController.status.value != 'in_progress')
+        // if (assistantController.status.value != 'in_progress')
           Row(
           children: [
             Container(
@@ -164,8 +165,8 @@ class CreateEmailState extends State<CreateEmail> {
                     recorderController.setTranscription('ok');
                   },
                   style: ElevatedButton.styleFrom(
-                    surfaceTintColor: Colors.lightBlue.shade300,
-                    backgroundColor: Colors.lightBlue.shade300,
+                    surfaceTintColor: const Color(0xffACCCFF),
+                    backgroundColor: const Color(0xffACCCFF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),

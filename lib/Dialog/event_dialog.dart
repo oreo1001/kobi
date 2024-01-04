@@ -5,7 +5,7 @@ import 'package:kobi/Dialog/widget/schedule_widget.dart';
 import '../Class/class_my_event.dart';
 import '../theme.dart';
 
-void showEventDialog(Event event) {
+void showEventDialog(MyEvent event) {
   Get.dialog(AlertDialog(
     // alignment: Alignment.topCenter,
     surfaceTintColor: Colors.white,

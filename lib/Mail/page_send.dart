@@ -5,11 +5,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 
 import '../User/class_contact.dart';
+import '../function_http_request.dart';
 import '../theme.dart';
 
 class SendPage extends StatefulWidget {
   SendPage(this.currentMail, {super.key});
-
   String currentMail;
 
   @override
@@ -17,7 +17,7 @@ class SendPage extends StatefulWidget {
 }
 
 class _SendPageState extends State<SendPage> {
-  final subjectController = TextEditingController();
+  final titleController = TextEditingController();
   final bodyController = TextEditingController();
   AuthController authController = Get.find();
   List<Contact> contactList = [];
@@ -57,8 +57,10 @@ class _SendPageState extends State<SendPage> {
                   IconButton(
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
-                      onPressed: () {
-                        Get.back();
+                      onPressed: () async{
+                        await httpResponse(
+                        '/email/send', {"reply": true, "title": titleController.text, "body": bodyController.text, "emailAddress": sendMailAddress});
+                        //Get.toNamed('/sent');
                       },
                       icon: Icon(Icons.send, size: 25.sp)),
                 ],
@@ -152,7 +154,7 @@ class _SendPageState extends State<SendPage> {
               Divider(color: Colors.grey.shade300),
               TextFormField(
                 cursorColor: const Color(0xff759CCC),
-                controller: subjectController,
+                controller: titleController,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,

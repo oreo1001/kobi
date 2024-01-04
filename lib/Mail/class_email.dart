@@ -39,3 +39,26 @@ class Message {
     return 'Message(sentByUser: $sentByUser, date: $date, subject: $subject, body: $body, messageId: $messageId, unread: $unread)';
   }
 }
+
+class TestMail{
+  final String title;
+  final String body;
+  final String emailAddress;
+  final bool reply;
+
+  TestMail({
+    required this.title,
+    required this.body,
+    required this.emailAddress,
+    required this.reply,
+  });
+
+  factory TestMail.fromMap(Map<String, dynamic> map) {
+    return TestMail(
+      title: map['title'] ?? '',
+      body: map['body'] ?? '',
+      emailAddress: map['emailAddress'] ?? '',
+      reply: map['reply'] ?? false,
+    );
+  }
+}

@@ -5,7 +5,7 @@ import 'package:kobi/Dialog/widget/schedule_widget.dart';
 
 import '../Class/class_my_event.dart';
 import '../theme.dart';
-void showUpdateEventDialog(Event beforeEvent, Event afterEvent) {  //Map<String, dynamic> beforeEvent, Map<String, dynamic> afterEvent
+void showUpdateEventDialog(MyEvent beforeEvent, MyEvent afterEvent) {  //Map<String, dynamic> beforeEvent, Map<String, dynamic> afterEvent
   Get.dialog(
     AlertDialog(
       surfaceTintColor: Colors.white,

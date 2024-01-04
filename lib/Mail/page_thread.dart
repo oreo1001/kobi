@@ -76,10 +76,13 @@ class _ThreadPageState extends State<ThreadPage> {
                         icon: Icon(Icons.arrow_back_ios, size: 25.sp)),
                     Container(
                       padding: EdgeInsets.fromLTRB(0, 0, 0, 3.h),
-                      child: Text(' ${widget.currentThread.name} 님과의 대화',
+                      child: SizedBox(
+                        width:310.w,
+                        child : Text(' ${widget.currentThread.name}',
+                          overflow: TextOverflow.fade,
                           style: textTheme()
                               .displaySmall
-                              ?.copyWith(fontSize: 20.sp)),
+                              ?.copyWith(fontSize: 20.sp)),),
                     ),
                   ],
                 ),
@@ -178,16 +181,32 @@ class _ThreadPageState extends State<ThreadPage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10.sp)),
                                       ),
-                                      child: Text(
-                                        messageList[index].body,
-                                        style: textTheme().bodySmall?.copyWith(
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w400,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            messageList[index].subject,
+                                            style: textTheme().bodySmall?.copyWith(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w500,
                                               color:
-                                                  messageList[index].sentByUser
-                                                      ? Colors.white
-                                                      : Colors.black,
+                                              messageList[index].sentByUser
+                                                  ? Colors.white
+                                                  : Colors.black,
                                             ),
+                                          ),
+                                          SizedBox(height:5.h),
+                                          Text(
+                                            messageList[index].body,
+                                            style: textTheme().bodySmall?.copyWith(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color:
+                                                      messageList[index].sentByUser
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -210,18 +229,36 @@ class _ThreadPageState extends State<ThreadPage> {
                                             ? const Color(0xff759CCC)
                                             : const Color(0xffD8EAF9),
                                       ),
-                                      child: Text(
-                                        removeNewlines(messageList[index].body),
-                                        style: textTheme().bodySmall?.copyWith(
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w400,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            removeNewlines(messageList[index].subject),
+                                            style: textTheme().bodySmall?.copyWith(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w500,
                                               color:
-                                                  messageList[index].sentByUser
-                                                      ? Colors.white
-                                                      : Colors.black,
+                                              messageList[index].sentByUser
+                                                  ? Colors.white
+                                                  : Colors.black,
                                             ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height:5.h),
+                                          Text(
+                                            removeNewlines(messageList[index].body),
+                                            style: textTheme().bodySmall?.copyWith(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color:
+                                                      messageList[index].sentByUser
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

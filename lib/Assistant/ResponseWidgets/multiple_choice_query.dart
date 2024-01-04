@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 
 import '../../Controller/assistant_controller.dart';
 import '../../Controller/recorder_controller.dart';
@@ -43,7 +44,7 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
         Container(
           padding: EdgeInsets.fromLTRB(10.w, 50.h, 0, 0.h),
           child: query != null
-              ? Text(query, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp))
+              ? WrappedKoreanText(query, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp))
               : Text(''),
         ),
         Flexible(
@@ -68,7 +69,7 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
                       selectedItem = options[index];
                     });
                   },
-                  child: Text(options[index]),
+                  child: WrappedKoreanText(options[index]),
                 ),
               );
             },
@@ -84,8 +85,8 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
             child: Text('이대로 보내기',
                 style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
             style: ElevatedButton.styleFrom(
-              surfaceTintColor: Colors.lightBlue.shade300,
-              backgroundColor: Colors.lightBlue.shade300,
+              surfaceTintColor: const Color(0xffACCCFF),
+              backgroundColor: const Color(0xffACCCFF),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),

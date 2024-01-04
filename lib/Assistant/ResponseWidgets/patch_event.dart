@@ -43,17 +43,17 @@ class PatchEventState extends State<PatchEvent> {
       "endTime": "2023-12-14T19:00:00+09:00"
     };
 
-    Event? beforeEvent;
-    Event? afterEvent;
+    MyEvent? beforeEvent;
+    MyEvent? afterEvent;
     if (beforeEventMap != null) {
-      beforeEvent = Event.fromMap(beforeEventMap);
+      beforeEvent = MyEvent.fromMap(beforeEventMap);
     } else {
-      beforeEvent = Event.fromMap(testBeforeEventMap);
+      beforeEvent = MyEvent.fromMap(testBeforeEventMap);
     }
     if (afterEventMap != null) {
-      afterEvent = Event.fromMap(afterEventMap);
+      afterEvent = MyEvent.fromMap(afterEventMap);
     } else {
-      afterEvent = Event.fromMap(testAfterEventMap);
+      afterEvent = MyEvent.fromMap(testAfterEventMap);
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -84,8 +84,8 @@ class PatchEventState extends State<PatchEvent> {
               child:
                   Text('확인', style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                surfaceTintColor: Color(0xff8B2CF5),
-                backgroundColor: Color(0xff8B2CF5),
+                surfaceTintColor: const Color(0xffACCCFF),
+                backgroundColor: const Color(0xffACCCFF),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),

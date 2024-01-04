@@ -1,6 +1,6 @@
 import '../Calendar/methods/function_event_date.dart';
 
-class Event {
+class MyEvent {
   final String? eventId;
   final String summary;
   final String startTime;
@@ -8,7 +8,7 @@ class Event {
   final String? description;
   final String? location;
 
-  Event({
+  MyEvent({
     this.eventId,
     required this.summary,
     required this.startTime,
@@ -17,8 +17,8 @@ class Event {
     this.location,
   });
 
-  factory Event.fromMap(Map<String, dynamic> map) {
-    return Event(
+  factory MyEvent.fromMap(Map<String, dynamic> map) {
+    return MyEvent(
       eventId: map['eventId'] ?? '',
       summary: map['summary'] ?? '',
       description: map['description'] ?? '',

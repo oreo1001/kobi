@@ -54,7 +54,6 @@ class HomeWidget extends StatelessWidget {
               extensionLogInfoList: [
                 ExtensionLogInfo(date: '', log: '오른쪽 아래 마이크 버튼을 눌러주세요.\n\'○○○에게 메일 보내줘.\'라고 말해보세요.'),
               ]),),
-
           SizedBox(height: 10.h,),
           ExtensionReport(extensionReportInfo: ExtensionReportInfo(
               extensionDescription: ExtensionDescription(

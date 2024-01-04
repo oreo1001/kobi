@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:wrapped_korean_text/wrapped_korean_text.dart';
 
 import '../../../theme.dart';
 import '../../Controller/assistant_controller.dart';
@@ -30,7 +31,7 @@ class _MessageCreationUIState extends State<MessageCreationUI> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         for (MessageCreation messageCreation in assistantController.stepDetails.value?.messageCreation ?? [])
-          Text(
+          WrappedKoreanText(
             messageCreation.text['value'].toString(),
             style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
           ),
