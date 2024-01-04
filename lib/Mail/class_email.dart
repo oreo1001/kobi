@@ -10,6 +10,11 @@ class Thread {
     required this.name,
     required this.messages,
   });
+
+  @override
+  String toString() {
+    return 'Thread(threadId: $threadId, emailAddress: $emailAddress, name: $name, messages: $messages)';
+  }
 }
 
 class Message {
@@ -28,4 +33,9 @@ class Message {
     required this.messageId,
     required this.unread,
   });
+
+  @override
+  String toString() {
+    return 'Message(sentByUser: $sentByUser, date: $date, subject: $subject, body: $body, messageId: $messageId, unread: $unread)';
+  }
 }

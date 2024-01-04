@@ -16,7 +16,7 @@ Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
           radius: 30.sp,
           backgroundColor: profileColor,
           child: Text(
-            thread.name[0],  // 첫 번째 글자만 가져옴
+            thread.name == '' ? '' : thread.name[0],  // 첫 번째 글자만 가져옴
             style: const TextStyle(
               fontSize: 24,
               color: Colors.white,
