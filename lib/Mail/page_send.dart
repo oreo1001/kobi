@@ -165,31 +165,29 @@ class _SendPageState extends State<SendPage> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(13.sp)),
                         ),
-                        child: Expanded(
-                          child: Row(
-                            children: [
-                              Text(sendMailAddress,
-                                  style: textTheme().bodySmall?.copyWith(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      )),
-                              SizedBox(
-                                height: 20.h,
-                                width: 23.w,
-                                child: IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: BoxConstraints(),
-                                    onPressed: () {
-                                      setState(() {
-                                        sendMailAddress = ''; //초기화
-                                        _showDropdown = true;
-                                      });
-                                    },
-                                    icon: Icon(Icons.close, size: 20.sp)),
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          children: [
+                            Text(sendMailAddress,
+                                style: textTheme().bodySmall?.copyWith(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    )),
+                            SizedBox(
+                              height: 20.h,
+                              width: 23.w,
+                              child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  onPressed: () {
+                                    setState(() {
+                                      sendMailAddress = ''; //초기화
+                                      _showDropdown = true;
+                                    });
+                                  },
+                                  icon: Icon(Icons.close, size: 20.sp)),
+                            ),
+                          ],
                         )),
                 ],
               ),

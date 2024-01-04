@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:kobi/Calendar/methods/function_event_date.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 
+import '../../function_http_request.dart';
 import '../../theme.dart';
 import 'custom_time_picker.dart';
 
@@ -39,10 +41,10 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
         selectedDate.year, selectedDate.month, selectedDate.day, 8); //오전8시로 초기화
     DateTime atNineAM = DateTime(
         selectedDate.year, selectedDate.month, selectedDate.day, 9); //오전9시로 초기화
-    selectedTime.value = formatTime(atEightAM);
-    selectedTime2.value = formatTime(atNineAM);
-    startDate.value = DateFormat('M월 d일').format(selectedDate);
-    endDate.value = DateFormat('M월 d일').format(endDateInitialize);
+    selectedTime.value = atEightAM.toString();
+    selectedTime2.value = atNineAM.toString();
+    startDate.value = selectedDate.toString();
+    endDate.value = endDateInitialize.toString();
   }
 
   @override
@@ -80,10 +82,14 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      print(summaryController.text);
-                      print(locationController.text);
-                      print(descriptionController.text);
+                    onPressed: () async{
+                      print(startDate + ' ' + selectedTime.value);
+                      print(endDate + ' ' + selectedTime2.value);
+                      // await httpResponse('/calendar/add', {
+                      //   "summary": summaryController.text,
+                      //   "location": locationController.text,
+                      //   "description": descriptionController.text,
+                      // });
                       Get.back();
                     },
                     child: Text(
@@ -148,10 +154,12 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         SfDateRangePicker(
                           onSelectionChanged:
                               (DateRangePickerSelectionChangedArgs args) {
-                            startDate.value = DateFormat('M월 d일')
-                                .format(args.value.startDate);
-                            endDate.value = DateFormat('M월 d일')
-                                .format(args.value.endDate);
+                            startDate.value = args.value.startDate.toString();
+                            endDate.value = args.value.endDate.toString();
+                            print(startDate);
+                            print(endDate);
+                            // startDate.value = DateFormat('M월 d일').format(args.value.startDate);
+                            // endDate.value = DateFormat('M월 d일').format(args.value.endDate);
                           },
                           selectionMode: DateRangePickerSelectionMode.range,
                           initialSelectedRange: PickerDateRange(
@@ -231,7 +239,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                   onPressed: () {
                     isVisible.value = true;
                   },
-                  child: Text(pickDate.value,
+                  child: Text(getMonthAndDay(pickDate.value),
                       style: textTheme().displaySmall?.copyWith(
                           color:
                               isVisible.value ? Colors.white : Colors.black87,
@@ -250,20 +258,22 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         date.timeZoneOffset.inHours.toString());
                   }, onConfirm: (date) {
                     DateTime tempTime = date;
-
-                    selectedTime.value = formatTime(tempTime);
+                    selectedTime.value = tempTime.toString();
+                    print(selectedTime.value);
                   },
                       pickerModel: CustomPicker(currentTime: DateTime.now()),
                       locale: picker.LocaleType.ko);
                 },
-                child: Text(selectedTime.value,
+                child: Text(formatTime(selectedTime.value),
                     style: textTheme().bodySmall?.copyWith(fontSize: 15.sp))))
           ],
         ));
   }
 }
 
-String formatTime(DateTime date) {
+String formatTime(String dateString) {
+  DateTime utcDate = DateTime.parse(dateString).toUtc();
+  DateTime date = utcDate.add(Duration(hours: 9));
   int hour = date.hour;
   int minute = date.minute;
   String period = hour >= 12 ? "오후" : "오전";
@@ -272,4 +282,14 @@ String formatTime(DateTime date) {
     hour = 12;
   }
   return '$period ${hour.toString()}:${minute.toString().padLeft(2, '0')}';
+}
+String getMonthAndDay(String? dateString){
+  if(dateString==null){
+    return '';
+  }else{
+    DateTime utcDate = DateTime.parse(dateString).toUtc();
+    DateTime date = utcDate.add(Duration(hours: 9));
+    String formatDay = DateFormat('M월 d일').format(date);
+    return formatDay;
+  }
 }
