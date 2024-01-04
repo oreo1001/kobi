@@ -9,7 +9,7 @@ void showDeleteDialog(Event event) {
   Get.dialog(AlertDialog(
     surfaceTintColor: Colors.white,
     backgroundColor: Colors.white,
-    title: Text('다음 일정이 삭제되었습니다',
+    title: Text('다음 일정이 삭제되었습니다.',
         style: textTheme().displayLarge?.copyWith(fontSize: 18.sp)),
     content: Column(
       mainAxisSize: MainAxisSize.min,

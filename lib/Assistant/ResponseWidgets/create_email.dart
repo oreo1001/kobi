@@ -22,8 +22,6 @@ class CreateEmailState extends State<CreateEmail> {
 
   @override
   void dispose() {
-
-
     super.dispose();
     textController.dispose();
   }
@@ -44,30 +42,98 @@ class CreateEmailState extends State<CreateEmail> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          margin: EdgeInsets.fromLTRB(10.w, 20.h, 10.w, 10.h),
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border(left: BorderSide(color: Colors.lightBlue.shade300, width: 9.w)),
-            borderRadius: BorderRadius.all(Radius.circular(9.sp)), // 오른쪽 위 둥근 border
-          ),
-          width: 400.w,
+        SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 5.h),
-              Text(title, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, fontSize: 20.sp)),
-              SizedBox(height: 5.h),
-              if (emailAddress != null)
-                Text('To : $emailAddress',
-                    style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w500, fontSize: 15.sp)),
-              SizedBox(height: 15.h),
-              Text(body, style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w400, fontSize: 13.sp))
+              Padding(
+                padding: EdgeInsets.fromLTRB(10.w,30.h,10.w,20.h),
+                child: Text('고객님의 상황에 맞게 메일을 작성하였어요. 이대로 보낼까요?',
+                    style: textTheme().bodySmall?.copyWith(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    )),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.sp),
+                  border: Border.all(
+                    width: 1.w,
+                    color: Colors.grey.shade200,
+                  ),
+                ),
+                margin: EdgeInsets.symmetric(
+                    horizontal: 10.w),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 20.w, vertical: 10.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(width: 10.w),
+                        Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                            child: Text('받는사람',
+                                style:
+                                textTheme().bodySmall?.copyWith(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                ))),
+                        SizedBox(width: 5.w),
+                        Container(
+                            height: 40.h,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 10.h),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffD8EAF9),
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(13.sp)),
+                            ),
+                            child: Text(emailAddress!,
+                                style: textTheme()
+                                    .bodySmall
+                                    ?.copyWith(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ))),
+                      ],
+                    ),
+                    Divider(color: Colors.grey.shade300),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
+                      alignment: Alignment.centerLeft,
+                      child: Text(title,style: textTheme()
+                          .bodySmall
+                          ?.copyWith(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      )),
+                    ),
+                    Divider(color: Colors.grey.shade300),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
+                      alignment: Alignment.centerLeft,
+                      child: Text(body,style: textTheme()
+                          .bodySmall
+                          ?.copyWith(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      )),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-        if (assistantController.status.value == 'in_progress')
+        if (assistantController.status.value != 'in_progress')
           Row(
           children: [
             Container(

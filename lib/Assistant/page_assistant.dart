@@ -70,14 +70,13 @@ class _AssistantPageState extends State< AssistantPage> {
                 if (recorderController.responseWidgets.isNotEmpty) {
                   Future.delayed(Duration.zero).then((_) {
                     InAppNotification.show(
-                        child: Container(margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                        child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                    color: Colors.white,
                               borderRadius: BorderRadius.circular(10.r),
-                              border: Border.all(color: Colors.grey[300]!),
+                              border: Border.all(color: Colors.grey[100]!),
                             ),
-                            width: 400.w,
-                            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                    padding: EdgeInsets.fromLTRB(5.w,0,5.w,20.h),
                             child : recorderController.responseWidgets.last
                         ),
                         duration: const Duration(seconds: 60), context: context);
@@ -100,7 +99,6 @@ class _AssistantPageState extends State< AssistantPage> {
   }
 
   void requestToBackEnd(List<String> transcription) async {
-
     /// TODO
     /// 마이크가 loading으로 변하도록
 
