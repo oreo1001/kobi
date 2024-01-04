@@ -118,22 +118,28 @@ class _SendPageState extends State<SendPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(contact.name,
-                                      style: textTheme().bodySmall?.copyWith(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis),
-                                  Text(contact.emailAddress,
-                                      style: textTheme().bodySmall?.copyWith(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis),
+                                  SizedBox(
+                                    width:250.w,
+                                    child: Text(contact.name,
+                                        style: textTheme().bodySmall?.copyWith(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black87,
+                                            ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
+                                  SizedBox(
+                                    width:250.w,
+                                    child: Text(contact.emailAddress,
+                                        style: textTheme().bodySmall?.copyWith(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black87,
+                                            ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
                                   Divider(color: Colors.grey.shade200)
                                 ],
                               ),
