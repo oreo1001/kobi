@@ -83,8 +83,8 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                   ),
                   TextButton(
                     onPressed: () async{
-                      print(startDate + ' ' + selectedTime.value);
-                      print(endDate + ' ' + selectedTime2.value);
+                      print(combineDate(startDate.value, selectedTime.value));
+                      print(combineDate(endDate.value, selectedTime2.value));
                       // await httpResponse('/calendar/add', {
                       //   "summary": summaryController.text,
                       //   "location": locationController.text,
@@ -154,12 +154,12 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         SfDateRangePicker(
                           onSelectionChanged:
                               (DateRangePickerSelectionChangedArgs args) {
-                            startDate.value = args.value.startDate.toString();
-                            endDate.value = args.value.endDate.toString();
-                            print(startDate);
-                            print(endDate);
-                            // startDate.value = DateFormat('M월 d일').format(args.value.startDate);
-                            // endDate.value = DateFormat('M월 d일').format(args.value.endDate);
+                            if(args.value.startDate!=null){
+                              startDate.value = args.value.startDate.toString();
+                            }
+                            if(args.value.endDate!=null){
+                              endDate.value = args.value.endDate.toString();
+                            }
                           },
                           selectionMode: DateRangePickerSelectionMode.range,
                           initialSelectedRange: PickerDateRange(
@@ -292,4 +292,12 @@ String getMonthAndDay(String? dateString){
     String formatDay = DateFormat('M월 d일').format(date);
     return formatDay;
   }
+}
+
+DateTime combineDate(String dateString,String timeString){
+  DateTime utcDate = DateTime.parse(dateString).toUtc();
+  DateTime kstDate = utcDate.add(const Duration(hours: 9));
+  DateTime utcTime = DateTime.parse(timeString).toUtc();
+  DateTime kstTime = utcTime.add(const Duration(hours: 9));
+  return DateTime(kstDate.year,kstDate.month,kstDate.day,kstTime.hour,kstTime.minute);
 }
