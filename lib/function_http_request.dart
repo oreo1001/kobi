@@ -40,7 +40,6 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   String responseBody = utf8.decode(response.bodyBytes);
   responseMap = json.decode(responseBody);
   responseMap['statusCode'] = response.statusCode;
-
   if (uri != 'http://13.209.152.32/email/emailList' && uri != 'http://13.209.152.32/calendar/eventList') print('responseMap: $responseMap');
   return responseMap;
 }
