@@ -28,7 +28,7 @@ class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 1;
   final List <Widget> _pageList =  [
-    const AssistantPage(),
+    AssistantPage(),
     CalendarPage(),
     MailPage(),
     const UserPage(),
@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
   void _handleMessage(RemoteMessage message) {
     Map <String, dynamic> data = message.data;
     setState(() {
-      _selectedIndex = 1;
+      _selectedIndex = 0;
     });
     String type = data['type'];
     switch (type) {
@@ -56,6 +56,10 @@ class _MainPageState extends State<MainPage> {
 
   void _onItemTapped(int index) {
     setState(() {
+      if (index == 0) {
+        _pageList.removeAt(0);
+        _pageList.insert(0, AssistantPage(key: UniqueKey()));
+      }
       if (index == 1) {
         // delete previous page
         _pageList.removeAt(1);
