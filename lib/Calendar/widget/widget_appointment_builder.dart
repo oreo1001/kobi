@@ -6,47 +6,50 @@ import '../../theme.dart';
 Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails calendarAppointmentDetails) {
   final Appointment appointment = calendarAppointmentDetails.appointments.first;
 
-  return Row(
-    children: [
-      Expanded(
-        child: Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 13.w, 0),
-          height: 53.h,
-          width: 5.w,
-          decoration: BoxDecoration(
-            color: Colors.lightBlue,
-            borderRadius: BorderRadius.circular(5.sp),
+  return GestureDetector(
+    onTap: (){ print('hi');},
+    child: Row(
+      children: [
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 13.w, 0),
+            height: 53.h,
+            width: 5.w,
+            decoration: BoxDecoration(
+              color: Colors.lightBlue,
+              borderRadius: BorderRadius.circular(5.sp),
+            ),
           ),
         ),
-      ),
-      SizedBox(
-        width: calendarAppointmentDetails.bounds.width - 20.w,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              text: TextSpan(
-                text: appointment.subject,
-                style: textTheme().displaySmall?.copyWith(fontSize: 13.sp),
-              ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              softWrap: true,
-              textAlign: TextAlign.start,
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0,2.h,0,0),
-              child: Text(
-                '${formatTime(appointment.startTime)} - ${formatTime(appointment.endTime)}',
+        SizedBox(
+          width: calendarAppointmentDetails.bounds.width - 20.w,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: appointment.subject,
+                  style: textTheme().displaySmall?.copyWith(fontSize: 13.sp),
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                softWrap: true,
                 textAlign: TextAlign.start,
-                style: textTheme().bodySmall?.copyWith(fontSize: 10.sp, color: Colors.grey.shade800),
               ),
-            )
-          ],
+              Padding(
+                padding: EdgeInsets.fromLTRB(0,2.h,0,0),
+                child: Text(
+                  '${formatTime(appointment.startTime)} - ${formatTime(appointment.endTime)}',
+                  textAlign: TextAlign.start,
+                  style: textTheme().bodySmall?.copyWith(fontSize: 10.sp, color: Colors.grey.shade800),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 

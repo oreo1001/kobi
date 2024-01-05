@@ -67,15 +67,15 @@ class _UserPageState extends State<UserPage> {
               ),
             ),
             SizedBox(height : 10.h),
-            myInfoButton(() {
-              // Share.share('https://careebe.page.link/rKBn');
-              //동적 딥링크 만들기
-            },
-                "앱 공유하기",
-                textTheme().displaySmall!.copyWith(
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500)),
+            // myInfoButton(() {
+            //   // Share.share('https://careebe.page.link/rKBn');
+            //   //동적 딥링크 만들기
+            // },
+            //     "앱 공유하기",
+            //     textTheme().displaySmall!.copyWith(
+            //         fontSize: 18.sp,
+            //         color: Colors.black,
+            //         fontWeight: FontWeight.w500)),
             myInfoButton(
                     () async{
                       if (!await launchUrl(Uri.parse('https://www.notion.so/jungwon423/466000cf0e6241f8bacbb9cffc746d47'))) {

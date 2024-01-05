@@ -53,7 +53,6 @@ class _MailPageState extends State<MailPage> {
           } else {
             var threadList = snapshot.data as List<Thread>;
             threadList = filterThreadListByFilter(threadList, filter);
-            print(threadList);
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,
