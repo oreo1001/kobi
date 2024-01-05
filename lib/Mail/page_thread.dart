@@ -281,23 +281,23 @@ class _ThreadPageState extends State<ThreadPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 SizedBox(height: 10.h,),
-                TextButton(
-                  style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
-                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.fromLTRB(0,0,0,10.h)),
-                      side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.sp)))),
-                  onPressed: () {
-                    recorderController.setTranscription('${widget.currentThread.emailAddress} 메일 주소로 메일 작성해서 보내줄래?');
-                  },
-                  child: Text('커리비에게 답장 추천받기',
-                      style: textTheme().bodySmall?.copyWith(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w400,
-                          )),
-                ),
-                SizedBox(height: 10.h),
+                // TextButton(
+                //   style: ButtonStyle(
+                //       minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
+                //       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.fromLTRB(0,0,0,10.h)),
+                //       side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
+                //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(10.sp)))),
+                //   onPressed: () {
+                //     recorderController.setTranscription('${widget.currentThread.emailAddress} 메일 주소로 메일 작성해서 보내줄래?');
+                //   },
+                //   child: Text('커리비에게 답장 추천받기',
+                //       style: textTheme().bodySmall?.copyWith(
+                //             fontSize: 13.sp,
+                //             fontWeight: FontWeight.w400,
+                //           )),
+                // ),
+                // SizedBox(height: 10.h),
                 TextButton(
                   style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
