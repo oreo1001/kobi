@@ -27,4 +27,13 @@ class MyEvent {
       location: map['location'] ?? '',
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'summary': summary,
+      'startTime': DateTime.parse(startTime).toIso8601String(),
+      'endTime': DateTime.parse(endTime).toIso8601String(),
+      'description': description,
+      'location': location,
+    };
+  }
 }

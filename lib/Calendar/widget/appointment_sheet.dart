@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 
+import '../../Class/class_my_event.dart';
 import '../../function_http_request.dart';
 import '../../theme.dart';
 import 'custom_time_picker.dart';
@@ -83,14 +86,19 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                   ),
                   TextButton(
                     onPressed: () async{
-                      print(combineDate(startDate.value, selectedTime.value));
-                      print(combineDate(endDate.value, selectedTime2.value));
-                      // await httpResponse('/calendar/add', {
-                      //   "summary": summaryController.text,
-                      //   "location": locationController.text,
-                      //   "description": descriptionController.text,
-                      // });
+                      String startTimeToBack = combineDate(startDate.value, selectedTime.value).toString();
+                      String endTimeToBack = combineDate(endDate.value, selectedTime2.value).toString();
+                      MyEvent eventToBack = MyEvent(summary: summaryController.text, startTime: startTimeToBack, endTime: endTimeToBack,description: descriptionController.text,location: locationController.text);
+
+                      await httpResponse('/calendar/insertEvent', {
+                        'event' : eventToBack.toJson()
+                      });
                       Get.back();
+                      Get.snackbar(
+                        "일정", // 제목
+                        "추가하였습니다!", // 메시지
+                        snackPosition: SnackPosition.TOP, // 스낵바 위치
+                      );
                     },
                     child: Text(
                       '저장',

@@ -40,7 +40,7 @@ Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails calen
               Padding(
                 padding: EdgeInsets.fromLTRB(0,2.h,0,0),
                 child: Text(
-                  '${formatTime(appointment.startTime)} - ${formatTime(appointment.endTime)}',
+                  checkSameDay(appointment.startTime, appointment.endTime),
                   textAlign: TextAlign.start,
                   style: textTheme().bodySmall?.copyWith(fontSize: 10.sp, color: Colors.grey.shade800),
                 ),
@@ -67,10 +67,26 @@ double calculateRichTextHeight(String text, double fontSize, int maxLines) {
   return textPainter.height;
 }
 
-String formatTime(DateTime time) {
+String checkSameDay(DateTime startTime,DateTime endTime) {
+  if(startTime.day == endTime.day){
+    return '${formatTime(startTime)} - ${formatTime(endTime)}';
+  }else{
+    return '${formatDay(startTime)} - ${formatDay(endTime)}';
+  }
+}
+String formatTime(DateTime time){
   String period = time.hour >= 12 ? '오후' : '오전';
   int hour = time.hour > 12 ? time.hour - 12 : time.hour;
   String minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
-
   return '$period $hour:$minute';
+}
+String formatDay(DateTime totalDate){
+  String result = '';
+  if(totalDate.year!=DateTime.now().year){
+    result += totalDate.year.toString();
+    result += '년';
+  }
+  result += ' ${totalDate.month}월 ${totalDate.day}일 ';
+  result += formatTime(totalDate);
+  return result;
 }
