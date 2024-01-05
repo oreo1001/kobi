@@ -99,8 +99,6 @@ class _CalendarPageState extends State<CalendarPage> {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     return SfCalendar(
-                        /// 정원 추가 ///
-                        // firstDayOfWeek: 1,
                         controller: _calendarController,
                         initialSelectedDate: DateTime.now(),
                         allowedViews: const <CalendarView>[
