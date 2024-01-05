@@ -254,9 +254,9 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                 onPressed: () {
                   picker.DatePicker.showPicker(context, showTitleActions: true,
                       onChanged: (date) {
-                    print('change $date in time zone ' +
-                        date.timeZoneOffset.inHours.toString());
-                  }, onConfirm: (date) {
+                    print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                  }, theme:picker.DatePickerTheme(),
+                      onConfirm: (date) {
                     DateTime tempTime = date;
                     selectedTime.value = tempTime.toString();
                     print(selectedTime.value);

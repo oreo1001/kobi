@@ -84,13 +84,13 @@ class _AssistantPageState extends State< AssistantPage> {
                   });
                 }
 
-                /// BE 로 요청 보내는 조건
-                if (equal && readyToRequest(transcription)) {
-                  previousTranscription = List.from(transcription);
-                  Future.delayed(Duration.zero, () {
-                    requestToBackEnd(transcription);
-                  });
-                }
+                // /// BE 로 요청 보내는 조건
+                // if (equal && readyToRequest(transcription)) {
+                //   previousTranscription = List.from(transcription);
+                //   Future.delayed(Duration.zero, () {
+                //     requestToBackEnd(transcription);
+                //   });
+                // }
               return const SizedBox();}),
             const HomeWidget()
           ]),

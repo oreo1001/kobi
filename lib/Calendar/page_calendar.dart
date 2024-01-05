@@ -143,10 +143,8 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   void _showTimeScroller(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
+    Get.bottomSheet(
+       Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -195,29 +193,32 @@ class _CalendarPageState extends State<CalendarPage> {
                   minimumDate: DateTime(1902, 1, 1),
                   maximumDate: DateTime(2100, 12, 31),
                   locale: Locale('ko'),
+                  options: DatePickerOptions(itemExtent: 30.sp, perspective: 0.0001,diameterRatio: 1,backgroundColor: Colors.white),
                   scrollViewOptions: DatePickerScrollViewOptions(
                       year: ScrollViewDetailOptions(
+                        alignment: Alignment.centerLeft,
                         label: '년',
-                        margin: EdgeInsets.only(right: 20.w),
+                        margin: EdgeInsets.only(right: 50.w),
                         selectedTextStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 20.sp),
+                            textTheme().displaySmall!.copyWith(fontSize: 25.sp),
                         textStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 18.sp),
+                            textTheme().displaySmall!.copyWith(fontSize: 23.sp),
                       ),
                       month: ScrollViewDetailOptions(
+                        alignment: Alignment.centerLeft,
                         label: '월',
-                        margin: EdgeInsets.only(right: 20.w),
+                        margin: EdgeInsets.only(right: 50.w),
                         selectedTextStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 20.sp),
+                            textTheme().displaySmall!.copyWith(fontSize: 23.sp),
                         textStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 18.sp),
+                            textTheme().displaySmall!.copyWith(fontSize: 23.sp,color:Colors.grey.shade600),
                       ),
                       day: ScrollViewDetailOptions(
                         label: '일',
                         selectedTextStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 20.sp),
+                            textTheme().displaySmall!.copyWith(fontSize: 25.sp),
                         textStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 18.sp),
+                            textTheme().displaySmall!.copyWith(fontSize: 23.sp),
                       )),
                   onDateTimeChanged: (DateTime value) {
                     tempDate.value = value;
@@ -226,8 +227,7 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
             ],
           ),
-        );
-      },
+        )
     );
   }
 }
