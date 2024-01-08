@@ -1,4 +1,4 @@
-package com.example.kobi
+package com.wonmo.careebee
 
 import io.flutter.embedding.android.FlutterActivity
 
