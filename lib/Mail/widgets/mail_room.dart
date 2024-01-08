@@ -56,7 +56,7 @@ Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
             ),
             SizedBox(
               width: 225.w,
-              child: Text(messageList[messageList.length - 1].subject,
+              child: Text((messageList[messageList.length - 1].subject.trim()=='') ? '(제목 없음)' : messageList[messageList.length - 1].subject,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme()

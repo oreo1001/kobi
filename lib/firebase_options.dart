@@ -28,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -48,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCWCGJD4ueKGfno-vHh3dTEMSL42F8w10M',
-    appId: '1:372113464838:android:e06615b1b6954efec8ad87',
+    appId: '1:372113464838:android:d6a17a0e7ee05ee6c8ad87',
     messagingSenderId: '372113464838',
     projectId: 'compact-lacing-408503',
     storageBucket: 'compact-lacing-408503.appspot.com',
@@ -56,21 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAATqX3_zJBzsu0a2q9_nCzCrGs4R3xYqQ',
-    appId: '1:372113464838:ios:420f170a8cebed28c8ad87',
+    appId: '1:372113464838:ios:93df7d99b8adc368c8ad87',
     messagingSenderId: '372113464838',
     projectId: 'compact-lacing-408503',
     storageBucket: 'compact-lacing-408503.appspot.com',
     androidClientId: '372113464838-6spk4rl61l9ahjn1a7pjdo0n7mgs3q5m.apps.googleusercontent.com',
-    iosBundleId: 'com.example.kobi',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAATqX3_zJBzsu0a2q9_nCzCrGs4R3xYqQ',
-    appId: '1:372113464838:ios:319eaa2955eb7bf7c8ad87',
-    messagingSenderId: '372113464838',
-    projectId: 'compact-lacing-408503',
-    storageBucket: 'compact-lacing-408503.appspot.com',
-    androidClientId: '372113464838-6spk4rl61l9ahjn1a7pjdo0n7mgs3q5m.apps.googleusercontent.com',
-    iosBundleId: 'com.example.kobi.RunnerTests',
+    iosClientId: '372113464838-aq8pu1adst4d93qcnftapf3se8iqs7jg.apps.googleusercontent.com',
+    iosBundleId: 'com.wonmo.careebee',
   );
 }

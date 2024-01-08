@@ -86,9 +86,19 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                   ),
                   TextButton(
                     onPressed: () async{
-                      String startTimeToBack = combineDate(startDate.value, selectedTime.value).toString();
-                      String endTimeToBack = combineDate(endDate.value, selectedTime2.value).toString();
-                      MyEvent eventToBack = MyEvent(summary: summaryController.text, startTime: startTimeToBack, endTime: endTimeToBack,description: descriptionController.text,location: locationController.text);
+                      DateTime startTimeToBack = combineDate(startDate.value, selectedTime.value);
+                      DateTime endTimeToBack = combineDate(endDate.value, selectedTime2.value);
+                      if(endTimeToBack.isBefore(startTimeToBack)){
+                        Get.snackbar(
+                          "오류", // 제목
+                          "종료 시간이 시작 시간보다 이전입니다!", // 메시지
+                          backgroundColor: Colors.grey,
+                          snackPosition: SnackPosition.TOP, // 스낵바 위치
+                        );
+                        return;
+                      }
+                      MyEvent eventToBack = MyEvent(summary: summaryController.text, startTime: startTimeToBack.toString(), endTime: endTimeToBack.toString(),description: descriptionController.text,location: locationController.text);
+
 
                       await httpResponse('/calendar/insertEvent', {
                         'event' : eventToBack.toJson()
@@ -99,6 +109,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         "추가하였습니다!", // 메시지
                         snackPosition: SnackPosition.TOP, // 스낵바 위치
                       );
+                      setState(() {});
                     },
                     child: Text(
                       '저장',
@@ -164,6 +175,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                               (DateRangePickerSelectionChangedArgs args) {
                             if(args.value.startDate!=null){
                               startDate.value = args.value.startDate.toString();
+                              endDate.value = '';
                             }
                             if(args.value.endDate!=null){
                               endDate.value = args.value.endDate.toString();
@@ -171,7 +183,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                           },
                           selectionMode: DateRangePickerSelectionMode.range,
                           initialSelectedRange: PickerDateRange(
-                              selectedDate.subtract(const Duration(days: 1)),
+                              selectedDate,
                               selectedDate.add(const Duration(days: 2))),
                           todayHighlightColor: Color(0xffACCCFF),
                           startRangeSelectionColor: Color(0xff759CCC),
@@ -269,7 +281,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                     selectedTime.value = tempTime.toString();
                     print(selectedTime.value);
                   },
-                      pickerModel: CustomPicker(currentTime: DateTime.now()),
+                      pickerModel: CustomPicker(currentTime: DateTime.now().add(Duration(hours:9))),
                       locale: picker.LocaleType.ko);
                 },
                 child: Text(formatTime(selectedTime.value),
@@ -291,9 +303,9 @@ String formatTime(String dateString) {
   }
   return '$period ${hour.toString()}:${minute.toString().padLeft(2, '0')}';
 }
-String getMonthAndDay(String? dateString){
-  if(dateString==null){
-    return '';
+String getMonthAndDay(String dateString){
+  if(dateString==''){
+    return '미선택';
   }else{
     DateTime utcDate = DateTime.parse(dateString).toUtc();
     DateTime date = utcDate.add(Duration(hours: 9));
