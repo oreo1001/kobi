@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Calendar/page_calendar.dart';
 import 'package:kobi/Controller/appointment_controller.dart';
+import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Main/microphone_button.dart';
 
 import '../Assistant/Class/API_response.dart';
@@ -54,6 +55,8 @@ class _MainPageState extends State<MainPage> {
   TtsController ttsController = Get.put(TtsController());
   // 캘린더 Appointment 의존성
   AppointmentController appointmentController = Get.put(AppointmentController());
+  //메일
+  MailController mailController = Get.put(MailController());
 
   // 이전의 transcription 값 저장
   List<String> previousTranscription = [''];

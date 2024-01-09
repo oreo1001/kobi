@@ -4,11 +4,12 @@ import '../class_email.dart';
 
 List<Thread> loadThreadListFromJson(List<dynamic> jsonList) {
   var threadList = jsonList.map((json) {
+    RxList<Message> messageList = parsingMessageListFromThread(json['messages']).obs;
     return Thread(
       threadId: json['threadId'],
       emailAddress: json['emailAddress'],
       name: json['name'],
-      messages: json['messages'],
+      messages: messageList,
       labelList: json['labelList'],
     );
   }).toList();

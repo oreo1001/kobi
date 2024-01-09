@@ -85,7 +85,6 @@ class MyAppState extends State<MyApp> {
               GetPage(name: '/login', page: () => const LoginPage()),
               GetPage(name: '/loading', page: () => const LoadingPage()),
               GetPage(name: '/test', page:()=> TestPage()),
-              GetPage(name: '/sentCompleted', page:()=> SentCompleted()),
             ],
             home: FutureBuilder(      //로그인 확인하여 페이지 라우팅
               future: getUserProfile(),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:kobi/Mail/class_email.dart';
 
 import '../../theme.dart';
 import '../methods/function_mail_date.dart';
 
-Row mailRoom (Color profileColor, Thread thread, List<Message> messageList) {
+Row mailRoom (Color profileColor, Thread thread, RxList<Message> messageList) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.start,

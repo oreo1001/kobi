@@ -1,18 +1,21 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/auth_controller.dart';
+import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Dialog/invalid_email_dialog.dart';
+import 'package:kobi/Mail/widgets/page_send_completed.dart';
 
 import '../User/class_contact.dart';
 import '../function_http_request.dart';
 import '../theme.dart';
+import 'class_email.dart';
 
 class SendPage extends StatefulWidget {
-  SendPage(this.currentMail, {super.key});
-
-  String currentMail;
+  SendPage({super.key});
 
   @override
   State<SendPage> createState() => _SendPageState();
@@ -21,6 +24,7 @@ class SendPage extends StatefulWidget {
 class _SendPageState extends State<SendPage> {
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
+  MailController mailController = Get.find();
   AuthController authController = Get.find();
   List<Contact> contactList = [];
   Contact? selectedContact;
@@ -31,7 +35,7 @@ class _SendPageState extends State<SendPage> {
   void initState() {
     super.initState();
     contactList = authController.contactList;
-    sendMailAddress = widget.currentMail;
+    sendMailAddress = mailController.threadList[mailController.threadIndex.value].emailAddress;
   }
 
   @override
@@ -63,13 +67,18 @@ class _SendPageState extends State<SendPage> {
                         if (sendMailAddress == '') {
                           showInvalidEmailDialog();
                         } else {
+                          String messageId = generateRandomId(20);
+                          Message sendMessage = Message(sentByUser: true, date: DateTime.now().toString(), subject: titleController.text, body: bodyController.text, messageId: messageId, unread: false);
+                          mailController.insertMessage(sendMessage);
                           await httpResponse('/email/send', {
+                            "messageId": 'messageId',
                             "reply": true,
                             "title": titleController.text,
                             "body": bodyController.text,
                             "emailAddress": sendMailAddress
                           });
-                          Get.toNamed('/sentCompleted');
+                          Get.back();
+                          // Get.to(()=> SentCompleted(currentThread: widget.currentThread));
                         }
                       },
                       icon: Icon(Icons.send, size: 25.sp)),
@@ -250,5 +259,12 @@ class _SendPageState extends State<SendPage> {
             ],
           ),
         ));
+  }
+
+  String generateRandomId(int length) {
+    final Random _random = Random();
+    const _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    return List.generate(length, (index) => _chars[_random.nextInt(_chars.length)]).join();
   }
 }
