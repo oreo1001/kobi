@@ -39,9 +39,6 @@ import '../function_firebase_message.dart';
 import '../function_http_request.dart';
 import '../in_app_notification/in_app_notification.dart';
 
-
-
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
   @override
@@ -70,7 +67,7 @@ class _MainPageState extends State<MainPage> {
   // 저장할 AssistantController
   AssistantController assistantController = Get.put(AssistantController());
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   final List <Widget> _pageList =  [
     AssistantPage(),
     CalendarPage(),
@@ -139,11 +136,12 @@ class _MainPageState extends State<MainPage> {
           children: [
             Obx(() {
               List<String> transcription = recorderController.transcription;
-              bool equal = !const ListEquality().equals(previousTranscription, transcription);
+              List<dynamic> responseWidgets = recorderController.responseWidgets;
+              bool transcriptionChanged = !const ListEquality().equals(previousTranscription, transcription);
 
               print('@@@@@@@@@@@@@@@@@@@@ Obx 내부 @@@@@@@@@@@@@@@@@@@@');
 
-              if (recorderController.responseWidgets.isNotEmpty) {
+              if (responseWidgets.isNotEmpty) {
                 Future.delayed(Duration.zero).then((_) {
                   InAppNotification.show(
                       child: Container(
@@ -158,10 +156,14 @@ class _MainPageState extends State<MainPage> {
                       duration: const Duration(seconds: 60), context: context);
                   recorderController.responseWidgets.removeLast();
                 });
+              } else {
+                Future.delayed(Duration.zero).then((_) {
+                  InAppNotification.dismiss(context: context);
+                });
               }
 
               /// BE 로 요청 보내는 조건
-              if (equal && readyToRequest(transcription)) {
+              if (transcriptionChanged && readyToRequest(transcription)) {
                 previousTranscription = List.from(transcription);
                 Future.delayed(Duration.zero, () {
                   requestToBackEnd(transcription);

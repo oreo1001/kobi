@@ -24,7 +24,7 @@ class RecorderController extends GetxController {
 
   RxDouble decibels = 0.0.obs;
 
-  RxList responseWidgets = RxList<Widget>();
+  List<Widget> responseWidgets = [];
 
   RxBool waitingForResponse = false.obs;
 

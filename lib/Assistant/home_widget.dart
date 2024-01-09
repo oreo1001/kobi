@@ -78,60 +78,6 @@ class HomeWidget extends StatelessWidget {
                             })
                             .toList()
                             .cast<ExtensionLogInfo>(),
-                        // extensionLogInfoList: [
-                        //   ExtensionLogInfo(
-                        //       date: homeDateString('2024-01-03T14:00:00+09:00'),
-                        //       log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',
-                        //       testMail: TestMail(
-                        //           title: 'test',
-                        //           body: '내용입니다.',
-                        //           emailAddress: 'ohsimon77@naver.com',
-                        //           reply: true),
-                        //       event: MyEvent(
-                        //           eventId: 'ddd',
-                        //           summary: 'hihihihi',
-                        //           startTime: '2019-02-23T14:00:00+09:00',
-                        //           endTime: '2019-02-23T14:00:00+09:00')),
-                        //   ExtensionLogInfo(
-                        //       date: homeDateString('2024-01-03T12:00:00+09:00'),
-                        //       log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',
-                        //       testMail: TestMail(
-                        //           title: 'test',
-                        //           body: '내용입니다.',
-                        //           emailAddress: 'ohsimon77@naver.com',
-                        //           reply: false),
-                        //       event: MyEvent(
-                        //           eventId: 'ddd',
-                        //           summary: 'hihihihi',
-                        //           startTime: '2019-02-23T14:00:00+09:00',
-                        //           endTime: '2019-02-23T14:00:00+09:00')),
-                        //   ExtensionLogInfo(
-                        //       date: homeDateString('2024-01-02T14:00:00+09:00'),
-                        //       log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',
-                        //       testMail: TestMail(
-                        //           title: 'test',
-                        //           body: '내용입니다.',
-                        //           emailAddress: 'ohsimon77@naver.com',
-                        //           reply: false),
-                        //       event: MyEvent(
-                        //           eventId: 'ddd',
-                        //           summary: 'hihihihi',
-                        //           startTime: '2019-02-23T14:00:00+09:00',
-                        //           endTime: '2019-02-23T14:00:00+09:00')),
-                        //   ExtensionLogInfo(
-                        //       date: homeDateString('2024-01-02T13:00:00+09:00'),
-                        //       log: '김정모와 1월 7일 영화보기 일정 캘린더에 추가했어요!',
-                        //       testMail: TestMail(
-                        //           title: 'test',
-                        //           body: '내용입니다.',
-                        //           emailAddress: 'ohsimon77@naver.com',
-                        //           reply: false),
-                        //       event: MyEvent(
-                        //           eventId: 'ddd',
-                        //           summary: 'hihihihi',
-                        //           startTime: '2019-02-23T14:00:00+09:00',
-                        //           endTime: '2019-02-23T14:00:00+09:00')),
-                        // ]
                     ),
                   ),
                   SizedBox(
