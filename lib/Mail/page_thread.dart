@@ -98,17 +98,17 @@ class _ThreadPageState extends State<ThreadPage> {
                   return InkWell(
                     onTap: () {
                       toggleExpansion(index);
-                      final key = keys[index];
-                      final RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
-                      final Offset? position = box?.localToGlobal(Offset.zero);
-
-                      if (position != null) {
-                        _scrollController.animateTo(
-                          position.dy,
-                          duration: Duration(seconds: 1),
-                          curve: Curves.ease,
-                        );
-                      }
+                      // final key = keys[index];
+                      // final RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
+                      // final Offset? position = box?.localToGlobal(Offset.zero);
+                      //
+                      // if (position != null) {
+                      //   _scrollController.animateTo(
+                      //     position.dy,
+                      //     duration: Duration(seconds: 1),
+                      //     curve: Curves.ease,
+                      //   );
+                      // }
                       },
                     child: Padding(
                       key: keys[index],
@@ -184,7 +184,7 @@ class _ThreadPageState extends State<ThreadPage> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            messageList[index].subject,
+                                            (messageList[index].subject.trim() == '' )  ? '(제목 없음)': messageList[index].subject,
                                             style: textTheme().bodySmall?.copyWith(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w500,
@@ -232,7 +232,7 @@ class _ThreadPageState extends State<ThreadPage> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            removeNewlines(messageList[index].subject),
+                                            (messageList[index].subject.trim() == '')  ? '(제목 없음)':removeNewlines(messageList[index].subject),
                                             style: textTheme().bodySmall?.copyWith(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w500,
