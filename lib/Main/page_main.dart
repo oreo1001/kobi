@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Calendar/page_calendar.dart';
+import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:kobi/Main/microphone_button.dart';
 
 import '../Assistant/Class/API_response.dart';
@@ -39,9 +40,6 @@ import '../function_firebase_message.dart';
 import '../function_http_request.dart';
 import '../in_app_notification/in_app_notification.dart';
 
-
-
-
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
   @override
@@ -54,6 +52,8 @@ class _MainPageState extends State<MainPage> {
   RecorderController recorderController = Get.put(RecorderController());
   // Tts 의존성 주입
   TtsController ttsController = Get.put(TtsController());
+  // 캘린더 Appointment 의존성
+  AppointmentController eventController = Get.put(AppointmentController());
 
   // 이전의 transcription 값 저장
   List<String> previousTranscription = [''];

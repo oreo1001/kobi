@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kobi/Calendar/methods/function_event_date.dart';
+import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
@@ -87,6 +88,15 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                   TextButton(
                     onPressed: () async{
                       DateTime startTimeToBack = combineDate(startDate.value, selectedTime.value);
+                      if(endDate.value==''){
+                        Get.snackbar(
+                          "오류", // 제목
+                          "종료 시간을 선택해주세요!", // 메시지
+                          backgroundColor: Colors.grey,
+                          snackPosition: SnackPosition.TOP, // 스낵바 위치
+                        );
+                        return;
+                      }
                       DateTime endTimeToBack = combineDate(endDate.value, selectedTime2.value);
                       if(endTimeToBack.isBefore(startTimeToBack)){
                         Get.snackbar(
@@ -99,7 +109,8 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       }
                       MyEvent eventToBack = MyEvent(summary: summaryController.text, startTime: startTimeToBack.toString(), endTime: endTimeToBack.toString(),description: descriptionController.text,location: locationController.text);
 
-
+                      AppointmentController appointmentController = Get.find();
+                      appointmentController.myAppointments.add(appointmentController.convertMyEventToAppointment(eventToBack));
                       await httpResponse('/calendar/insertEvent', {
                         'event' : eventToBack.toJson()
                       });
