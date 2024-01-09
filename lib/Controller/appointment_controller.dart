@@ -20,12 +20,14 @@ class AppointmentController extends GetxController {
 
   Future getAppointments() async {
     Map<String, dynamic> responseMap = await httpResponse('/calendar/eventList', {});
+    List<Appointment> tempAppointments = [];
     for (Map data in responseMap['data']) {
       if (data['summary'] == 'primary' ||
           data['summary'] == 'WonMoCalendar') {
-        myAppointments.addAll(loadAppointmentsFromJson(data['eventList']));
+        tempAppointments.addAll(loadAppointmentsFromJson(data['eventList']));
       }
     }
+    myAppointments.value = tempAppointments;
   }
 
   List<Appointment> loadAppointmentsFromJson(List<dynamic> jsonList) {
@@ -43,7 +45,11 @@ class AppointmentController extends GetxController {
     }).toList();
     return newAppointments;
   }
-  void updateAppointmentFromMyEvent(MyEvent myEvent) {   //update로 바꾸면 더 좋을지도 (myAppointments.add(newAppointment);포함해서)
+  void updateAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
+    MyEvent myEvent = MyEvent.fromMap(map);
+    insertAppointmentFromMyEvent(myEvent);
+  }
+  void insertAppointmentFromMyEvent(MyEvent myEvent) {
     Appointment newAppointment = Appointment(
       startTime: DateTime.parse(myEvent.startTime),
       endTime: DateTime.parse(myEvent.endTime),
@@ -55,8 +61,5 @@ class AppointmentController extends GetxController {
     );
     myAppointments.add(newAppointment);
   }
-  void updateAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
-    MyEvent myEvent = MyEvent.fromMap(map);
-    updateAppointmentFromMyEvent(myEvent);
-  }
+  ///TODO  delete Appointment 랑 patch Appointment 구현
 }

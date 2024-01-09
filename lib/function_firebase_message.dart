@@ -91,8 +91,6 @@ Future<void> initializeAndroidForegroundMessaging(void Function(RemoteMessage) h
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
-    AppointmentController appointmentController = Get.put(AppointmentController());
-    appointmentController.updateAppointmentFromMap(message.data);
     handleMessage(message);
 
     RemoteNotification? notification = message.notification;

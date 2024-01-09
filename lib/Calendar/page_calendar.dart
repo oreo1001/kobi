@@ -19,7 +19,6 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  // Events 의존성 주입
   AppointmentController appointmentController = Get.find();
 
   final CalendarController _calendarController = CalendarController();
