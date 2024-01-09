@@ -62,19 +62,21 @@ android {
     }
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            if (keystoreProperties['storeFile'] != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-        }
-        debug{
-            signingConfig signingConfigs.debug
+            // 릴리스 빌드 서명 구성 적용
+            if (keystoreProperties['storeFile'] != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
