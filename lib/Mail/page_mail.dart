@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/auth_controller.dart';
+import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Mail/methods/match_email_to_color.dart';
 import 'package:kobi/Mail/page_thread.dart';
 import 'package:kobi/Mail/widgets/mail_room.dart';
@@ -22,37 +23,29 @@ class MailPage extends StatefulWidget {
 
 class _MailPageState extends State<MailPage> {
   AuthController authController = Get.find();
+  MailController mailController = Get.put(MailController());
   String name = '';
   String email = '';
   String photoUrl = '';
   String filter = 'WonMoMeeting 메일함';
 
-  static Future getMail() async {
-    Map<String, dynamic> responseMap =
-    await httpResponse('/email/emailList', {});
-    var emailList = loadThreadListFromJson(responseMap['emailList']);
-    return emailList;
-  }
   @override
   void initState() {
     super.initState();
     name = authController.name.value;
     email = authController.email.value;
     photoUrl = authController.photoUrl.value;
+    mailController.getThread();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getMail(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('데이터를 불러오는 중에 오류가 발생했습니다.'));
+    return Obx(() {
+      if (mailController.threadList.isEmpty) {
+        return Center(child: CircularProgressIndicator());
           } else {
-            var threadList = snapshot.data as List<Thread>;
-            threadList = filterThreadListByFilter(threadList, filter);
+            var threadList = mailController.threadList;
+            var filterThreadList = filterThreadListByFilter(threadList, filter);
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,
@@ -137,9 +130,9 @@ class _MailPageState extends State<MailPage> {
                 ),
               ),
               body: ListView.builder(
-                itemCount: threadList.length,
+                itemCount: filterThreadList.length,
                 itemBuilder: (context, index) {
-                  final thread = threadList[index];
+                  final thread = filterThreadList[index];
                   final messageList = parsingMessageListFromThread(thread.messages);
                   return GestureDetector(
                     behavior: HitTestBehavior.translucent,

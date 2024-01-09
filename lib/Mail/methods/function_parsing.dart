@@ -1,3 +1,5 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import '../class_email.dart';
 
 List<Thread> loadThreadListFromJson(List<dynamic> jsonList) {
@@ -47,8 +49,8 @@ List <String> unreadMessageIdList(List<Message> messageList) {
   return unreadMessageIdList;
 }
 
-List <Thread> filterThreadListByFilter(List<Thread> threadList, String filter) {
-  List <Thread> filteredThreadList = [];
+List<Thread> filterThreadListByFilter(RxList<Thread> threadList, String filter) {
+  List<Thread> filteredThreadList = [];
   for (var thread in threadList) {
     if (filter == '전체 메일함') {
       filteredThreadList.add(thread);

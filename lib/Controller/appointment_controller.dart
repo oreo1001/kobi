@@ -20,7 +20,6 @@ class AppointmentController extends GetxController {
 
   Future getAppointments() async {
     Map<String, dynamic> responseMap = await httpResponse('/calendar/eventList', {});
-
     for (Map data in responseMap['data']) {
       if (data['summary'] == 'primary' ||
           data['summary'] == 'WonMoCalendar') {
@@ -44,8 +43,8 @@ class AppointmentController extends GetxController {
     }).toList();
     return newAppointments;
   }
-  Appointment convertMyEventToAppointment(MyEvent myEvent) {
-    return Appointment(
+  void updateAppointmentFromMyEvent(MyEvent myEvent) {   //update로 바꾸면 더 좋을지도 (myAppointments.add(newAppointment);포함해서)
+    Appointment newAppointment = Appointment(
       startTime: DateTime.parse(myEvent.startTime),
       endTime: DateTime.parse(myEvent.endTime),
       subject: myEvent.summary,
@@ -54,10 +53,10 @@ class AppointmentController extends GetxController {
       notes: myEvent.description,
       color: Colors.lightBlue, // 색상은 예시로 lightBlue
     );
-  }
-  void updateAppointmentFromMap(Map<String, dynamic> map){
-    MyEvent myEvent = MyEvent.fromMap(map);
-    Appointment newAppointment = convertMyEventToAppointment(myEvent);
     myAppointments.add(newAppointment);
+  }
+  void updateAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
+    MyEvent myEvent = MyEvent.fromMap(map);
+    updateAppointmentFromMyEvent(myEvent);
   }
 }

@@ -110,7 +110,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       MyEvent eventToBack = MyEvent(summary: summaryController.text, startTime: startTimeToBack.toString(), endTime: endTimeToBack.toString(),description: descriptionController.text,location: locationController.text);
 
                       AppointmentController appointmentController = Get.find();
-                      appointmentController.myAppointments.add(appointmentController.convertMyEventToAppointment(eventToBack));
+                      appointmentController.updateAppointmentFromMyEvent(eventToBack);
                       await httpResponse('/calendar/insertEvent', {
                         'event' : eventToBack.toJson()
                       });
