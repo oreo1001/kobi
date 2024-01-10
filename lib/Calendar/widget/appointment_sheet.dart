@@ -49,7 +49,6 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600.h,
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -64,7 +63,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
         },
         child: SingleChildScrollView(
           child: Column(
-            //mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

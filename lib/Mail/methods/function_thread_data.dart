@@ -30,8 +30,8 @@ List<Message> parsingMessageListFromThread(List<dynamic> jsonList) {
   return messageList;
 }
 
-int unreadMessageCount(List<Message> messageList) {
-  int count = 0;
+RxInt unreadMessageCount(List<Message> messageList) {
+  RxInt count = 0.obs;
   for (var message in messageList) {
     if (message.unread) {
       count++;

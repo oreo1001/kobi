@@ -32,12 +32,17 @@ class AppointmentController extends GetxController {
 
   List<Appointment> loadAppointmentsFromJson(List<dynamic> jsonList) {
     var newAppointments = jsonList.map((json) {
-      bool isAllDay = json['isAllDay'];
+      String summary;
+      if(json['summary']==null || json['summary']=='') {
+        summary='(제목 없음)';
+      }else {
+        summary= json['summary'];
+      }
       return Appointment(
         // id : json['id'],
-        startTime: DateTime.parse(appointKSTDate(json['startTime'], isAllDay)),
-        endTime: DateTime.parse(appointKSTDate(json['endTime'], isAllDay)),
-        subject: json['summary'] ?? '',
+        startTime: DateTime.parse(appointKSTDate(json['startTime'])),
+        endTime: DateTime.parse(appointKSTEndDate(json['endTime'])),
+        subject: summary,
         isAllDay: json['isAllDay'],
         notes: json['description'],
         location: json['location'],

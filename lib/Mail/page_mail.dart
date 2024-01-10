@@ -128,32 +128,34 @@ class _MailPageState extends State<MailPage> {
                   ],
                 ),
               ),
-              body: ListView.builder(
-                itemCount: mailController.filterThreadList.length,
-                itemBuilder: (context, index) {
-                  Thread thread = mailController.filterThreadList[index];
-                  return GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      mailController.threadIndex.value = index;
-                      Get.to(() => const ThreadPage());
-                      httpResponse('/email/read', {"messageIdList": unreadMessageIdList(thread.messages)});
-                      mailController.readMessage(thread);
-                      setState(() {});
+              body: GetBuilder<MailController>(
+                  builder: (mailController) => ListView.builder(
+                    itemCount: mailController.filterThreadList.length,
+                    itemBuilder: (context, index) {
+                      Thread thread = mailController.filterThreadList[index];
+                      return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () async{
+                          mailController.threadIndex.value = index;
+                          mailController.readMessage(thread);
+                          Get.to(() => const ThreadPage());
+                          await httpResponse('/email/read', {"messageIdList": unreadMessageIdList(thread.messages)});
+                          mailController.update();
+                        },
+                        child:
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 20.w),
+                          child: Stack(
+                              children: [
+                                mailRoom(matchEmailToColor(thread.emailAddress), thread, thread.messages),
+                                /// 안 읽은 메일 개수
+                                UnreadMark(thread.messages)]
+                          ),
+                        ),
+                      );
                     },
-                    child:
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 20.w),
-                      child: Stack(
-                        children: [
-                          mailRoom(matchEmailToColor(thread.emailAddress), thread, thread.messages),
-                          /// 안 읽은 메일 개수
-                          unreadMark(thread.messages)]
-                      ),
-                    ),
-                  );
-                },
-              ),
+                  )
+              )
             );
           }
         });

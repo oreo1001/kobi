@@ -7,6 +7,7 @@ import '../Mail/methods/function_thread_data.dart';
 class MailController extends GetxController {
   RxInt threadIndex = 0.obs;
   RxList<Thread> filterThreadList =<Thread>[].obs;
+  RxInt unreadCount = 0.obs;
 
   // @override
   // void onReady() {
@@ -23,8 +24,9 @@ class MailController extends GetxController {
   }
   void readMessage(Thread thread){
     for (var i = 0; i < filterThreadList.length; i++) {
-      if (filterThreadList[i] == thread) {
+      if (filterThreadList[i].threadId == thread.threadId) {
         markAllAsRead(filterThreadList[i].messages);
+        print(filterThreadList[i].messages);
         break;
       }
     }

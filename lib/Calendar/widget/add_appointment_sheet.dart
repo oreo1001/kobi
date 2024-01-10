@@ -54,7 +54,6 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600.h,
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         color: Colors.white,

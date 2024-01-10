@@ -44,8 +44,10 @@ class _CalendarPageState extends State<CalendarPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(
-            height: 30.h,
+          Expanded(
+            child: SizedBox(
+              height: 30.h,
+            ),
           ),
           Container(
             height: 120.h,
@@ -92,7 +94,7 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           SizedBox(
-            height: 500.h,
+            height: 550.h,
             child: Obx(() {
               if (appointmentController.myAppointments.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
@@ -117,6 +119,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     dataSource:
                         getCalendarDataSource(appointmentController.myAppointments),
                     monthViewSettings: MonthViewSettings(
+                      agendaViewHeight: 250.h,
                       showAgenda: true,
                       agendaItemHeight: 70.h,
                       showTrailingAndLeadingDates: false,
