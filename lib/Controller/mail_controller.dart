@@ -8,7 +8,6 @@ import '../function_http_request.dart';
 class MailController extends GetxController {
   RxList<Thread> threadList = <Thread>[].obs;
   RxInt threadIndex = 0.obs;
-  RxInt filterThreadIndex = 0.obs;
 
   // @override
   // void onReady() {

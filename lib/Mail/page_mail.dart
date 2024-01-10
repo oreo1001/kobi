@@ -27,7 +27,8 @@ class _MailPageState extends State<MailPage> {
   String name = '';
   String email = '';
   String photoUrl = '';
-  String filter = 'WonMoMeeting 메일함';
+  RxString filter = 'WonMoMeeting 메일함'.obs;
+  RxList<Thread> filterThreadList = <Thread>[].obs;
 
   @override
   void initState() {
@@ -44,8 +45,7 @@ class _MailPageState extends State<MailPage> {
       if (mailController.threadList.isEmpty) {
         return const Center(child: CircularProgressIndicator());
           } else {
-            var filterThreadList = filterThreadListByFilter(mailController.threadList, filter);
-            mailController.threadList = filterThreadList.obs;
+            filterThreadList = filterThreadListByFilter(mailController.threadList, filter.value).obs;
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,
@@ -56,7 +56,7 @@ class _MailPageState extends State<MailPage> {
                       SizedBox(height : 30.h),
                       Padding(
                         padding: EdgeInsets.fromLTRB(10.w,0,0,0),
-                        child: Text(filter,
+                        child: Text(filter.value,
                             style: textTheme()
                                 .displayMedium
                                 ?.copyWith(fontSize: 23.sp)),
@@ -101,30 +101,23 @@ class _MailPageState extends State<MailPage> {
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
                       title: Text('WonMoMeeting 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
-                        setState(() {
-                          filter = 'WonMoMeeting 메일함';
-                        });
+                        filter.value = 'WonMoMeeting 메일함';
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
                       title: Text('전체 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
-                        setState(() {
-                          filter = '전체 메일함';
-                        });
-                      },
+                        filter.value = '전체 메일함';
+                      }
                     ),
                     ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
                       title: Text('프로모션 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
-                        setState(() {
-                          filter = '프로모션 메일함';
-                        });
+                        filter.value = '프로모션 메일함';
                       },
                     ),
-                    // 추가적인 프로필 정보를 여기에 넣으세요.
                   ],
                 ),
               ),
@@ -132,7 +125,6 @@ class _MailPageState extends State<MailPage> {
                 itemCount: filterThreadList.length,
                 itemBuilder: (context, index) {
                   Thread thread = filterThreadList[index];
-
                   return GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
