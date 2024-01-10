@@ -91,7 +91,8 @@ class _CalendarPageState extends State<CalendarPage> {
               ],
             ),
           ),
-          Expanded(
+          SizedBox(
+            height: 500.h,
             child: Obx(() {
               if (appointmentController.myAppointments.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
@@ -120,6 +121,10 @@ class _CalendarPageState extends State<CalendarPage> {
                       agendaItemHeight: 70.h,
                       showTrailingAndLeadingDates: false,
                       dayFormat: 'E',
+                        monthCellStyle: const MonthCellStyle(
+                            textStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Arial')),
                     ),
                     timeSlotViewSettings: const TimeSlotViewSettings(
                         timelineAppointmentHeight: 100),

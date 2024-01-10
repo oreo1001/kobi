@@ -4,7 +4,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../theme.dart';
 import '../class_email.dart';
-import '../methods/function_parsing.dart';
+import '../methods/function_thread_data.dart';
 
 Widget unreadMark (RxList<Message> messageList) {
   return Visibility(

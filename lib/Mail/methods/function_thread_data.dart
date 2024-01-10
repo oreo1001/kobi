@@ -67,3 +67,18 @@ List<Thread> filterThreadListByFilter(RxList<Thread> threadList, String filter) 
   }
   return filteredThreadList;
 }
+
+void markAllAsRead(List<Message> messages) {
+  for (var message in messages) {
+    if (message.unread) {
+      message = Message(
+        sentByUser: message.sentByUser,
+        date: message.date,
+        subject: message.subject,
+        body: message.body,
+        messageId: message.messageId,
+        unread: false,
+      );
+    }
+  }
+}

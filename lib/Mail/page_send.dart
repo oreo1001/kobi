@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Dialog/invalid_email_dialog.dart';
+import 'package:kobi/Mail/page_thread.dart';
 import 'package:kobi/Mail/widgets/page_send_completed.dart';
 
 import '../User/class_contact.dart';
@@ -35,7 +37,7 @@ class _SendPageState extends State<SendPage> {
   void initState() {
     super.initState();
     contactList = authController.contactList;
-    sendMailAddress = mailController.threadList[mailController.threadIndex.value].emailAddress;
+    sendMailAddress = mailController.filterThreadList[mailController.threadIndex.value].emailAddress;
   }
 
   @override
@@ -68,17 +70,19 @@ class _SendPageState extends State<SendPage> {
                           showInvalidEmailDialog();
                         } else {
                           String messageId = generateRandomId(20);
-                          Message sendMessage = Message(sentByUser: true, date: DateTime.now().toString(), subject: titleController.text, body: bodyController.text, messageId: messageId, unread: false);
+                          String nowDate = DateFormat("EEE, dd MMM yyyy HH:mm:ss Z").format(DateTime.now());
+                          Message sendMessage = Message(sentByUser: true, date: nowDate, subject: titleController.text, body: bodyController.text, messageId: messageId, unread: false);
                           mailController.insertMessage(sendMessage);
                           await httpResponse('/email/send', {
-                            "messageId": 'messageId',
+                            "messageId": messageId,
                             "reply": true,
                             "title": titleController.text,
                             "body": bodyController.text,
                             "emailAddress": sendMailAddress
                           });
-                          Get.back();
-                          // Get.to(()=> SentCompleted(currentThread: widget.currentThread));
+                          setState(() {});
+                          Get.off(()=>const ThreadPage());
+                          //Get.to(()=> SentCompleted(currentThread: mailController.filterThreadList[mailController.threadIndex.value]));
                         }
                       },
                       icon: Icon(Icons.send, size: 25.sp)),
