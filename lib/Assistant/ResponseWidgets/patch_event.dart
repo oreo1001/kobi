@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,6 +10,11 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class PatchEvent extends StatefulWidget {
+
+  final int index;
+
+  const PatchEvent({Key? key, required this.index}) : super(key: key);
+
   @override
   PatchEventState createState() => PatchEventState();
 }
@@ -20,6 +23,12 @@ class PatchEventState extends State<PatchEvent> {
   final AssistantController assistantController = Get.find();
   RecorderController recorderController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
+
+  @override
+  dispose() {
+    ttsController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

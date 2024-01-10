@@ -10,7 +10,10 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class GetFreeBusy extends StatefulWidget {
-  const GetFreeBusy({super.key});
+
+  final int index;
+
+  const GetFreeBusy({super.key, required this.index});
 
   @override
   GetFreeBusyState createState() => GetFreeBusyState();
@@ -20,6 +23,12 @@ class GetFreeBusyState extends State<GetFreeBusy> {
   final AssistantController assistantController = Get.find();
   AuthController authController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
+
+  @override
+  void initState() {
+    ttsController.dispose();
+    super.initState();
+  }
 
   String? findBusyOrNot(String? exDate) {
     if (exDate == null) {

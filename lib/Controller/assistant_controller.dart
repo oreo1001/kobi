@@ -21,4 +21,14 @@ class AssistantController extends GetxController {
     type.value = json['type'] ?? '';
     stepDetails.value = json.containsKey('step_details') ? StepDetails.fromJson(json['step_details']) : null;
   }
+
+  void printAll() {
+    print('assistantId: ${assistantId.value}');
+    print('threadId: ${threadId.value}');
+    print('runId: ${runId.value}');
+    print('status: ${status.value}');
+    print('stepId: ${stepId.value}');
+    print('type: ${type.value}');
+    print('stepDetails: ${stepDetails.value}');
+  }
 }

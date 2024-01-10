@@ -28,12 +28,13 @@ Future<Map<String, dynamic>> httpResponse(String path, Map<String, dynamic> body
   print('-----------------HTTP API 리퀘스트 보내기--------------------');
   print('uri : $uri');
   print('HTTP request body : $body');
-  print('HTTP request time : ${DateTime.now().toString().substring(0, 19)}');
+  print('HTTP request time : ${DateTime.now().toString().substring(0, 23)}');
   http.Response response = await http.post(Uri.parse(uri),
       headers: <String, String>{'Content-Type': "application/json"}, body: jsonEncode(body));
-  if (uri != 'http://13.209.152.32/email/emailList' && uri != 'http://13.209.152.32/calendar/eventList')
+  if (uri != 'http://13.209.152.32/email/emailList' && uri != 'http://13.209.152.32/calendar/eventList') {
     print('-----------------HTTP API 응답--------------------');
-  print('HTTP response time : ${DateTime.now().toString().substring(0, 19)}');
+  }
+  print('HTTP response time : ${DateTime.now().toString().substring(0, 23)}');
 
   Map<String, dynamic> responseMap;
 

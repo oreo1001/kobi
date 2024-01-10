@@ -25,6 +25,11 @@ class RecorderController extends GetxController {
   RxDouble decibels = 0.0.obs;
 
   List<Widget> responseWidgets = [];
+  RxBool mainPageBuilder = false.obs;
+
+  void toggleMainPageBuilder() {
+    mainPageBuilder.value = !mainPageBuilder.value;
+  }
 
   RxBool waitingForResponse = false.obs;
 

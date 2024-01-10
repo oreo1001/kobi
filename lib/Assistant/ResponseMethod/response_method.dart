@@ -1,5 +1,5 @@
 bool readyToRequest (List<String> transcription) {
-  if (!transcription.contains('')) {
+  if (!transcription.contains('') && !transcription.contains('error')) {
     return true;
   }
   else {

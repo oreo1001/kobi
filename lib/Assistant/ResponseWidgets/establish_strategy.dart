@@ -9,7 +9,10 @@ import '../../Controller/tts_controller.dart';
 import '../../theme.dart';
 
 class EstablishStrategy extends StatefulWidget {
-  const EstablishStrategy({ super.key});
+
+  final int index;
+
+  const EstablishStrategy({ super.key, required this.index});
 
   @override
   EstablishStrategyState createState() =>EstablishStrategyState();
@@ -20,8 +23,9 @@ class EstablishStrategyState extends State<EstablishStrategy> {
   TtsController ttsController = Get.find<TtsController>();
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    ttsController.dispose();
+    super.dispose();
   }
 
   @override

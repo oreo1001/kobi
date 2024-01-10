@@ -29,4 +29,14 @@ class AssistantResponse {
     stepDetails = json.containsKey('step_details') ? StepDetails.fromJson(json['step_details']) : null;
   }
 
+  void printAll() {
+    print('assistantId: $assistantId');
+    print('threadId: $threadId');
+    print('runId: $runId');
+    print('status: $status');
+    print('stepId: $stepId');
+    print('type: $type');
+    print('stepDetails: $stepDetails');
+  }
+
 }

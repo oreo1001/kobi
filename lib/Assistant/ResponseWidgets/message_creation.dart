@@ -9,7 +9,10 @@ import '../../Controller/tts_controller.dart';
 import '../Class/step_details.dart';
 
 class MessageCreationUI extends StatefulWidget {
-  const MessageCreationUI({super.key});
+
+  final int index;
+
+  const MessageCreationUI({super.key, required this.index});
 
   @override
   State<MessageCreationUI> createState() => _MessageCreationUIState();
@@ -17,11 +20,17 @@ class MessageCreationUI extends StatefulWidget {
 
 class _MessageCreationUIState extends State<MessageCreationUI> {
 
+  final AssistantController assistantController = Get.find();
+  TtsController ttsController = Get.find<TtsController>();
+
+  @override
+  void dispose() {
+    ttsController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    final AssistantController assistantController = Get.find();
-    TtsController ttsController = Get.find<TtsController>();
 
     for (MessageCreation messageCreation in assistantController.stepDetails.value?.messageCreation ?? []) {
       ttsController.playTTS(messageCreation.tts);

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/tts_controller.dart';
-import '../../Calendar/methods/function_event_date.dart';
 import '../../Class/class_my_event.dart';
 import '../../Controller/assistant_controller.dart';
 import '../../Controller/recorder_controller.dart';
@@ -12,7 +11,10 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class InsertEvent extends StatefulWidget {
-  const InsertEvent({super.key});
+
+  final int index;
+
+  const InsertEvent({super.key, required this.index});
 
   @override
   InsertEventState createState() => InsertEventState();
@@ -23,6 +25,12 @@ class InsertEventState extends State<InsertEvent> {
   final AssistantController assistantController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
   String? eventId = '';
+
+  @override
+  void dispose() {
+    ttsController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

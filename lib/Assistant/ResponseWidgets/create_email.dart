@@ -11,6 +11,11 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class CreateEmail extends StatefulWidget {
+
+  final int index;
+
+  const CreateEmail({Key? key, required this.index}) : super(key: key);
+
   @override
   CreateEmailState createState() => CreateEmailState();
 }
@@ -23,8 +28,9 @@ class CreateEmailState extends State<CreateEmail> {
 
   @override
   void dispose() {
-    super.dispose();
+    ttsController.dispose();
     textController.dispose();
+    super.dispose();
   }
 
   @override

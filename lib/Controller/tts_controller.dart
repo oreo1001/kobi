@@ -7,6 +7,12 @@ class TtsController extends GetxController {
   FlutterTts flutterTts = FlutterTts();
 
   @override
+  void dispose() {
+    flutterTts.stop().then((_) {super.dispose();});
+
+  }
+
+  @override
   void onInit() async {
     super.onInit();
     await flutterTts.awaitSpeakCompletion(true);
