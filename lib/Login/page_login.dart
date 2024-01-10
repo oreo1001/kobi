@@ -72,7 +72,8 @@ class _LoginPageState extends State<LoginPage> {
 
       String? token = await authController.getToken();
 
-      Get.toNamed('/loading');
+      // Get.offNamed('/loading');
+      Get.offNamed('/loading');
       Map<String, dynamic> responseMap = await httpResponse('/auth/signIn',
           {'fcmToken': token, 'authCode': serverAuthCode, 'user': googleId});
 
@@ -90,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
           authController.contactList.value =
               convertDynamicListToContactList(responseMap['contactList']);
         }
+        print('로그인 성공!');
         Get.offNamed('/main');
       }
     } catch (error) {
