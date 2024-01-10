@@ -40,8 +40,8 @@ RxInt unreadMessageCount(List<Message> messageList) {
   return count;
 }
 
-List <String> unreadMessageIdList(List<Message> messageList) {
-  List <String> unreadMessageIdList = [];
+List<String> unreadMessageIdList(List<Message> messageList) {
+  List<String> unreadMessageIdList = [];
   for (var message in messageList) {
     if (message.unread) {
       unreadMessageIdList.add(message.messageId);
@@ -81,4 +81,13 @@ void markAllAsRead(List<Message> messages) {
       );
     }
   }
+}
+RxInt unreadMessageCountFunc(List<Message> messageList) {
+  RxInt count = 0.obs;
+  for (var message in messageList) {
+    if (message.unread) {
+      count++;
+    }
+  }
+  return count;
 }

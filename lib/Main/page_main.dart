@@ -42,13 +42,13 @@ import '../function_http_request.dart';
 import '../in_app_notification/in_app_notification.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  MainPage(this.pageIndex,{super.key});
+  int pageIndex;
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-
   // Recorder 의존성 주입
   RecorderController recorderController = Get.put(RecorderController());
   // Tts 의존성 주입
@@ -124,6 +124,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
+    _selectedIndex = widget.pageIndex;
     if (Platform.isAndroid) {
       initializeAndroidForegroundMessaging(_handleMessage);
     }

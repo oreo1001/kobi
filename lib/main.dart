@@ -79,7 +79,7 @@ class MyAppState extends State<MyApp> {
                   radius: const Radius.circular(10),
                 )),
             getPages: [
-              GetPage(name: '/main', page: () => const MainPage()),
+              GetPage(name: '/main', page: () => MainPage(0)),
               GetPage(name: '/login', page: () => const LoginPage()),
               GetPage(name: '/loading', page: () => const LoadingPage()),
               GetPage(name: '/test', page:()=> TestPage()),
@@ -95,7 +95,7 @@ class MyAppState extends State<MyApp> {
                   if (isLogged == null || !isLogged) {
                     return const LoginPage();
                   } else {
-                    return const MainPage();
+                    return MainPage(0);
                   }
                 }
               }

@@ -17,15 +17,14 @@ String homeDateString(String dateString) {
   final DateFormat timeFormat = DateFormat('a h:mm', 'ko_KR');
   final DateFormat dateFormat = DateFormat('M월 d일');
   DateTime dateTime = DateTime.parse(dateString).toUtc();
-  DateTime kstDate = dateTime.add(const Duration(hours: 9));
   DateTime now = DateTime.now();
 
   if (dateTime.year == now.year && dateTime.month == now.month && dateTime.day == now.day) {
     // 오늘인 경우
-    return timeFormat.format(kstDate);
+    return timeFormat.format(dateTime);
   } else {
     // 이전인 경우
-    return dateFormat.format(kstDate);
+    return dateFormat.format(dateTime);
   }
 }
 
@@ -33,15 +32,14 @@ String mailDateString(String dateString) {
   final DateFormat timeFormat = DateFormat('a h:mm');
   final DateFormat dateFormat = DateFormat('M월 d일');
   DateTime dateTime = parseDateTime(dateString);
-  DateTime kstDate = dateTime.add(const Duration(hours: 9));
   DateTime now = DateTime.now();
 
   if (dateTime.year == now.year && dateTime.month == now.month && dateTime.day == now.day) {
     // 오늘인 경우
-    return timeFormat.format(kstDate);
+    return timeFormat.format(dateTime);
   } else {
     // 이전인 경우
-    return dateFormat.format(kstDate);
+    return dateFormat.format(dateTime);
   }
 }
 

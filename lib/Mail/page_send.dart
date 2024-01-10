@@ -81,8 +81,7 @@ class _SendPageState extends State<SendPage> {
                             "emailAddress": sendMailAddress
                           });
                           setState(() {});
-                          Get.off(()=>const ThreadPage());
-                          //Get.to(()=> SentCompleted(currentThread: mailController.filterThreadList[mailController.threadIndex.value]));
+                          Get.to(()=> const SentCompleted());
                         }
                       },
                       icon: Icon(Icons.send, size: 25.sp)),

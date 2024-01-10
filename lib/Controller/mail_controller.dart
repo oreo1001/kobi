@@ -7,12 +7,10 @@ import '../Mail/methods/function_thread_data.dart';
 class MailController extends GetxController {
   RxInt threadIndex = 0.obs;
   RxList<Thread> filterThreadList =<Thread>[].obs;
-  RxInt unreadCount = 0.obs;
+  RxInt unreadMessageCount = 0.obs;
 
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  //   getAppointments(); // 페이지 로드될 때 데이터 로드
+  // void updateUnreadMessageCount(List<Message> messageList) {
+  //   unreadMessageCount.value = unreadMessageCountFunc(messageList);
   // }
   void insertMessage(Message message) {
     int index = filterThreadList.indexWhere((thread) => thread.threadId == filterThreadList[threadIndex.value].threadId);
@@ -26,18 +24,8 @@ class MailController extends GetxController {
     for (var i = 0; i < filterThreadList.length; i++) {
       if (filterThreadList[i].threadId == thread.threadId) {
         markAllAsRead(filterThreadList[i].messages);
-        print(filterThreadList[i].messages);
         break;
       }
     }
-  }
-  int unreadMessageCount(List<Message> messageList) {
-    int count = 0;
-    for (var message in messageList) {
-      if (message.unread) {
-        count++;
-      }
-    }
-    return count;
   }
 }

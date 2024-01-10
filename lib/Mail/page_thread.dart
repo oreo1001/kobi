@@ -30,6 +30,12 @@ class _ThreadPageState extends State<ThreadPage> {
   @override
   void initState() {
     super.initState();
+    sentUsername =
+        mailController.filterThreadList[mailController.threadIndex.value].name;
+    messageList = mailController
+        .filterThreadList[mailController.threadIndex.value].messages;
+    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
+    isExpandedList = List.filled(messageList.length, false);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
@@ -49,12 +55,6 @@ class _ThreadPageState extends State<ThreadPage> {
 
   @override
   Widget build(BuildContext context) {
-    sentUsername =
-        mailController.filterThreadList[mailController.threadIndex.value].name;
-    messageList = mailController
-        .filterThreadList[mailController.threadIndex.value].messages;
-    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
-    isExpandedList = List.filled(messageList.length, false);
     return Stack(
       children: [
         Scaffold(
