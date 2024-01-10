@@ -34,6 +34,7 @@ class AppointmentController extends GetxController {
     var newAppointments = jsonList.map((json) {
       bool isAllDay = json['isAllDay'];
       return Appointment(
+        // id : json['id'],
         startTime: DateTime.parse(appointKSTDate(json['startTime'], isAllDay)),
         endTime: DateTime.parse(appointKSTDate(json['endTime'], isAllDay)),
         subject: json['summary'] ?? '',
@@ -47,9 +48,6 @@ class AppointmentController extends GetxController {
   }
   void updateAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
     MyEvent myEvent = MyEvent.fromMap(map);
-    insertAppointmentFromMyEvent(myEvent);
-  }
-  void insertAppointmentFromMyEvent(MyEvent myEvent) {
     Appointment newAppointment = Appointment(
       startTime: DateTime.parse(myEvent.startTime),
       endTime: DateTime.parse(myEvent.endTime),
@@ -61,5 +59,21 @@ class AppointmentController extends GetxController {
     );
     myAppointments.add(newAppointment);
   }
-  ///TODO  delete Appointment 랑 patch Appointment 구현
+
+  void updateAppointment(Appointment myAppointment) {
+    int index = myAppointments.indexWhere((appointment) => appointment.id == myAppointment.id);
+    print(index);
+    if (index != -1) {
+      myAppointments[index] = Appointment(
+        startTime: myAppointment.startTime,
+        endTime: myAppointment.endTime,
+        subject: myAppointment.subject,
+        id: myAppointment.id,
+        location: myAppointment.location,
+        notes: myAppointment.notes,
+        color: Colors.lightBlue,
+      );
+    }
+  }
+  ///TODO  delete Appointment 구현
 }

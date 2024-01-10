@@ -8,7 +8,7 @@ import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../theme.dart';
-import 'widget/appointment_sheet.dart';
+import 'widget/add_appointment_sheet.dart';
 import 'methods/get_calendar_source.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -78,7 +78,7 @@ class _CalendarPageState extends State<CalendarPage> {
                           isScrollControlled: true,
                           FractionallySizedBox(
                               heightFactor: 0.8,
-                              child: AppointmentSheet(
+                              child: AddAppointmentSheet(
                                   selectedDate: _selectedDate)));
                     },
                     style: TextButton.styleFrom(

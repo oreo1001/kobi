@@ -13,7 +13,7 @@ class DescribeUserQuery extends StatefulWidget {
 }
 
 class DescribeUserQueryState extends State<DescribeUserQuery> {
-  TextEditingController textController = TextEditingController();
+  final textController = TextEditingController();
   final AssistantController assistantController = Get.find();
   RecorderController recorderController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
