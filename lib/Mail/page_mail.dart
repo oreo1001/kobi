@@ -28,9 +28,15 @@ class _MailPageState extends State<MailPage> {
   String filter = 'WonMoMeeting 메일함';
 
   static Future getMail() async {
-    Map<String, dynamic> responseMap =
-    await httpResponse('/email/emailList', {});
+    DateTime now = DateTime.now();
+
+    Map<String, dynamic> responseMap = await httpResponse('/email/emailList', {});
+    DateTime after = DateTime.now();
+
+    print('/email/emailList API 응답 시간 : ${after.difference(now).inMilliseconds}ms');
+
     var emailList = loadThreadListFromJson(responseMap['emailList']);
+
     return emailList;
   }
   @override
@@ -51,8 +57,18 @@ class _MailPageState extends State<MailPage> {
           } else if (snapshot.hasError) {
             return const Center(child: Text('데이터를 불러오는 중에 오류가 발생했습니다.'));
           } else {
+            DateTime after = DateTime.now();
+            print('/email/emailList API 응답 시간 : ${after.difference(after).inMilliseconds}ms');
+
             var threadList = snapshot.data as List<Thread>;
             threadList = filterThreadListByFilter(threadList, filter);
+
+            // addPostFrameCallback을 사용하여 랜더링 완료 시간 측정
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              DateTime buildEndTime = DateTime.now();
+              print('Mail Page 렌더링 시간 : ${buildEndTime.difference(after).inMilliseconds}ms');
+            });
+
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,
@@ -163,6 +179,8 @@ class _MailPageState extends State<MailPage> {
               ),
             );
           }
+
         });
+
   }
 }
