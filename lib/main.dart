@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Main/page_main.dart';
 import 'package:get/get.dart';
+import 'Controller/appointment_controller.dart';
 import 'Test/test_page.dart';
 import 'Login/loading_page.dart';
 import 'Mail/widgets/page_send_completed.dart';
@@ -84,7 +85,6 @@ class MyAppState extends State<MyApp> {
               GetPage(name: '/login', page: () => const LoginPage()),
               GetPage(name: '/loading', page: () => const LoadingPage()),
               GetPage(name: '/test', page:()=> TestPage()),
-              GetPage(name: '/sentCompleted', page:()=> SentCompleted()),
             ],
             home: FutureBuilder(      //로그인 확인하여 페이지 라우팅
               future: getUserProfile(),

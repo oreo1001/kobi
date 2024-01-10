@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kobi/Calendar/page_calendar.dart';
+import 'package:kobi/Controller/appointment_controller.dart';
+import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Main/microphone_button.dart';
 
 import '../Assistant/Class/API_response.dart';
@@ -51,6 +53,10 @@ class _MainPageState extends State<MainPage> {
   RecorderController recorderController = Get.put(RecorderController());
   // Tts 의존성 주입
   TtsController ttsController = Get.put(TtsController());
+  // 캘린더 Appointment 의존성
+  AppointmentController appointmentController = Get.put(AppointmentController());
+  //메일
+  MailController mailController = Get.put(MailController());
 
   // 이전의 transcription 값 저장
   List<String> previousTranscription = [''];
@@ -84,6 +90,7 @@ class _MainPageState extends State<MainPage> {
     switch (type) {
       case 'insert_event':
         showEventDialog(MyEvent.fromMap(data));
+        appointmentController.updateAppointmentFromMap(message.data);
         break;
       case 'update_event':
         showUpdateEventDialog(MyEvent.fromMap(jsonDecode(data["before_event"])), MyEvent.fromMap(jsonDecode(data["after_event"])));
@@ -273,8 +280,6 @@ class _MainPageState extends State<MainPage> {
       }
       apiResponseMap = await httpResponse('/assistant/step', apiRequestMap);
     }
-
-
     /// 마이크 대기 상태로 변하도록
     recorderController.waitingForResponse.value = false;
 
@@ -283,7 +288,6 @@ class _MainPageState extends State<MainPage> {
 
   /// #3. BackEnd에서 받은 응답을 가지고 currentScreen을 변경
   void switchWidget() async {
-
     /// recorderController의 responseWidgets 초기화
     recorderController.responseWidgets.clear();
 

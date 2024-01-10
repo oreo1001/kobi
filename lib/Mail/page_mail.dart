@@ -3,14 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/auth_controller.dart';
+import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Mail/methods/match_email_to_color.dart';
 import 'package:kobi/Mail/page_thread.dart';
 import 'package:kobi/Mail/widgets/mail_room.dart';
 import 'package:kobi/Mail/widgets/unread_mark.dart';
 
-import 'class_email.dart';
 import '../function_http_request.dart';
 import '../theme.dart';
+import 'class_email.dart';
 import 'methods/function_parsing.dart';
 
 class MailPage extends StatefulWidget {
@@ -22,53 +23,29 @@ class MailPage extends StatefulWidget {
 
 class _MailPageState extends State<MailPage> {
   AuthController authController = Get.find();
+  MailController mailController = Get.find();
   String name = '';
   String email = '';
   String photoUrl = '';
-  String filter = 'WonMoMeeting 메일함';
+  RxString filter = 'WonMoMeeting 메일함'.obs;
+  RxList<Thread> filterThreadList = <Thread>[].obs;
 
-  static Future getMail() async {
-    DateTime now = DateTime.now();
-
-    Map<String, dynamic> responseMap = await httpResponse('/email/emailList', {});
-    DateTime after = DateTime.now();
-
-    print('/email/emailList API 응답 시간 : ${after.difference(now).inMilliseconds}ms');
-
-    var emailList = loadThreadListFromJson(responseMap['emailList']);
-
-    return emailList;
-  }
   @override
   void initState() {
     super.initState();
     name = authController.name.value;
     email = authController.email.value;
     photoUrl = authController.photoUrl.value;
+    mailController.getThread();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getMail(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('데이터를 불러오는 중에 오류가 발생했습니다.'));
+    return Obx(() {
+      if (mailController.threadList.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
           } else {
-            DateTime after = DateTime.now();
-            print('/email/emailList API 응답 시간 : ${after.difference(after).inMilliseconds}ms');
-
-            var threadList = snapshot.data as List<Thread>;
-            threadList = filterThreadListByFilter(threadList, filter);
-
-            // addPostFrameCallback을 사용하여 랜더링 완료 시간 측정
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              DateTime buildEndTime = DateTime.now();
-              print('Mail Page 렌더링 시간 : ${buildEndTime.difference(after).inMilliseconds}ms');
-            });
-
+            filterThreadList = filterThreadListByFilter(mailController.threadList, filter.value).obs;
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,
@@ -79,7 +56,7 @@ class _MailPageState extends State<MailPage> {
                       SizedBox(height : 30.h),
                       Padding(
                         padding: EdgeInsets.fromLTRB(10.w,0,0,0),
-                        child: Text(filter,
+                        child: Text(filter.value,
                             style: textTheme()
                                 .displayMedium
                                 ?.copyWith(fontSize: 23.sp)),
@@ -124,44 +101,36 @@ class _MailPageState extends State<MailPage> {
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
                       title: Text('WonMoMeeting 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
-                        setState(() {
-                          filter = 'WonMoMeeting 메일함';
-                        });
+                        filter.value = 'WonMoMeeting 메일함';
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
                       title: Text('전체 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
-                        setState(() {
-                          filter = '전체 메일함';
-                        });
-                      },
+                        filter.value = '전체 메일함';
+                      }
                     ),
                     ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
                       title: Text('프로모션 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
-                        setState(() {
-                          filter = '프로모션 메일함';
-                        });
+                        filter.value = '프로모션 메일함';
                       },
                     ),
-
-                    // 추가적인 프로필 정보를 여기에 넣으세요.
                   ],
                 ),
               ),
               body: ListView.builder(
-                itemCount: threadList.length,
+                itemCount: filterThreadList.length,
                 itemBuilder: (context, index) {
-                  final thread = threadList[index];
-                  final messageList = parsingMessageListFromThread(thread.messages);
+                  Thread thread = filterThreadList[index];
                   return GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      Get.to(() => ThreadPage(thread));
-                      httpResponse('/email/read', {"messageIdList": unreadMessageIdList(messageList)});
+                      mailController.threadIndex.value = index;
+                      Get.to(() => const ThreadPage());
+                      httpResponse('/email/read', {"messageIdList": unreadMessageIdList(thread.messages)});
                       setState(() {});
                     },
                     child:
@@ -169,9 +138,9 @@ class _MailPageState extends State<MailPage> {
                       padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 20.w),
                       child: Stack(
                         children: [
-                          mailRoom(matchEmailToColor(thread.emailAddress), thread, messageList),
+                          mailRoom(matchEmailToColor(thread.emailAddress), thread, thread.messages),
                           /// 안 읽은 메일 개수
-                          unreadMark(messageList)]
+                          unreadMark(thread.messages)]
                       ),
                     ),
                   );
@@ -179,8 +148,6 @@ class _MailPageState extends State<MailPage> {
               ),
             );
           }
-
         });
-
   }
 }

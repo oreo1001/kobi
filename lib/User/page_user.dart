@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Class/secure_storage.dart';
 import '../Controller/auth_controller.dart';
+import '../Test/test_page.dart';
 import '../theme.dart';
 import 'Widgets/my_info_button.dart';
 
@@ -113,6 +114,15 @@ class _UserPageState extends State<UserPage> {
                   _handleSignOut();
                 },
                 "로그아웃",
+                textTheme().displaySmall!.copyWith(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500)),
+            myInfoButton(
+                    () {
+                  Get.to(TestPage());
+                },
+                "테스트ㅇㅇㅇ",
                 textTheme().displaySmall!.copyWith(
                     fontSize: 18.sp,
                     color: Colors.black,

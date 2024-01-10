@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kobi/Calendar/widget/widget_appointment_builder.dart';
+import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../theme.dart';
 import 'widget/appointment_sheet.dart';
 import 'methods/get_calendar_source.dart';
-import 'methods/json_to_appointment.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -19,6 +19,8 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  AppointmentController appointmentController = Get.find();
+
   final CalendarController _calendarController = CalendarController();
   DateTime _selectedDate = DateTime.now();
   Rx<DateTime> tempDate = DateTime.now().obs;
@@ -29,13 +31,15 @@ class _CalendarPageState extends State<CalendarPage> {
     super.initState();
     var now = DateTime.now();
     _headerText.value = DateFormat('yyyy년 M월').format(now);
+    appointmentController.getAppointments();
   }
 
   @override
   Widget build(BuildContext context) {
     _calendarController.displayDate = _selectedDate; //달력 보여주는 날짜
     _calendarController.selectedDate = _selectedDate; //달력에서 선택된 날짜
-    _headerText.value = DateFormat('yyyy년 M월').format(_selectedDate); //2023년 12월
+    _headerText.value =
+        DateFormat('yyyy년 M월').format(_selectedDate); //2023년 12월
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -56,7 +60,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     },
                     child: Row(
                       children: [
-                        Obx(()=>Text(_headerText.value,
+                        Obx(() => Text(_headerText.value,
                             style: textTheme()
                                 .displaySmall
                                 ?.copyWith(fontSize: 23.sp))),
@@ -71,10 +75,11 @@ class _CalendarPageState extends State<CalendarPage> {
                 TextButton(
                     onPressed: () {
                       Get.bottomSheet(
-                        isScrollControlled : true,
+                          isScrollControlled: true,
                           FractionallySizedBox(
                               heightFactor: 0.8,
-                              child : AppointmentSheet(selectedDate: _selectedDate)));
+                              child: AppointmentSheet(
+                                  selectedDate: _selectedDate)));
                     },
                     style: TextButton.styleFrom(
                       minimumSize: Size.zero,
@@ -87,52 +92,50 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           Expanded(
-            child: FutureBuilder(
-                future: getEvents(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return SfCalendar(
-                        controller: _calendarController,
-                        initialSelectedDate: DateTime.now(),
-                        allowedViews: const <CalendarView>[
-                          CalendarView.month,
-                          // CalendarView.week,
-                          // CalendarView.day,
-                        ],
-                        onViewChanged: (ViewChangedDetails details) {
-                          _headerText.value =DateFormat('yyyy년 M월').format(details.visibleDates[0]);
-                        },
-                        selectionDecoration: BoxDecoration(
-                          color: const Color(0x88ACCCFF),
-                          borderRadius: BorderRadius.all(Radius.circular(4.sp)),
-                          shape: BoxShape.rectangle,
-                        ),
-                        dataSource: getCalendarDataSource(snapshot.data!),
-                        monthViewSettings: MonthViewSettings(
-                          showAgenda: true,
-                          agendaItemHeight: 70.h,
-                          showTrailingAndLeadingDates: false,
-                          dayFormat: 'E',
-                        ),
-                        timeSlotViewSettings: const TimeSlotViewSettings(
-                            timelineAppointmentHeight: 100),
-                        appointmentBuilder: appointmentBuilder,
-                        view: CalendarView.month,
-                        cellBorderColor: Colors.transparent,
-                        headerHeight: 0,
-                        viewHeaderHeight: 40.h,
-                        todayHighlightColor: const Color(0xff759CCC),
-                        appointmentTimeTextFormat: 'HH:mm',
-                        allowDragAndDrop: true
-                        // monthViewSettings: const MonthViewSettings(
-                        //     appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
-                        );
-                  }
-                }),
+            child: Obx(() {
+              if (appointmentController.myAppointments.isEmpty) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return SfCalendar(
+                    controller: _calendarController,
+                    initialSelectedDate: DateTime.now(),
+                    allowedViews: const <CalendarView>[
+                      CalendarView.month,
+                      // CalendarView.week,
+                      // CalendarView.day,
+                    ],
+                    onViewChanged: (ViewChangedDetails details) {
+                      _headerText.value = DateFormat('yyyy년 M월')
+                          .format(details.visibleDates[0]);
+                    },
+                    selectionDecoration: BoxDecoration(
+                      color: const Color(0x88ACCCFF),
+                      borderRadius: BorderRadius.all(Radius.circular(4.sp)),
+                      shape: BoxShape.rectangle,
+                    ),
+                    dataSource:
+                        getCalendarDataSource(appointmentController.myAppointments),
+                    monthViewSettings: MonthViewSettings(
+                      showAgenda: true,
+                      agendaItemHeight: 70.h,
+                      showTrailingAndLeadingDates: false,
+                      dayFormat: 'E',
+                    ),
+                    timeSlotViewSettings: const TimeSlotViewSettings(
+                        timelineAppointmentHeight: 100),
+                    appointmentBuilder: appointmentBuilder,
+                    view: CalendarView.month,
+                    cellBorderColor: Colors.transparent,
+                    headerHeight: 0,
+                    viewHeaderHeight: 40.h,
+                    todayHighlightColor: const Color(0xff759CCC),
+                    appointmentTimeTextFormat: 'HH:mm',
+                    allowDragAndDrop: true
+                    // monthViewSettings: const MonthViewSettings(
+                    //     appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+                    );
+              }
+            }),
           ),
         ],
       ),
@@ -140,91 +143,92 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   void _showTimeScroller(BuildContext context) {
-    Get.bottomSheet(
-       Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30.sp),
-              topLeft: Radius.circular(30.sp),
+    Get.bottomSheet(Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30.sp),
+          topLeft: Radius.circular(30.sp),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // 버튼들을 양쪽 끝으로 배치
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Get.back(); // '취소' 버튼을 누르면 모달 시트를 닫음
+                  },
+                  child: Text(
+                    '취소',
+                    style: textTheme().displaySmall?.copyWith(fontSize: 17.sp),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedDate = tempDate.value;
+                      Get.back();
+                    });
+                  },
+                  child: Text(
+                    '완료',
+                    style: textTheme().displaySmall?.copyWith(fontSize: 17.sp),
+                  ),
+                ),
+              ],
             ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // 버튼들을 양쪽 끝으로 배치
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Get.back(); // '취소' 버튼을 누르면 모달 시트를 닫음
-                      },
-                      child: Text(
-                        '취소',
-                        style:
-                            textTheme().displaySmall?.copyWith(fontSize: 17.sp),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _selectedDate = tempDate.value;
-                          Get.back();
-                        });
-                      },
-                      child: Text(
-                        '완료',
-                        style:
-                            textTheme().displaySmall?.copyWith(fontSize: 17.sp),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 250.h,
-                child: ScrollDatePicker(
-                  selectedDate: _selectedDate,
-                  minimumDate: DateTime(1902, 1, 1),
-                  maximumDate: DateTime(2100, 12, 31),
-                  locale: Locale('ko'),
-                  options: DatePickerOptions(itemExtent: 30.sp, perspective: 0.0001,diameterRatio: 1,backgroundColor: Colors.white),
-                  scrollViewOptions: DatePickerScrollViewOptions(
-                      year: ScrollViewDetailOptions(
-                        alignment: Alignment.centerLeft,
-                        label: '년',
-                        margin: EdgeInsets.only(right: 50.w),
-                        selectedTextStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 25.sp),
-                        textStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 23.sp),
-                      ),
-                      month: ScrollViewDetailOptions(
-                        alignment: Alignment.centerLeft,
-                        label: '월',
-                        margin: EdgeInsets.only(right: 50.w),
-                        selectedTextStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 23.sp),
-                        textStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 23.sp,color:Colors.grey.shade600),
-                      ),
-                      day: ScrollViewDetailOptions(
-                        label: '일',
-                        selectedTextStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 25.sp),
-                        textStyle:
-                            textTheme().displaySmall!.copyWith(fontSize: 23.sp),
-                      )),
-                  onDateTimeChanged: (DateTime value) {
-                    tempDate.value = value;
-                  },
-                ),
-              ),
-            ],
+          SizedBox(
+            height: 250.h,
+            child: ScrollDatePicker(
+              selectedDate: _selectedDate,
+              minimumDate: DateTime(1902, 1, 1),
+              maximumDate: DateTime(2100, 12, 31),
+              locale: Locale('ko'),
+              options: DatePickerOptions(
+                  itemExtent: 30.sp,
+                  perspective: 0.0001,
+                  diameterRatio: 1,
+                  backgroundColor: Colors.white),
+              scrollViewOptions: DatePickerScrollViewOptions(
+                  year: ScrollViewDetailOptions(
+                    alignment: Alignment.centerLeft,
+                    label: '년',
+                    margin: EdgeInsets.only(right: 50.w),
+                    selectedTextStyle:
+                        textTheme().displaySmall!.copyWith(fontSize: 25.sp),
+                    textStyle:
+                        textTheme().displaySmall!.copyWith(fontSize: 23.sp),
+                  ),
+                  month: ScrollViewDetailOptions(
+                    alignment: Alignment.centerLeft,
+                    label: '월',
+                    margin: EdgeInsets.only(right: 50.w),
+                    selectedTextStyle:
+                        textTheme().displaySmall!.copyWith(fontSize: 23.sp),
+                    textStyle: textTheme()
+                        .displaySmall!
+                        .copyWith(fontSize: 23.sp, color: Colors.grey.shade600),
+                  ),
+                  day: ScrollViewDetailOptions(
+                    label: '일',
+                    selectedTextStyle:
+                        textTheme().displaySmall!.copyWith(fontSize: 25.sp),
+                    textStyle:
+                        textTheme().displaySmall!.copyWith(fontSize: 23.sp),
+                  )),
+              onDateTimeChanged: (DateTime value) {
+                tempDate.value = value;
+              },
+            ),
           ),
-        )
-    );
+        ],
+      ),
+    ));
   }
 }
