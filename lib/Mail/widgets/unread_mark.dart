@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../theme.dart';
 import '../class_email.dart';
 import '../methods/function_parsing.dart';
 
-Widget unreadMark (List<Message> messageList) {
+Widget unreadMark (RxList<Message> messageList) {
   return Visibility(
     visible: unreadMessageCount(messageList)==0 ? false : true,
     child: Positioned(

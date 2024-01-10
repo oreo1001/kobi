@@ -7,6 +7,7 @@ import '../function_http_request.dart';
 
 class MailController extends GetxController {
   RxList<Thread> threadList = <Thread>[].obs;
+  RxInt threadIndex = 0.obs;
 
   // @override
   // void onReady() {
@@ -16,5 +17,13 @@ class MailController extends GetxController {
   Future getThread() async {
     Map<String, dynamic> responseMap = await httpResponse('/email/emailList', {});
     threadList.value = loadThreadListFromJson(responseMap['emailList']);
+  }
+  void insertMessage(Message message) {
+    int index = threadList.indexWhere((thread) => thread.threadId == threadList[threadIndex.value].threadId);
+    if (index != -1) {
+      threadList[index].messages.add(message);
+    } else {
+      print('Thread not found');
+    }
   }
 }

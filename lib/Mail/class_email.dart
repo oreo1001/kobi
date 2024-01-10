@@ -1,9 +1,12 @@
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 class Thread {
   final String threadId;
   final String emailAddress;
   final String name;
   final List<dynamic> labelList;
-  final List<dynamic> messages;
+  //final List<dynamic> messages;
+  final RxList<Message> messages;
 
   Thread({
     required this.threadId,

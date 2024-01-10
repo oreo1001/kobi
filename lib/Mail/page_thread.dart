@@ -3,34 +3,36 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
 import 'package:kobi/Mail/page_send.dart';
 
 import 'class_email.dart';
 import '../theme.dart';
 import 'methods/function_mail_date.dart';
-import 'methods/function_parsing.dart';
 
 class ThreadPage extends StatefulWidget {
-  const ThreadPage(this.currentThread, {super.key});
-
-  final Thread currentThread;
+  const ThreadPage({super.key});
 
   @override
   State<ThreadPage> createState() => _ThreadPageState();
 }
 
 class _ThreadPageState extends State<ThreadPage> {
-  List<Message> messageList = [];
+  RxList<Message> messageList = <Message>[].obs;
   List<bool> isExpandedList = [];
+  MailController mailController = Get.find();
   final ScrollController _scrollController = ScrollController();
   RecorderController recorderController = Get.find();
   List<GlobalKey> keys = [];
+  String sentUsername = '';
+
 
   @override
   void initState() {
     super.initState();
-    messageList = parsingMessageListFromThread(widget.currentThread.messages);
+    sentUsername = mailController.threadList[mailController.threadIndex.value].name;
+    messageList = mailController.threadList[mailController.threadIndex.value].messages;
     keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
     isExpandedList = List.filled(messageList.length, false);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -78,7 +80,7 @@ class _ThreadPageState extends State<ThreadPage> {
                       padding: EdgeInsets.fromLTRB(0, 0, 0, 3.h),
                       child: SizedBox(
                         width:310.w,
-                        child : Text(' ${widget.currentThread.name}',
+                        child : Text(sentUsername,
                           overflow: TextOverflow.fade,
                           style: textTheme()
                               .displaySmall
@@ -130,7 +132,7 @@ class _ThreadPageState extends State<ThreadPage> {
                                   TextSpan(
                                     text: messageList[index].sentByUser
                                         ? ''
-                                        : widget.currentThread.name,
+                                        : sentUsername,
                                     style: textTheme()
                                         .displayMedium
                                         ?.copyWith(fontSize: 16.sp),
@@ -305,7 +307,7 @@ class _ThreadPageState extends State<ThreadPage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.sp)))),
                   onPressed: () {
-                    Get.to(() => SendPage(widget.currentThread.emailAddress));
+                    Get.to(() => SendPage());
                   },
                   child: Text(
                     '메일 쓰기',
