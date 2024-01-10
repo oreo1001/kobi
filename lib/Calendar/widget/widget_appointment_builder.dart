@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../theme.dart';
+import 'add_appointment_sheet.dart';
+import 'appointment_sheet.dart';
 
-Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails calendarAppointmentDetails) {
+Widget appointmentBuilder(BuildContext context,
+    CalendarAppointmentDetails calendarAppointmentDetails) {
   final Appointment appointment = calendarAppointmentDetails.appointments.first;
 
   return GestureDetector(
-    onTap: (){ print('hi');},
+    behavior: HitTestBehavior.translucent,
+    onTap: () {
+      Get.bottomSheet(
+          isScrollControlled: true,
+          FractionallySizedBox(
+              heightFactor: 0.8,
+              child: AppointmentSheet(
+                appointment: appointment,
+              )));
+    },
     child: Row(
       children: [
         Expanded(
@@ -38,11 +52,13 @@ Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails calen
                 textAlign: TextAlign.start,
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0,2.h,0,0),
+                padding: EdgeInsets.fromLTRB(0, 2.h, 0, 0),
                 child: Text(
                   checkSameDay(appointment.startTime, appointment.endTime),
                   textAlign: TextAlign.start,
-                  style: textTheme().bodySmall?.copyWith(fontSize: 10.sp, color: Colors.grey.shade800),
+                  style: textTheme()
+                      .bodySmall
+                      ?.copyWith(fontSize: 10.sp, color: Colors.grey.shade800),
                 ),
               )
             ],
@@ -67,22 +83,24 @@ double calculateRichTextHeight(String text, double fontSize, int maxLines) {
   return textPainter.height;
 }
 
-String checkSameDay(DateTime startTime,DateTime endTime) {
-  if(startTime.day == endTime.day){
+String checkSameDay(DateTime startTime, DateTime endTime) {
+  if (startTime.day == endTime.day) {
     return '${formatTime(startTime)} - ${formatTime(endTime)}';
-  }else{
+  } else {
     return '${formatDay(startTime)} - ${formatDay(endTime)}';
   }
 }
-String formatTime(DateTime time){
+
+String formatTime(DateTime time) {
   String period = time.hour >= 12 ? '오후' : '오전';
   int hour = time.hour > 12 ? time.hour - 12 : time.hour;
   String minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
   return '$period $hour:$minute';
 }
-String formatDay(DateTime totalDate){
+
+String formatDay(DateTime totalDate) {
   String result = '';
-  if(totalDate.year!=DateTime.now().year){
+  if (totalDate.year != DateTime.now().year) {
     result += totalDate.year.toString();
     result += '년';
   }

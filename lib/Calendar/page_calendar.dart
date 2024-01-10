@@ -8,7 +8,7 @@ import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../theme.dart';
-import 'widget/appointment_sheet.dart';
+import 'widget/add_appointment_sheet.dart';
 import 'methods/get_calendar_source.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -44,8 +44,10 @@ class _CalendarPageState extends State<CalendarPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(
-            height: 30.h,
+          Expanded(
+            child: SizedBox(
+              height: 30.h,
+            ),
           ),
           Container(
             height: 120.h,
@@ -78,7 +80,7 @@ class _CalendarPageState extends State<CalendarPage> {
                           isScrollControlled: true,
                           FractionallySizedBox(
                               heightFactor: 0.8,
-                              child: AppointmentSheet(
+                              child: AddAppointmentSheet(
                                   selectedDate: _selectedDate)));
                     },
                     style: TextButton.styleFrom(
@@ -91,7 +93,8 @@ class _CalendarPageState extends State<CalendarPage> {
               ],
             ),
           ),
-          Expanded(
+          SizedBox(
+            height: 550.h,
             child: Obx(() {
               if (appointmentController.myAppointments.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
@@ -116,10 +119,15 @@ class _CalendarPageState extends State<CalendarPage> {
                     dataSource:
                         getCalendarDataSource(appointmentController.myAppointments),
                     monthViewSettings: MonthViewSettings(
+                      agendaViewHeight: 250.h,
                       showAgenda: true,
                       agendaItemHeight: 70.h,
                       showTrailingAndLeadingDates: false,
                       dayFormat: 'E',
+                        monthCellStyle: const MonthCellStyle(
+                            textStyle: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Arial')),
                     ),
                     timeSlotViewSettings: const TimeSlotViewSettings(
                         timelineAppointmentHeight: 100),

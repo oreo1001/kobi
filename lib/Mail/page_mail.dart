@@ -12,7 +12,7 @@ import 'package:kobi/Mail/widgets/unread_mark.dart';
 import '../function_http_request.dart';
 import '../theme.dart';
 import 'class_email.dart';
-import 'methods/function_parsing.dart';
+import 'methods/function_thread_data.dart';
 
 class MailPage extends StatefulWidget {
   const MailPage({super.key});
@@ -28,7 +28,7 @@ class _MailPageState extends State<MailPage> {
   String email = '';
   String photoUrl = '';
   RxString filter = 'WonMoMeeting 메일함'.obs;
-  RxList<Thread> filterThreadList = <Thread>[].obs;
+  RxList<Thread> threadList = <Thread>[].obs;
 
   @override
   void initState() {
@@ -36,16 +36,20 @@ class _MailPageState extends State<MailPage> {
     name = authController.name.value;
     email = authController.email.value;
     photoUrl = authController.photoUrl.value;
-    mailController.getThread();
+    getThread();
+  }
+  Future getThread() async {
+    Map<String, dynamic> responseMap = await httpResponse('/email/emailList', {});
+    threadList.value = loadThreadListFromJson(responseMap['emailList']);
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (mailController.threadList.isEmpty) {
+      if (threadList.isEmpty) {
         return const Center(child: CircularProgressIndicator());
           } else {
-            filterThreadList = filterThreadListByFilter(mailController.threadList, filter.value).obs;
+            mailController.filterThreadList = filterThreadListByFilter(threadList, filter.value).obs;
             return Scaffold(
               appBar: AppBar(
                   backgroundColor: Colors.white,
@@ -102,6 +106,7 @@ class _MailPageState extends State<MailPage> {
                       title: Text('WonMoMeeting 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
                         filter.value = 'WonMoMeeting 메일함';
+                        Navigator.pop(context);
                       },
                     ),
                     ListTile(
@@ -109,6 +114,7 @@ class _MailPageState extends State<MailPage> {
                       title: Text('전체 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
                         filter.value = '전체 메일함';
+                        Navigator.pop(context);
                       }
                     ),
                     ListTile(
@@ -116,36 +122,40 @@ class _MailPageState extends State<MailPage> {
                       title: Text('프로모션 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
                         filter.value = '프로모션 메일함';
+                        Navigator.pop(context);
                       },
                     ),
                   ],
                 ),
               ),
-              body: ListView.builder(
-                itemCount: filterThreadList.length,
-                itemBuilder: (context, index) {
-                  Thread thread = filterThreadList[index];
-                  return GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      mailController.threadIndex.value = index;
-                      Get.to(() => const ThreadPage());
-                      httpResponse('/email/read', {"messageIdList": unreadMessageIdList(thread.messages)});
-                      setState(() {});
+              body: GetBuilder<MailController>(
+                  builder: (mailController) => ListView.builder(
+                    itemCount: mailController.filterThreadList.length,
+                    itemBuilder: (context, index) {
+                      Thread thread = mailController.filterThreadList[index];
+                      return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () async{
+                          mailController.threadIndex.value = index;
+                          mailController.readMessage(thread);
+                          Get.to(() => const ThreadPage());
+                          await httpResponse('/email/read', {"messageIdList": unreadMessageIdList(thread.messages)});
+                          mailController.update();
+                        },
+                        child:
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 20.w),
+                          child: Stack(
+                              children: [
+                                mailRoom(matchEmailToColor(thread.emailAddress), thread, thread.messages),
+                                /// 안 읽은 메일 개수
+                                UnreadMark(thread.messages)]
+                          ),
+                        ),
+                      );
                     },
-                    child:
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 20.w),
-                      child: Stack(
-                        children: [
-                          mailRoom(matchEmailToColor(thread.emailAddress), thread, thread.messages),
-                          /// 안 읽은 메일 개수
-                          unreadMark(thread.messages)]
-                      ),
-                    ),
-                  );
-                },
-              ),
+                  )
+              )
             );
           }
         });

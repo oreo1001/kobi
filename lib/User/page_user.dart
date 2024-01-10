@@ -118,15 +118,6 @@ class _UserPageState extends State<UserPage> {
                     fontSize: 18.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w500)),
-            myInfoButton(
-                    () {
-                  Get.to(TestPage());
-                },
-                "테스트ㅇㅇㅇ",
-                textTheme().displaySmall!.copyWith(
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500)),
           ],
         ));
   }

@@ -24,17 +24,12 @@ class _ThreadPageState extends State<ThreadPage> {
   MailController mailController = Get.find();
   final ScrollController _scrollController = ScrollController();
   RecorderController recorderController = Get.find();
-  List<GlobalKey> keys = [];
+  List<GlobalKey> keys = <GlobalKey>[].obs;
   String sentUsername = '';
-
 
   @override
   void initState() {
     super.initState();
-    sentUsername = mailController.threadList[mailController.threadIndex.value].name;
-    messageList = mailController.threadList[mailController.threadIndex.value].messages;
-    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
-    isExpandedList = List.filled(messageList.length, false);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
@@ -54,6 +49,12 @@ class _ThreadPageState extends State<ThreadPage> {
 
   @override
   Widget build(BuildContext context) {
+    sentUsername =
+        mailController.filterThreadList[mailController.threadIndex.value].name;
+    messageList = mailController
+        .filterThreadList[mailController.threadIndex.value].messages;
+    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
+    isExpandedList = List.filled(messageList.length, false);
     return Stack(
       children: [
         Scaffold(
@@ -79,12 +80,13 @@ class _ThreadPageState extends State<ThreadPage> {
                     Container(
                       padding: EdgeInsets.fromLTRB(0, 0, 0, 3.h),
                       child: SizedBox(
-                        width:310.w,
-                        child : Text(sentUsername,
-                          overflow: TextOverflow.fade,
-                          style: textTheme()
-                              .displaySmall
-                              ?.copyWith(fontSize: 20.sp)),),
+                        width: 310.w,
+                        child: Text(sentUsername,
+                            overflow: TextOverflow.fade,
+                            style: textTheme()
+                                .displaySmall
+                                ?.copyWith(fontSize: 20.sp)),
+                      ),
                     ),
                   ],
                 ),
@@ -92,7 +94,7 @@ class _ThreadPageState extends State<ThreadPage> {
             ),
           ),
           body: Padding(
-            padding: EdgeInsets.fromLTRB(0,0,0,130.h),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 130.h),
             child: ListView.builder(
                 controller: _scrollController,
                 itemCount: messageList.length,
@@ -111,9 +113,9 @@ class _ThreadPageState extends State<ThreadPage> {
                       //     curve: Curves.ease,
                       //   );
                       // }
-                      },
+                    },
                     child: Padding(
-                      key: keys[index],
+                      // key: keys[index],
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 10.w),
                       child: Column(
@@ -186,26 +188,35 @@ class _ThreadPageState extends State<ThreadPage> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            (messageList[index].subject.trim() == '' )  ? '(제목 없음)': messageList[index].subject,
-                                            style: textTheme().bodySmall?.copyWith(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                              messageList[index].sentByUser
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            ),
+                                            (messageList[index]
+                                                        .subject
+                                                        .trim() ==
+                                                    '')
+                                                ? '(제목 없음)'
+                                                : messageList[index].subject,
+                                            style: textTheme()
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: messageList[index]
+                                                          .sentByUser
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                ),
                                           ),
-                                          SizedBox(height:5.h),
+                                          SizedBox(height: 5.h),
                                           Text(
                                             messageList[index].body,
-                                            style: textTheme().bodySmall?.copyWith(
+                                            style: textTheme()
+                                                .bodySmall
+                                                ?.copyWith(
                                                   fontSize: 13.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color:
-                                                      messageList[index].sentByUser
-                                                          ? Colors.white
-                                                          : Colors.black,
+                                                  color: messageList[index]
+                                                          .sentByUser
+                                                      ? Colors.white
+                                                      : Colors.black,
                                                 ),
                                           ),
                                         ],
@@ -234,28 +245,39 @@ class _ThreadPageState extends State<ThreadPage> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            (messageList[index].subject.trim() == '')  ? '(제목 없음)':removeNewlines(messageList[index].subject),
-                                            style: textTheme().bodySmall?.copyWith(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color:
-                                              messageList[index].sentByUser
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            ),
+                                            (messageList[index]
+                                                        .subject
+                                                        .trim() ==
+                                                    '')
+                                                ? '(제목 없음)'
+                                                : removeNewlines(
+                                                    messageList[index].subject),
+                                            style: textTheme()
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: messageList[index]
+                                                          .sentByUser
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                ),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          SizedBox(height:5.h),
+                                          SizedBox(height: 5.h),
                                           Text(
-                                            removeNewlines(messageList[index].body),
-                                            style: textTheme().bodySmall?.copyWith(
+                                            removeNewlines(
+                                                messageList[index].body),
+                                            style: textTheme()
+                                                .bodySmall
+                                                ?.copyWith(
                                                   fontSize: 13.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color:
-                                                      messageList[index].sentByUser
-                                                          ? Colors.white
-                                                          : Colors.black,
+                                                  color: messageList[index]
+                                                          .sentByUser
+                                                      ? Colors.white
+                                                      : Colors.black,
                                                 ),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
@@ -282,7 +304,9 @@ class _ThreadPageState extends State<ThreadPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
                 // TextButton(
                 //   style: ButtonStyle(
                 //       minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
@@ -302,19 +326,21 @@ class _ThreadPageState extends State<ThreadPage> {
                 // SizedBox(height: 10.h),
                 TextButton(
                   style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
-                      side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
+                      side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: Colors.grey.shade200, width: 2.w)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.sp)))),
                   onPressed: () {
-                    Get.to(() => SendPage());
+                    Get.off(() => SendPage());
                   },
                   child: Text(
                     '메일 쓰기',
                     style: textTheme().bodySmall?.copyWith(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
                   ),
                 )
               ],

@@ -30,8 +30,8 @@ List<Message> parsingMessageListFromThread(List<dynamic> jsonList) {
   return messageList;
 }
 
-int unreadMessageCount(List<Message> messageList) {
-  int count = 0;
+RxInt unreadMessageCount(List<Message> messageList) {
+  RxInt count = 0.obs;
   for (var message in messageList) {
     if (message.unread) {
       count++;
@@ -66,4 +66,19 @@ List<Thread> filterThreadListByFilter(RxList<Thread> threadList, String filter) 
     }
   }
   return filteredThreadList;
+}
+
+void markAllAsRead(List<Message> messages) {
+  for (var message in messages) {
+    if (message.unread) {
+      message = Message(
+        sentByUser: message.sentByUser,
+        date: message.date,
+        subject: message.subject,
+        body: message.body,
+        messageId: message.messageId,
+        unread: false,
+      );
+    }
+  }
 }

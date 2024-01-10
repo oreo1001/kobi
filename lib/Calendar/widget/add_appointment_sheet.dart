@@ -9,7 +9,7 @@ import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
-as picker;
+    as picker;
 
 import '../../Class/class_my_event.dart';
 import '../../function_http_request.dart';
@@ -17,19 +17,19 @@ import '../../theme.dart';
 import '../methods/function_appointment_sheet.dart';
 import 'custom_time_picker.dart';
 
-class AppointmentSheet extends StatefulWidget {
-  AppointmentSheet({super.key, required this.appointment});
-  Appointment appointment;
+class AddAppointmentSheet extends StatefulWidget {
+  AddAppointmentSheet({super.key, required this.selectedDate});
+  DateTime selectedDate;
   @override
-  State<AppointmentSheet> createState() => _AppointmentSheetState();
+  State<AddAppointmentSheet> createState() => _AddAppointmentSheetState();
 }
 
-class _AppointmentSheetState extends State<AppointmentSheet> {
+class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
   final summaryController = TextEditingController();
   final locationController = TextEditingController();
   final descriptionController = TextEditingController();
 
-  // DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
   RxBool isVisible = false.obs;
   RxString selectedTime = ''.obs;
   RxString selectedTime2 = ''.obs;
@@ -39,11 +39,16 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
   @override
   void initState() {
     super.initState();
-    locationController.text = widget.appointment.location ?? '';
-    descriptionController.text = widget.appointment.notes ?? '';
-    summaryController.text = widget.appointment.subject ?? '';
-    selectedTime.value = startDate.value = widget.appointment.startTime.toString();
-    selectedTime2.value = endDate.value = widget.appointment.endTime.toString();
+    selectedDate = widget.selectedDate;
+    DateTime endDateInitialize = selectedDate.add(const Duration(days: 2));
+    DateTime atEightAM = DateTime(
+        selectedDate.year, selectedDate.month, selectedDate.day, 8); //오전8시로 초기화
+    DateTime atNineAM = DateTime(
+        selectedDate.year, selectedDate.month, selectedDate.day, 9); //오전9시로 초기화
+    selectedTime.value = atEightAM.toString();
+    selectedTime2.value = atNineAM.toString();
+    startDate.value = selectedDate.toString();
+    endDate.value = endDateInitialize.toString();
   }
 
   @override
@@ -63,7 +68,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
         },
         child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            //mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,7 +81,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                     child: Text(
                       '취소',
                       style:
-                      textTheme().displaySmall?.copyWith(fontSize: 17.sp),
+                          textTheme().displaySmall?.copyWith(fontSize: 17.sp),
                     ),
                   ),
                   TextButton(
@@ -86,31 +91,33 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       DateTime endTimeToBack = combineDate(endDate.value, selectedTime2.value);
                       if(checkIfEarlier(startTimeToBack,endTimeToBack)) return;
 
-                      Appointment myAppointment = Appointment(id: widget.appointment.id, subject : summaryController.text, startTime : startTimeToBack, endTime: endTimeToBack,notes: descriptionController.text,location: locationController.text);
-                      MyEvent eventToBack = appointmentToMyEvent(myAppointment);
+                      Appointment newAppointment = Appointment(subject : summaryController.text, startTime : startTimeToBack, endTime: endTimeToBack,notes: descriptionController.text,location: locationController.text);
+                      MyEvent eventToBack = appointmentToMyEvent(newAppointment);
+
                       AppointmentController appointmentController = Get.find();
-                      appointmentController.updateAppointment(myAppointment);
-                      // await httpResponse('/calendar/insertEvent', {
-                      //   'event' : eventToBack.toJson()
-                      // });
+                      appointmentController.myAppointments.add(newAppointment);
+                      await httpResponse('/calendar/insertEvent', {
+                        'event' : eventToBack.toJson()
+                      });
                       Get.back();
                       Get.snackbar(
                         "일정", // 제목
-                        "수정하였습니다!", // 메시지
+                        "추가하였습니다!", // 메시지
                         snackPosition: SnackPosition.TOP, // 스낵바 위치
                       );
+                      setState(() {});
                     },
                     child: Text(
                       '저장',
                       style:
-                      textTheme().displaySmall?.copyWith(fontSize: 17.sp),
+                          textTheme().displaySmall?.copyWith(fontSize: 17.sp),
                     ),
                   ),
                 ],
               ),
               Container(
                   padding:
-                  EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
                   child: TextFormField(
                     cursorColor: const Color(0xff759CCC),
                     controller: summaryController,
@@ -122,7 +129,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         errorBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
+                            EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
                         hintText: "제목"),
                     onTap: () {
                       isVisible.value = false;
@@ -154,34 +161,34 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                     ],
                   )),
               Obx(() => Visibility(
-                visible: isVisible.value,
-                maintainSize: false,
-                child: Column(
-                  children: [
-                    Divider(),
-                    SfDateRangePicker(
-                      onSelectionChanged:
-                          (DateRangePickerSelectionChangedArgs args) {
-                        if(args.value.startDate!=null){
-                          startDate.value = args.value.startDate.toString();
-                          endDate.value = '';
-                        }
-                        if(args.value.endDate!=null){
-                          endDate.value = args.value.endDate.toString();
-                        }
-                      },
-                      selectionMode: DateRangePickerSelectionMode.range,
-                      initialSelectedRange: PickerDateRange(
-                          DateTime.parse(startDate.value).toUtc().add(const Duration(hours:9)),
-                        DateTime.parse(endDate.value).toUtc().add(const Duration(hours:9))),
-                      todayHighlightColor: Color(0xffACCCFF),
-                      startRangeSelectionColor: Color(0xff759CCC),
-                      endRangeSelectionColor: Color(0xff759CCC),
-                      rangeSelectionColor: Color(0xffD8EAF9),
+                    visible: isVisible.value,
+                    maintainSize: false,
+                    child: Column(
+                      children: [
+                        Divider(),
+                        SfDateRangePicker(
+                          onSelectionChanged:
+                              (DateRangePickerSelectionChangedArgs args) {
+                            if(args.value.startDate!=null){
+                              startDate.value = args.value.startDate.toString();
+                              endDate.value = '';
+                            }
+                            if(args.value.endDate!=null){
+                              endDate.value = args.value.endDate.toString();
+                            }
+                          },
+                          selectionMode: DateRangePickerSelectionMode.range,
+                          initialSelectedRange: PickerDateRange(
+                              DateTime.parse(startDate.value).toUtc().add(const Duration(hours:9)),
+                              DateTime.parse(endDate.value).toUtc().add(const Duration(hours:9))),
+                          todayHighlightColor: Color(0xffACCCFF),
+                          startRangeSelectionColor: Color(0xff759CCC),
+                          endRangeSelectionColor: Color(0xff759CCC),
+                          rangeSelectionColor: Color(0xffD8EAF9),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )),
+                  )),
               Divider(),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -196,7 +203,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         errorBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
+                            EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
                         hintText: "장소"),
                     onTap: () {
                       isVisible.value = false;
@@ -216,7 +223,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
                       contentPadding:
-                      EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
+                          EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
                       hintText: "메모",
                     ),
                     onTap: () {
@@ -237,23 +244,23 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
         child: Column(
           children: [
             Obx(() => TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: isVisible.value
-                    ? const Color(0xff759CCC)
-                    : Colors.transparent,
-                foregroundColor: Colors.black87,
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              onPressed: () {
-                isVisible.value = true;
-              },
-              child: Text(getMonthAndDay(pickDate.value),
-                  style: textTheme().displaySmall?.copyWith(
-                      color:
-                      isVisible.value ? Colors.white : Colors.black87,
-                      fontSize: 17.sp)),
-            )),
+                  style: TextButton.styleFrom(
+                    backgroundColor: isVisible.value
+                        ? const Color(0xff759CCC)
+                        : Colors.transparent,
+                    foregroundColor: Colors.black87,
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  onPressed: () {
+                    isVisible.value = true;
+                  },
+                  child: Text(getMonthAndDay(pickDate.value),
+                      style: textTheme().displaySmall?.copyWith(
+                          color:
+                              isVisible.value ? Colors.white : Colors.black87,
+                          fontSize: 17.sp)),
+                )),
             Obx(() => TextButton(
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black87,
@@ -263,13 +270,13 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                 onPressed: () {
                   picker.DatePicker.showPicker(context, showTitleActions: true,
                       onChanged: (date) {
-                        print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-                      }, theme:picker.DatePickerTheme(),
+                    print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                  }, theme:picker.DatePickerTheme(),
                       onConfirm: (date) {
-                        DateTime tempTime = date;
-                        selectedTime.value = tempTime.toString();
-                        print(selectedTime.value);
-                      },
+                    DateTime tempTime = date;
+                    selectedTime.value = tempTime.toString();
+                    print(selectedTime.value);
+                  },
                       pickerModel: CustomPicker(currentTime: DateTime.now().add(Duration(hours:9))),
                       locale: picker.LocaleType.ko);
                 },

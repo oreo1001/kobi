@@ -12,16 +12,19 @@ DateTime dateStrToKSTDate(String exDate){
   return kstDate;
 }
 
-String appointKSTDate(String exDate, bool isAllDay){
+String appointKSTDate(String exDate){
   DateTime kstDate;
-  // if(!isAllDay){
-  //   DateTime utcDate = DateTime.parse(exDate).toUtc();
-  //   kstDate = utcDate.add(Duration(hours: 9));
-  // }else {
-  //   kstDate = DateTime.parse(exDate).toUtc();
-  // }
   DateTime utcDate = DateTime.parse(exDate).toUtc();
   kstDate = utcDate.add(Duration(hours: 9));
+  String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(kstDate);
+  return formattedDate;
+}
+String appointKSTEndDate(String endDate){
+  DateTime utcDate = DateTime.parse(endDate).toUtc();
+  DateTime kstDate = utcDate.add(Duration(hours: 9));
+  if(kstDate.hour == 0  && kstDate.minute ==0){
+    kstDate = kstDate.subtract(const Duration(minutes: 1));
+  }
   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(kstDate);
   return formattedDate;
 }
