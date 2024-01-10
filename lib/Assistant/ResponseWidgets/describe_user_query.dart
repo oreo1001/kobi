@@ -8,6 +8,10 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class DescribeUserQuery extends StatefulWidget {
+  final int index;
+
+  const DescribeUserQuery({Key? key, required this.index}) : super(key: key);
+
   @override
   DescribeUserQueryState createState() => DescribeUserQueryState();
 }
@@ -20,8 +24,9 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
 
   @override
   void dispose() {
-    super.dispose();
+    ttsController.dispose();
     textController.dispose();
+    super.dispose();
   }
 
   @override

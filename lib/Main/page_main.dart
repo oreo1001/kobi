@@ -145,19 +145,25 @@ class _MainPageState extends State<MainPage> {
               List<String> transcription = recorderController.transcription;
               List<dynamic> responseWidgets = recorderController.responseWidgets;
               bool transcriptionChanged = !const ListEquality().equals(previousTranscription, transcription);
+              /// mainPage 안의 Obx를 다시 실행시키기 위한 변수 :
+              bool mainPageBuilder = recorderController.mainPageBuilder.value;
+              print(mainPageBuilder);
 
               print('@@@@@@@@@@@@@@@@@@@@ Obx 내부 @@@@@@@@@@@@@@@@@@@@');
+              print('transcription : $transcription');
+              print('responseWidgets : $responseWidgets');
 
               if (responseWidgets.isNotEmpty) {
                 Future.delayed(Duration.zero).then((_) {
                   InAppNotification.show(
                       child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                           decoration: BoxDecoration(
-                            color: Colors.grey[50],
+                            color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(10.r),
                             border: Border.all(color: Colors.grey[100]!),
                           ),
-                          padding: EdgeInsets.fromLTRB(5.w,0,5.w,20.h),
+                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                           child : recorderController.responseWidgets.last
                       ),
                       duration: const Duration(seconds: 60), context: context);
@@ -227,9 +233,14 @@ class _MainPageState extends State<MainPage> {
   void requestToBackEnd(List<String> transcription) async {
     Map<String, dynamic> apiResponseMap = await sendToBackEnd(transcription);
 
+    print('@@@ apiResponseMap : $apiResponseMap @@@');
+
     /// #2. BackEnd에서 받은 응답을 각각 이 Widget(assistantResponse) / assistantController에 저장
     assistantController.loadAssistantFromJson(apiResponseMap);
+    assistantController.printAll();
+
     assistantResponse.fromJson(apiResponseMap);
+    assistantResponse.printAll();
 
     /// BackEnd에서 받은 응답을 가지고 화면에 보여줄 Widget을 결정
     switchWidget();
@@ -246,7 +257,6 @@ class _MainPageState extends State<MainPage> {
 
     if (assistantResponse.status != 'in_progress') {
       /// assistant 에게 처음 요청
-
       apiResponseMap =
       await httpResponse('/assistant/run', {'userRequest': transcription[0]});
     } else {
@@ -293,7 +303,9 @@ class _MainPageState extends State<MainPage> {
 
     String responseWidgetType = assistantResponse.type;
     if (responseWidgetType == 'message_creation') {
-      recorderController.responseWidgets.add(const MessageCreationUI());
+      recorderController.responseWidgets.add(const MessageCreationUI(index: 0,));
+
+
     } else {
       /// toolCalls의 길이만큼 transcription을 초기화
       int toolCallsLength = assistantResponse.stepDetails!.toolCalls!.length;
@@ -302,25 +314,27 @@ class _MainPageState extends State<MainPage> {
       for (int i = 0 ; i < toolCallsLength ; i++) {
         String? type = assistantResponse.stepDetails?.toolCalls?[i].function.name;
 
+        print('@@@ 응답 후 type : $type @');
+
         if (type == AssistantFunction.createEmail.value) {
-          recorderController.responseWidgets.add(CreateEmail());
+          recorderController.responseWidgets.add(CreateEmail(index: i,));
         } else if (type == AssistantFunction.describeUserQuery.value) {
-          recorderController.responseWidgets.add(DescribeUserQuery());
+          recorderController.responseWidgets.add(DescribeUserQuery(index: i,));
         } else if (type == AssistantFunction.multipleChoiceQuery.value) {
-          recorderController.responseWidgets.add(const MultipleChoiceQuery());
+          recorderController.responseWidgets.add(MultipleChoiceQuery(index: i,));
         } else if (type == AssistantFunction.insertEvent.value) {
-          recorderController.responseWidgets.add(const InsertEvent());
+          recorderController.responseWidgets.add(InsertEvent(index: i,));
         } else if (type == AssistantFunction.patchEvent.value) {
-          recorderController.responseWidgets.add(PatchEvent());
+          recorderController.responseWidgets.add(PatchEvent(index: i,));
         } else if (type == AssistantFunction.deleteEvent.value) {
-          recorderController.responseWidgets.add(const DeleteEvent());
+          recorderController.responseWidgets.add(DeleteEvent(index: i,));
         } else if (type == AssistantFunction.getFreeBusy.value) {
-          recorderController.responseWidgets.add(const GetFreeBusy());
+          recorderController.responseWidgets.add(GetFreeBusy(index: i,));
           if (assistantResponse.status == 'in_progress') {
             recorderController.setTranscription('OK');
           }
         } else if (type == AssistantFunction.establishStrategy.value) {
-          recorderController.responseWidgets.add(const EstablishStrategy());
+          recorderController.responseWidgets.add(EstablishStrategy(index: i,));
           if (assistantResponse.status == 'in_progress') {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               recorderController.setTranscription('ok');
@@ -329,5 +343,7 @@ class _MainPageState extends State<MainPage> {
         }
       }
     }
+
+    recorderController.toggleMainPageBuilder();
   }
 }

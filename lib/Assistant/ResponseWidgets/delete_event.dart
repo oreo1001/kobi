@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/tts_controller.dart';
-import '../../Calendar/methods/function_event_date.dart';
 import '../../Class/class_my_event.dart';
 import '../../Controller/assistant_controller.dart';
 import '../../Controller/recorder_controller.dart';
@@ -12,7 +10,10 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class DeleteEvent extends StatefulWidget {
-  const DeleteEvent({super.key});
+
+  final int index;
+
+  const DeleteEvent({super.key, required this.index});
 
   @override
   DeleteEventState createState() => DeleteEventState();
@@ -23,6 +24,12 @@ class DeleteEventState extends State<DeleteEvent> {
   final AssistantController assistantController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
   String? eventId = '';
+
+  @override
+  dispose() {
+    ttsController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

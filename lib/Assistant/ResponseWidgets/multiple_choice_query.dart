@@ -10,7 +10,10 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class MultipleChoiceQuery extends StatefulWidget {
-  const MultipleChoiceQuery({super.key});
+
+  final int index;
+
+  const MultipleChoiceQuery({super.key, required this.index});
 
   @override
   State<MultipleChoiceQuery> createState() => _MultipleChoiceQueryState();
@@ -22,6 +25,12 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
   TtsController ttsController = Get.find<TtsController>();
   String selectedItem = '';
   Map<String, dynamic>? arguments;
+
+  @override
+  void dispose() {
+    ttsController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
