@@ -37,7 +37,7 @@ class _SendPageState extends State<SendPage> {
   void initState() {
     super.initState();
     contactList = authController.contactList;
-    sendMailAddress = mailController.filterThreadList[mailController.threadIndex.value].emailAddress;
+    sendMailAddress = mailController.threadList[mailController.threadIndex.value].emailAddress;
   }
 
   @override

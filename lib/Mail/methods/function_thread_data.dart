@@ -30,16 +30,6 @@ List<Message> parsingMessageListFromThread(List<dynamic> jsonList) {
   return messageList;
 }
 
-RxInt unreadMessageCount(List<Message> messageList) {
-  RxInt count = 0.obs;
-  for (var message in messageList) {
-    if (message.unread) {
-      count++;
-    }
-  }
-  return count;
-}
-
 List<String> unreadMessageIdList(List<Message> messageList) {
   List<String> unreadMessageIdList = [];
   for (var message in messageList) {
@@ -68,7 +58,8 @@ List<Thread> filterThreadListByFilter(RxList<Thread> threadList, String filter) 
   return filteredThreadList;
 }
 
-void markAllAsRead(List<Message> messages) {
+RxList<Message> markAllAsRead(List<Message> messages) {
+  List<Message> newMessages= [];
   for (var message in messages) {
     if (message.unread) {
       message = Message(
@@ -80,14 +71,20 @@ void markAllAsRead(List<Message> messages) {
         unread: false,
       );
     }
+    newMessages.add(message);
   }
+  return newMessages.obs;
 }
-RxInt unreadMessageCountFunc(List<Message> messageList) {
-  RxInt count = 0.obs;
-  for (var message in messageList) {
-    if (message.unread) {
-      count++;
+RxList<RxInt> countUnreadMessagesInThreads(List<Thread> threadList) {
+  RxList<RxInt> unreadCounts = <RxInt>[].obs;
+  for (var thread in threadList) {
+    RxInt count = 0.obs;
+    for (var message in thread.messages) {
+      if (message.unread) {
+        count++;
+      }
     }
+    unreadCounts.add(count);
   }
-  return count;
+  return unreadCounts;
 }

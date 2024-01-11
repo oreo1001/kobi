@@ -28,8 +28,8 @@ class _MailPageState extends State<MailPage> {
   String email = '';
   String photoUrl = '';
   RxString filter = 'WonMoMeeting 메일함'.obs;
-  RxList<Thread> threadList = <Thread>[].obs;
-  RxList<Message> messageList = <Message>[].obs;
+  RxList<Thread> filterThreadList = <Thread>[].obs;
+  RxList<RxInt> unreadList = <RxInt>[].obs;
 
   @override
   void initState() {
@@ -42,18 +42,21 @@ class _MailPageState extends State<MailPage> {
 
   Future getThread() async {
     Map<String, dynamic> responseMap =
-        await httpResponse('/email/emailList', {});
-    threadList.value = loadThreadListFromJson(responseMap['emailList']);
+    await httpResponse('/email/emailList', {});
+    mailController.threadList =
+        loadThreadListFromJson(responseMap['emailList']).obs;
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (threadList.isEmpty) {
+      if (mailController.threadList.isEmpty) {
         return const Center(child: CircularProgressIndicator());
       } else {
-        mailController.filterThreadList =
-            filterThreadListByFilter(threadList, filter.value).obs;
+        filterThreadList =
+            filterThreadListByFilter(mailController.threadList, filter.value)
+                .obs;
+        unreadList = countUnreadMessagesInThreads(filterThreadList);
         return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.white,
@@ -73,15 +76,17 @@ class _MailPageState extends State<MailPage> {
               ),
               actions: <Widget>[
                 Builder(
-                  builder: (context) => Padding(
-                    padding: EdgeInsets.fromLTRB(0, 30.h, 10.w, 0),
-                    child: IconButton(
-                      icon: Icon(Icons.menu, size: 30.sp),
-                      onPressed: () => Scaffold.of(context).openEndDrawer(),
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
-                    ),
-                  ),
+                  builder: (context) =>
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 30.h, 10.w, 0),
+                        child: IconButton(
+                          icon: Icon(Icons.menu, size: 30.sp),
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
+                          tooltip: MaterialLocalizations
+                              .of(context)
+                              .openAppDrawerTooltip,
+                        ),
+                      ),
                 ),
               ],
             ),
@@ -143,27 +148,27 @@ class _MailPageState extends State<MailPage> {
               ),
             ),
             body: ListView.builder(
-              itemCount: mailController.filterThreadList.length,
+              itemCount: filterThreadList.length,
               itemBuilder: (context, index) {
-                Thread thread = mailController.filterThreadList[index];
-                messageList = mailController.filterThreadList[index].messages;
+                Thread thread = filterThreadList[index];
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () async {
-                    mailController.threadIndex.value = index;
+                    mailController.findThreadIndex(thread);
                     mailController.readMessage(thread);
-                    Get.to(() => const ThreadPage());
+                    Get.to(() => ThreadPage(thread));
                     await httpResponse('/email/read',
-                        {"messageIdList": unreadMessageIdList(messageList)});
+                        {
+                          "messageIdList": unreadMessageIdList(thread.messages)
+                        });
                   },
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                    EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
                     child: Stack(children: [
-                      mailRoom(matchEmailToColor(thread.emailAddress), thread,
-                          messageList),
+                      MailRoom(thread: thread),
                       /// 안 읽은 메일 개수
-                      UnreadMark(messageList),
+                      UnreadMark(unreadList[index]),
                     ]),
                   ),
                 );

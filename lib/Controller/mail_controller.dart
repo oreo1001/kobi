@@ -6,24 +6,25 @@ import '../Mail/methods/function_thread_data.dart';
 
 class MailController extends GetxController {
   RxInt threadIndex = 0.obs;
-  RxList<Thread> filterThreadList =<Thread>[].obs;
-  RxInt unreadMessageCount = 0.obs;
+  RxList<Thread> threadList =<Thread>[].obs;
+  RxList<int> unreadCounterList = <int>[].obs;
 
-  // void updateUnreadMessageCount(List<Message> messageList) {
-  //   unreadMessageCount.value = unreadMessageCountFunc(messageList);
-  // }
   void insertMessage(Message message) {
-    int index = filterThreadList.indexWhere((thread) => thread.threadId == filterThreadList[threadIndex.value].threadId);
+    int index = threadList.indexWhere((thread) => thread.threadId == threadList[threadIndex.value].threadId);
     if (index != -1) {
-      filterThreadList[index].messages.add(message);
+      threadList[index].messages.add(message);
     } else {
       print('Thread not found');
     }
+    threadList[index].messages.refresh();
+  }
+  void findThreadIndex(Thread targetThread){
+    threadIndex = threadList.indexWhere((thread) => thread.threadId == targetThread.threadId).obs;
   }
   void readMessage(Thread thread){
-    for (var i = 0; i < filterThreadList.length; i++) {
-      if (filterThreadList[i].threadId == thread.threadId) {
-        markAllAsRead(filterThreadList[i].messages);
+    for (var i = 0; i < threadList.length; i++) {
+      if (threadList[i].threadId == thread.threadId) {
+        threadList[i].messages = markAllAsRead(threadList[i].messages);
         break;
       }
     }
