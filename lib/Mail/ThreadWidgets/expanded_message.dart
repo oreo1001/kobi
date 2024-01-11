@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../theme.dart';
+import '../class_email.dart';
+
+Row expandedMessage(Message message){
+  return Row(
+    mainAxisAlignment:
+    message.sentByUser
+        ? MainAxisAlignment.end
+        : MainAxisAlignment.start,
+    children: [
+      Container(
+        width: 280.w,
+        padding: EdgeInsets.symmetric(
+            horizontal: 10.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: message.sentByUser
+              ? const Color(0xff759CCC)
+              : const Color(0xffD8EAF9),
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(
+              Radius.circular(10.sp)),
+        ),
+        child: Column(
+          children: [
+            Text(
+              (message
+                  .subject
+                  .trim() ==
+                  '')
+                  ? '(제목 없음)'
+                  : message.subject,
+              style: textTheme()
+                  .bodySmall
+                  ?.copyWith(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: message
+                    .sentByUser
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+            SizedBox(height: 5.h),
+            Text(
+              message.body,
+              style: textTheme()
+                  .bodySmall
+                  ?.copyWith(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w400,
+                color: message
+                    .sentByUser
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}

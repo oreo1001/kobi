@@ -10,9 +10,7 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class DeleteEvent extends StatefulWidget {
-
   final int index;
-
   const DeleteEvent({super.key, required this.index});
 
   @override
@@ -37,7 +35,12 @@ class DeleteEventState extends State<DeleteEvent> {
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
-    MyEvent event = MyEvent.fromMap(arguments !);
+    MyEvent event;
+    if(arguments == null){
+      event = MyEvent(eventId : 'ddd', summary: 'hihihihi', startTime: '2024-02-23T14:00:00+09:00', endTime: '2024-02-24T14:00:00+09:00');
+    }else{
+      event = MyEvent.fromMap(arguments);
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -54,9 +57,8 @@ class DeleteEventState extends State<DeleteEvent> {
                 )),
           ),
           ScheduleWidget(myEvent : event),
-          // if (assistantController.status.value == 'in_progress')
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+              padding: EdgeInsets.symmetric(vertical: 10.h),
               width:400.w,
               child: ElevatedButton(onPressed: (){
                 recorderController.setTranscription('delete');

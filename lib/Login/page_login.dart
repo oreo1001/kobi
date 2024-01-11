@@ -72,7 +72,6 @@ class _LoginPageState extends State<LoginPage> {
 
       String? token = await authController.getToken();
 
-      // Get.offNamed('/loading');
       Get.offNamed('/loading');
       Map<String, dynamic> responseMap = await httpResponse('/auth/signIn',
           {'fcmToken': token, 'authCode': serverAuthCode, 'user': googleId});

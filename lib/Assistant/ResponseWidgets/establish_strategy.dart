@@ -8,10 +8,9 @@ import '../../Controller/assistant_controller.dart';
 import '../../Controller/tts_controller.dart';
 import '../../theme.dart';
 
+//deprecated
 class EstablishStrategy extends StatefulWidget {
-
   final int index;
-
   const EstablishStrategy({ super.key, required this.index});
 
   @override

@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kobi/Assistant/ResponseWidgets/create_email.dart';
+import 'package:kobi/Assistant/ResponseWidgets/describe_user_query.dart';
+import 'package:kobi/Assistant/ResponseWidgets/get_free_busy.dart';
+import 'package:kobi/Assistant/ResponseWidgets/message_creation.dart';
+import 'package:kobi/Assistant/ResponseWidgets/multiple_choice_query.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../Assistant/ResponseWidgets/delete_event.dart';
+import '../Assistant/ResponseWidgets/insert_event.dart';
+import '../Assistant/ResponseWidgets/patch_event.dart';
 import '../Class/secure_storage.dart';
 import '../Controller/auth_controller.dart';
 import '../Test/test_page.dart';
+import '../in_app_notification/in_app_notification.dart';
 import '../theme.dart';
 import 'Widgets/my_info_button.dart';
 
@@ -114,6 +123,29 @@ class _UserPageState extends State<UserPage> {
                   _handleSignOut();
                 },
                 "로그아웃",
+                textTheme().displaySmall!.copyWith(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500)),
+            myInfoButton(
+                    () {
+                      // Future.delayed(Duration.zero).then((_) {
+                      //   InAppNotification.show(
+                      //       child: Container(
+                      //           margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                      //           decoration: BoxDecoration(
+                      //             color: Colors.grey[200],
+                      //             borderRadius: BorderRadius.circular(10.r),
+                      //             border: Border.all(color: Colors.grey[100]!),
+                      //           ),
+                      //           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                      //           child : MultipleChoiceQuery(index: 0,)
+                      //       ),
+                      //       duration: const Duration(seconds: 60), context: context);
+                      // });
+                      Get.toNamed('/test');
+                },
+                "테스트",
                 textTheme().displaySmall!.copyWith(
                     fontSize: 18.sp,
                     color: Colors.black,

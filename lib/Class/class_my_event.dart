@@ -18,9 +18,11 @@ class MyEvent {
   });
 
   factory MyEvent.fromMap(Map<String, dynamic> map) {
-    String summary='';
+    String summary;
     if(map['summary']==null || map['summary']=='') {
       summary='(제목 없음)';
+    }else{
+      summary=map['summary'];
     }
     return MyEvent(
       eventId: map['eventId'] ?? '',

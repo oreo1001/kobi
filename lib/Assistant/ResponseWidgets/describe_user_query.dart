@@ -35,20 +35,25 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
-    String? query = arguments?['query'];
+    String query;
+    if(arguments==null){
+      query = '제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목';
+    }
+    else {
+      query = arguments['query'];
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(20.w, 0, 0, 10.h),
-          child: query != null
-              ? Text(query, style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700))
-              : const Text(''),
+          padding: EdgeInsets.fromLTRB(10.w, 0, 0, 10.h),
+          child:
+              Center(child: Text(query, style: textTheme().bodyMedium!.copyWith(fontSize: 18.sp, fontWeight: FontWeight.w600)))
         ),
         Container(
           height: 150.h,
-          margin: EdgeInsets.symmetric(horizontal: 10.w),
+          //margin: EdgeInsets.symmetric(horizontal: 10.w),
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           color: Colors.white,
           child: TextFormField(

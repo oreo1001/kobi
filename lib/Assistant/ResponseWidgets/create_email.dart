@@ -11,9 +11,7 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class CreateEmail extends StatefulWidget {
-
   final int index;
-
   const CreateEmail({Key? key, required this.index}) : super(key: key);
 
   @override
@@ -40,10 +38,22 @@ class CreateEmailState extends State<CreateEmail> {
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
 
-    String? emailAddress = arguments?['emailAddress'];
-    String title = arguments?['title'] ?? '';
-    String body = arguments?['body'] ?? '';
-    bool reply = arguments?['reply'] ?? false;
+    String emailAddress;
+    String title;
+    String body;
+    bool reply;
+
+    if(arguments==null){
+      reply = false;
+      emailAddress = 'jungwon01234512345@gmail.com';
+      title = '[미래에셋증권] [2024 Outlook] 글로벌 소프트웨어, 24년 투자전략: 생성AI 실전편 “고민하면 늦어요”';
+      body = testBody;
+    }else{
+      reply = arguments['reply'] ?? false;
+      emailAddress = arguments['emailAddress'] ?? '';
+      title = arguments['title'] ?? '(제목 없음)';
+      body = arguments['body'] ?? '';
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +64,7 @@ class CreateEmailState extends State<CreateEmail> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(10.w,30.h,10.w,20.h),
+                padding: EdgeInsets.fromLTRB(0.w,10.h,0.w,10.h),
                 child: WrappedKoreanText('고객님의 상황에 맞게 메일을 작성하였어요. 이대로 보낼까요?',
                     style: textTheme().bodySmall?.copyWith(
                       fontSize: 18.sp,
@@ -70,10 +80,8 @@ class CreateEmailState extends State<CreateEmail> {
                     color: Colors.grey.shade200,
                   ),
                 ),
-                margin: EdgeInsets.symmetric(
-                    horizontal: 10.w),
                 padding: EdgeInsets.symmetric(
-                    horizontal: 20.w, vertical: 10.h),
+                    horizontal: 0.w, vertical: 10.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -85,22 +93,23 @@ class CreateEmailState extends State<CreateEmail> {
                             child: Text('받는사람',
                                 style:
                                 textTheme().bodySmall?.copyWith(
-                                  fontSize: 14.sp,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black87,
                                 ))),
                         SizedBox(width: 5.w),
                         Container(
+                          width: 240.w,
                             height: 40.h,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 10.h),
+                            padding: EdgeInsets.fromLTRB(10.w,10.h,0,10.h),
                             decoration: BoxDecoration(
                               color: const Color(0xffD8EAF9),
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.all(
                                   Radius.circular(13.sp)),
                             ),
-                            child: Text(emailAddress!,
+                            child: Text(emailAddress,
+                                overflow: TextOverflow.ellipsis,
                                 style: textTheme()
                                     .bodySmall
                                     ?.copyWith(
@@ -112,7 +121,7 @@ class CreateEmailState extends State<CreateEmail> {
                     ),
                     Divider(color: Colors.grey.shade300),
                     Container(
-                      padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
+                      padding: EdgeInsets.fromLTRB(10.h,10.h,0,10.h),
                       alignment: Alignment.centerLeft,
                       child: WrappedKoreanText(title,style: textTheme()
                           .bodySmall
@@ -124,7 +133,7 @@ class CreateEmailState extends State<CreateEmail> {
                     ),
                     Divider(color: Colors.grey.shade300),
                     Container(
-                      padding: EdgeInsets.fromLTRB(15.h,10.h,0,10.h),
+                      padding: EdgeInsets.fromLTRB(10.h,10.h,0,10.h),
                       alignment: Alignment.centerLeft,
                       child: WrappedKoreanText(body,style: textTheme()
                           .bodySmall
@@ -144,8 +153,8 @@ class CreateEmailState extends State<CreateEmail> {
           Row(
           children: [
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                width: 190.w,
+                padding: EdgeInsets.fromLTRB(0,0,5.w,0),
+                width: 150.w,
                 child: ElevatedButton(
                   onPressed: () {
                     recorderController.setTranscription("don't send it");
@@ -161,8 +170,8 @@ class CreateEmailState extends State<CreateEmail> {
                       style: textTheme().bodySmall!.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
                 )),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                width: 190.w,
+                padding: EdgeInsets.fromLTRB(5.w,0,0,0),
+                width: 150.w,
                 child: ElevatedButton(
                   onPressed: () async {
                     reply = true;
@@ -186,3 +195,15 @@ class CreateEmailState extends State<CreateEmail> {
     );
   }
 }
+
+String testBody = '''양대지수 모두 하락. 전일 삼성전자 어닝 쇼크 여파에 하락했던 국내 증시는 오늘도 반도체주 약세 지속. 외국인이 전기전자 업종 중심 매물 출회 확대하면서 SK하이닉스도 장중 -3%대 하락. 더불어 2차전지주도 하락하며 지수 전반 하방 압력 확대. 원화 약세폭 확대. 미국 국채금리 상승, CPI 경계감에 따른 안전 선호 심리 강화 그럼 그 시간에 뵙겠습니당
+      -----Original Message-----
+          From: "오동근"<ohsimon77@naver.com>
+    To: "오동근[졸업생 / 화학과]"<oreo1001@hufs.ac.kr>;
+    Cc:
+    Sent: 2024-01-10 (수) 13:36:12 (GMT+09:00)
+    Subject: Re: 안녕하세요 동근님 1월 14일 오후 7시에 뵙고 싶습니다.
+
+
+    15일 오후 3시에도 추가미팅을 잡고싶은데 괜찮으신가요?
+    -----Original Message-----';''';

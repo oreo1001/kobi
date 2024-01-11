@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Controller/mail_controller.dart';
-import 'package:kobi/Mail/methods/match_email_to_color.dart';
 import 'package:kobi/Mail/page_thread.dart';
 import 'package:kobi/Mail/widgets/mail_room.dart';
 import 'package:kobi/Mail/widgets/unread_mark.dart';
 
+import '../Loading/loading_widget.dart';
 import '../function_http_request.dart';
 import '../theme.dart';
 import 'class_email.dart';
@@ -51,7 +51,7 @@ class _MailPageState extends State<MailPage> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (mailController.threadList.isEmpty) {
-        return const Center(child: CircularProgressIndicator());
+        return const LoadingWidget();
       } else {
         filterThreadList =
             filterThreadListByFilter(mailController.threadList, filter.value)
