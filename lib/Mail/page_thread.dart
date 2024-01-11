@@ -12,7 +12,8 @@ import '../theme.dart';
 import 'methods/function_mail_date.dart';
 
 class ThreadPage extends StatefulWidget {
-  const ThreadPage({super.key});
+  ThreadPage(this.thread, {super.key});
+  Thread thread;
 
   @override
   State<ThreadPage> createState() => _ThreadPageState();
@@ -30,7 +31,11 @@ class _ThreadPageState extends State<ThreadPage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
+    sentUsername = widget.thread.name;
+    messageList = widget.thread.messages;
+    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
+    isExpandedList = List.filled(messageList.length, false);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
   }
@@ -49,12 +54,6 @@ class _ThreadPageState extends State<ThreadPage> {
 
   @override
   Widget build(BuildContext context) {
-    sentUsername =
-        mailController.filterThreadList[mailController.threadIndex.value].name;
-    messageList = mailController
-        .filterThreadList[mailController.threadIndex.value].messages;
-    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
-    isExpandedList = List.filled(messageList.length, false);
     return Stack(
       children: [
         Scaffold(

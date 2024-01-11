@@ -37,7 +37,7 @@ class _SendPageState extends State<SendPage> {
   void initState() {
     super.initState();
     contactList = authController.contactList;
-    sendMailAddress = mailController.filterThreadList[mailController.threadIndex.value].emailAddress;
+    sendMailAddress = mailController.threadList[mailController.threadIndex.value].emailAddress;
   }
 
   @override
@@ -81,8 +81,7 @@ class _SendPageState extends State<SendPage> {
                             "emailAddress": sendMailAddress
                           });
                           setState(() {});
-                          Get.off(()=>const ThreadPage());
-                          //Get.to(()=> SentCompleted(currentThread: mailController.filterThreadList[mailController.threadIndex.value]));
+                          Get.to(()=> const SentCompleted());
                         }
                       },
                       icon: Icon(Icons.send, size: 25.sp)),

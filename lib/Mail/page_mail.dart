@@ -28,7 +28,8 @@ class _MailPageState extends State<MailPage> {
   String email = '';
   String photoUrl = '';
   RxString filter = 'WonMoMeeting 메일함'.obs;
-  RxList<Thread> threadList = <Thread>[].obs;
+  RxList<Thread> filterThreadList = <Thread>[].obs;
+  RxList<RxInt> unreadList = <RxInt>[].obs;
 
   @override
   void initState() {
@@ -38,126 +39,142 @@ class _MailPageState extends State<MailPage> {
     photoUrl = authController.photoUrl.value;
     getThread();
   }
+
   Future getThread() async {
-    Map<String, dynamic> responseMap = await httpResponse('/email/emailList', {});
-    threadList.value = loadThreadListFromJson(responseMap['emailList']);
+    Map<String, dynamic> responseMap =
+    await httpResponse('/email/emailList', {});
+    mailController.threadList =
+        loadThreadListFromJson(responseMap['emailList']).obs;
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (threadList.isEmpty) {
+      if (mailController.threadList.isEmpty) {
         return const Center(child: CircularProgressIndicator());
-          } else {
-            mailController.filterThreadList = filterThreadListByFilter(threadList, filter.value).obs;
-            return Scaffold(
-              appBar: AppBar(
-                  backgroundColor: Colors.white,
-                  toolbarHeight: 100.h,
-                  automaticallyImplyLeading: false,
-                  title: Column(
-                    children: [
-                      SizedBox(height : 30.h),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10.w,0,0,0),
-                        child: Text(filter.value,
-                            style: textTheme()
-                                .displayMedium
-                                ?.copyWith(fontSize: 23.sp)),
-                      ),
-                    ],
-                  ),
-                actions: <Widget>[
-                  Builder(
-                    builder: (context) => Padding(
-                      padding: EdgeInsets.fromLTRB(0,30.h,10.w,0),
-                      child: IconButton(
-                        icon: Icon(Icons.menu,size: 30.sp),
-                        onPressed: () => Scaffold.of(context).openEndDrawer(),
-                        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                      ),
-                    ),
+      } else {
+        filterThreadList =
+            filterThreadListByFilter(mailController.threadList, filter.value)
+                .obs;
+        unreadList = countUnreadMessagesInThreads(filterThreadList);
+        return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              toolbarHeight: 100.h,
+              automaticallyImplyLeading: false,
+              title: Column(
+                children: [
+                  SizedBox(height: 30.h),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                    child: Text(filter.value,
+                        style: textTheme()
+                            .displayMedium
+                            ?.copyWith(fontSize: 23.sp)),
                   ),
                 ],
               ),
-              endDrawer: Drawer(
-                width: 300.w,
-                backgroundColor: Colors.white,
-                elevation: 0,
-                child: ListView(
-                  padding: EdgeInsets.fromLTRB(10.w,0,10.w,0),
-                  children: [
-                    SizedBox(height:30.h),
-                    ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(30.sp),
-                        child: Image.network(
-                          photoUrl,
-                          fit: BoxFit.fill,
-                          scale: 0.3,
-                        ), // Text(key['title']),
+              actions: <Widget>[
+                Builder(
+                  builder: (context) =>
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 30.h, 10.w, 0),
+                        child: IconButton(
+                          icon: Icon(Icons.menu, size: 30.sp),
+                          onPressed: () => Scaffold.of(context).openEndDrawer(),
+                          tooltip: MaterialLocalizations
+                              .of(context)
+                              .openAppDrawerTooltip,
+                        ),
                       ),
-                      title: Text(name,style: textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
-                      subtitle: Text(email,style: textTheme().bodySmall?.copyWith(fontSize: 12.sp, color: Colors.grey.shade500)),
+                ),
+              ],
+            ),
+            endDrawer: Drawer(
+              width: 300.w,
+              backgroundColor: Colors.white,
+              elevation: 0,
+              child: ListView(
+                padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
+                children: [
+                  SizedBox(height: 30.h),
+                  ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(30.sp),
+                      child: Image.network(
+                        photoUrl,
+                        fit: BoxFit.fill,
+                        scale: 0.3,
+                      ), // Text(key['title']),
                     ),
-                    SizedBox(height:17.h),
-                    ListTile(
+                    title: Text(name,
+                        style: textTheme().bodySmall?.copyWith(
+                            fontSize: 15.sp, color: Colors.grey.shade800)),
+                    subtitle: Text(email,
+                        style: textTheme().bodySmall?.copyWith(
+                            fontSize: 12.sp, color: Colors.grey.shade500)),
+                  ),
+                  SizedBox(height: 17.h),
+                  ListTile(
+                    leading: Icon(Icons.folder_outlined, size: 25.sp),
+                    title: Text('WonMoMeeting 메일함',
+                        style: textTheme().bodySmall?.copyWith(
+                            fontSize: 15.sp, color: Colors.grey.shade800)),
+                    onTap: () {
+                      filter.value = 'WonMoMeeting 메일함';
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
-                      title: Text('WonMoMeeting 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
-                      onTap: () {
-                        filter.value = 'WonMoMeeting 메일함';
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.folder_outlined, size: 25.sp),
-                      title: Text('전체 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
+                      title: Text('전체 메일함',
+                          style: textTheme().bodySmall?.copyWith(
+                              fontSize: 15.sp, color: Colors.grey.shade800)),
                       onTap: () {
                         filter.value = '전체 메일함';
                         Navigator.pop(context);
-                      }
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.folder_outlined, size: 25.sp),
-                      title: Text('프로모션 메일함',style:textTheme().bodySmall?.copyWith(fontSize: 15.sp, color: Colors.grey.shade800)),
-                      onTap: () {
-                        filter.value = '프로모션 메일함';
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              body: GetBuilder<MailController>(
-                  builder: (mailController) => ListView.builder(
-                    itemCount: mailController.filterThreadList.length,
-                    itemBuilder: (context, index) {
-                      Thread thread = mailController.filterThreadList[index];
-                      return GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () async{
-                          mailController.threadIndex.value = index;
-                          mailController.readMessage(thread);
-                          Get.to(() => const ThreadPage());
-                          await httpResponse('/email/read', {"messageIdList": unreadMessageIdList(thread.messages)});
-                          mailController.update();
-                        },
-                        child:
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 20.w),
-                          child: Stack(
-                              children: [
-                                mailRoom(matchEmailToColor(thread.emailAddress), thread, thread.messages),
-                                /// 안 읽은 메일 개수
-                                UnreadMark(thread.messages)]
-                          ),
-                        ),
-                      );
+                      }),
+                  ListTile(
+                    leading: Icon(Icons.folder_outlined, size: 25.sp),
+                    title: Text('프로모션 메일함',
+                        style: textTheme().bodySmall?.copyWith(
+                            fontSize: 15.sp, color: Colors.grey.shade800)),
+                    onTap: () {
+                      filter.value = '프로모션 메일함';
+                      Navigator.pop(context);
                     },
-                  )
-              )
-            );
-          }
-        });
+                  ),
+                ],
+              ),
+            ),
+            body: ListView.builder(
+              itemCount: filterThreadList.length,
+              itemBuilder: (context, index) {
+                Thread thread = filterThreadList[index];
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () async {
+                    mailController.findThreadIndex(thread);
+                    mailController.readMessage(thread);
+                    Get.to(() => ThreadPage(thread));
+                    await httpResponse('/email/read',
+                        {
+                          "messageIdList": unreadMessageIdList(thread.messages)
+                        });
+                  },
+                  child: Padding(
+                    padding:
+                    EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                    child: Stack(children: [
+                      MailRoom(thread: thread),
+                      /// 안 읽은 메일 개수
+                      UnreadMark(unreadList[index]),
+                    ]),
+                  ),
+                );
+              },
+            ));
+      }
+    });
   }
 }

@@ -6,7 +6,7 @@ class Thread {
   final String name;
   final List<dynamic> labelList;
   //final List<dynamic> messages;
-  final RxList<Message> messages;
+  RxList<Message> messages;
 
   Thread({
     required this.threadId,
@@ -28,7 +28,7 @@ class Message {
   final String subject;
   final String body;
   final String messageId;
-  final bool unread;
+  bool unread;
 
   Message({
     required this.sentByUser,

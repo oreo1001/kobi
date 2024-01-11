@@ -26,8 +26,8 @@ class MyEvent {
       eventId: map['eventId'] ?? '',
       summary: summary,
       description: map['description'] ?? '',
-      startTime: eventKSTDate(map['startTime'] ?? ''),
-      endTime: eventKSTDate(map['endTime']) ?? '',
+      startTime: appointKSTDate(map['startTime'] ?? ''),
+      endTime: appointKSTEndDate(map['endTime']) ?? '',
       location: map['location'] ?? '',
     );
   }

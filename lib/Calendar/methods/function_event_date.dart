@@ -1,11 +1,5 @@
 import 'package:intl/intl.dart';
 
-String eventKSTDate(String exDate){
-  DateTime utcDate = DateTime.parse(exDate).toUtc();
-  DateTime kstDate = utcDate.add(Duration(hours: 9));
-  String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(kstDate);
-  return formattedDate;
-}
 DateTime dateStrToKSTDate(String exDate){
   DateTime utcDate = DateTime.parse(exDate).toUtc();
   DateTime kstDate = utcDate.add(Duration(hours: 9));
@@ -13,9 +7,8 @@ DateTime dateStrToKSTDate(String exDate){
 }
 
 String appointKSTDate(String exDate){
-  DateTime kstDate;
   DateTime utcDate = DateTime.parse(exDate).toUtc();
-  kstDate = utcDate.add(Duration(hours: 9));
+  DateTime kstDate = utcDate.add(Duration(hours: 9));
   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(kstDate);
   return formattedDate;
 }
