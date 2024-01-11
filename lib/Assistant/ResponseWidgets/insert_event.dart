@@ -13,7 +13,6 @@ import '../Class/step_details.dart';
 class InsertEvent extends StatefulWidget {
 
   final int index;
-
   const InsertEvent({super.key, required this.index});
 
   @override

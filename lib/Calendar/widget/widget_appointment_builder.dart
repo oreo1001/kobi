@@ -54,7 +54,7 @@ Widget appointmentBuilder(BuildContext context,
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 2.h, 0, 0),
                 child: Text(
-                  checkSameDay(appointment.startTime, appointment.endTime),
+                   appointment.isAllDay? ifAllDay(appointment.startTime,appointment.endTime): checkSameDay(appointment.startTime, appointment.endTime),
                   textAlign: TextAlign.start,
                   style: textTheme()
                       .bodySmall
@@ -82,12 +82,19 @@ double calculateRichTextHeight(String text, double fontSize, int maxLines) {
 
   return textPainter.height;
 }
+String ifAllDay(DateTime startTime, DateTime endTime){
+  if (startTime.day == endTime.day) {
+    return formatDay(startTime);
+  }else{
+    return '${formatDay(startTime)} - ${formatDay(endTime)}';
+  }
+}
 
 String checkSameDay(DateTime startTime, DateTime endTime) {
   if (startTime.day == endTime.day) {
     return '${formatTime(startTime)} - ${formatTime(endTime)}';
   } else {
-    return '${formatDay(startTime)} - ${formatDay(endTime)}';
+    return '${formatDay(startTime)+formatTime(startTime)} - ${formatDay(endTime)+formatTime(endTime)}';
   }
 }
 
@@ -104,7 +111,6 @@ String formatDay(DateTime totalDate) {
     result += totalDate.year.toString();
     result += '년';
   }
-  result += ' ${totalDate.month}월 ${totalDate.day}일 ';
-  result += formatTime(totalDate);
+  result += '${totalDate.month}월 ${totalDate.day}일 ';
   return result;
 }
