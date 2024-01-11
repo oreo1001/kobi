@@ -42,6 +42,7 @@ class ScheduleWidget extends StatelessWidget {
                             fontSize: 14.sp, color: Colors.grey)),
                   ),
                   SizedBox(width: 5.w),
+                  //${startTime.month.toString()}.
                   Text(startTime.day.toString(),
                       style: textTheme().displayMedium?.copyWith(
                           fontSize: 16.sp, color: const Color(0xff759CCC))),
@@ -82,10 +83,14 @@ class ScheduleWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(myEvent.summary,
-                  style: textTheme()
-                      .displaySmall
-                      ?.copyWith(fontSize: 16.sp, color: Colors.black)),
+              SizedBox(
+                width:180.w,
+                child: Text(myEvent.summary,
+                    style: textTheme()
+                        .displaySmall
+                        ?.copyWith(fontSize: 16.sp, color: Colors.black),maxLines:1,overflow: TextOverflow.ellipsis,
+                ),
+              ),
               Text(
                 '$startFormat ~ $endFormat',
                 style: textTheme()

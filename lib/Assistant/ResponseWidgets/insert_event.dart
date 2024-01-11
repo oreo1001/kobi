@@ -37,8 +37,12 @@ class InsertEventState extends State<InsertEvent> {
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
     ttsController.playTTS(ttsString ?? '');
-    MyEvent event = MyEvent.fromMap(arguments!);
-    //Event event = Event(eventId : 'ddd', summary: 'hihihihi', startTime: '2019-02-23T14:00:00+09:00', endTime: '2019-02-23T14:00:00+09:00');
+    MyEvent event;
+    if(arguments == null){
+      event = MyEvent(eventId : 'ddd', summary: 'hihihihi', startTime: '2024-02-23T14:00:00+09:00', endTime: '2024-02-24T14:00:00+09:00');
+    }else{
+      event = MyEvent.fromMap(arguments);
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,

@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Main/page_main.dart';
 import 'package:get/get.dart';
+import 'Loading/loading_widget.dart';
 import 'Test/test_page.dart';
-import 'Login/loading_page.dart';
+import 'Loading/loading_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -88,7 +89,7 @@ class MyAppState extends State<MyApp> {
               future: getUserProfile(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator(); // 로딩 중일 때 보여줄 위젯
+                  return const LoadingWidget(); // 로딩 중일 때 보여줄 위젯
                 } else {
                   FlutterNativeSplash.remove();
                   final bool? isLogged = snapshot.data;

@@ -7,6 +7,7 @@ import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../Loading/loading_widget.dart';
 import '../theme.dart';
 import 'widget/add_appointment_sheet.dart';
 import 'methods/get_calendar_source.dart';
@@ -97,7 +98,7 @@ class _CalendarPageState extends State<CalendarPage> {
             height: 550.h,
             child: Obx(() {
               if (appointmentController.myAppointments.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const LoadingWidget();
               } else {
                 return SfCalendar(
                     controller: _calendarController,

@@ -8,19 +8,11 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'Class/class_my_event.dart';
 
 Future<void> setupInteractedMessage(void Function(RemoteMessage) handleMessage) async {
-  // Get any messages which caused the application to open from
-  // a terminated state.
   RemoteMessage? initialMessage =
   await FirebaseMessaging.instance.getInitialMessage();
-
-  // If the message also contains a data property with a "type" of "chat",
-  // navigate to a chat screen
   if (initialMessage != null) {
     handleMessage(initialMessage);
   }
-
-  // Also handle any interaction when the app is in the background via a
-  // Stream listener
   FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
 }
 

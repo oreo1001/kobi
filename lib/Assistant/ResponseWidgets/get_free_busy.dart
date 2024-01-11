@@ -10,11 +10,8 @@ import '../../theme.dart';
 import '../Class/step_details.dart';
 
 class GetFreeBusy extends StatefulWidget {
-
   final int index;
-
   const GetFreeBusy({super.key, required this.index});
-
   @override
   GetFreeBusyState createState() => GetFreeBusyState();
 }
@@ -43,33 +40,34 @@ class GetFreeBusyState extends State<GetFreeBusy> {
 
   @override
   Widget build(BuildContext context) {
-    ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
-    Map<String, dynamic>? arguments = toolCall?.function.arguments;
-    String? ttsString = toolCall?.tts;
-    ttsController.playTTS(ttsString ?? '');
-    //Map<String, dynamic>? arguments = {"timeMin":"2023-12-14T15:00:00+09:00", "timeMax": "2023-12-14T17:00:00+09:00"};
-    String? timeMin = arguments?['timeMin'];
-    String? timeMax = arguments?['timeMax'];
+    // ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
+    // Map<String, dynamic>? arguments = toolCall?.function.arguments;
+    // String? ttsString = toolCall?.tts;
+    // ttsController.playTTS(ttsString ?? '');
+    // String timeMin;
+    // String timeMax;
+    // if(arguments==null){
+    //   timeMin = "2024-01-14T15:00:00+09:00";
+    //   timeMax = "2024-01-15T17:00:00+09:00";
+    // }else{
+    //   timeMin = arguments['timeMin'];
+    //   timeMax = arguments['timeMax'];
+    // }
     return Container(
-      width: 400.w,
-      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 10.h),
+      width: 600.w,
+      padding: EdgeInsets.fromLTRB(0.w, 0, 0, 10.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('${findBusyOrNot(timeMin)}에서',
-              style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700)),
-          Text('${findBusyOrNot(timeMax)} 까지',
-              style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700)),
-          SizedBox(height: 20.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
             child: RichText(
                 softWrap: true,
                 text: TextSpan(children: [
                   TextSpan(
-                    text: '${authController.name}님의 일정은 다음과 같아요!',
-                    style: textTheme().bodyMedium!.copyWith(fontSize: 20.sp, fontWeight: FontWeight.w700),
+                    text: '${authController.name}님의 일정을 조회 하고 있어요',
+                    style: textTheme().bodyMedium!.copyWith(fontSize: 18.sp, fontWeight: FontWeight.w700),
                   ),
                   WidgetSpan(
                     child: SizedBox(
