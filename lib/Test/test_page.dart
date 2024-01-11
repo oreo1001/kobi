@@ -40,8 +40,8 @@ class _TestPageState extends State<TestPage> {
     // );
 
 
-    return MaterialApp(
-      home: Scaffold(
+    return
+      Scaffold(
         body: SingleChildScrollView(
           child: SizedBox(
             height:700.h,
@@ -67,7 +67,6 @@ class _TestPageState extends State<TestPage> {
                     ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
