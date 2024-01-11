@@ -129,20 +129,21 @@ class _UserPageState extends State<UserPage> {
                     fontWeight: FontWeight.w500)),
             myInfoButton(
                     () {
-                      Future.delayed(Duration.zero).then((_) {
-                        InAppNotification.show(
-                            child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  border: Border.all(color: Colors.grey[100]!),
-                                ),
-                                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                                child : MultipleChoiceQuery(index: 0,)
-                            ),
-                            duration: const Duration(seconds: 60), context: context);
-                      });
+                      // Future.delayed(Duration.zero).then((_) {
+                      //   InAppNotification.show(
+                      //       child: Container(
+                      //           margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                      //           decoration: BoxDecoration(
+                      //             color: Colors.grey[200],
+                      //             borderRadius: BorderRadius.circular(10.r),
+                      //             border: Border.all(color: Colors.grey[100]!),
+                      //           ),
+                      //           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                      //           child : MultipleChoiceQuery(index: 0,)
+                      //       ),
+                      //       duration: const Duration(seconds: 60), context: context);
+                      // });
+                      Get.toNamed('/test');
                 },
                 "테스트",
                 textTheme().displaySmall!.copyWith(

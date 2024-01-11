@@ -5,8 +5,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Controller/recorder_controller.dart';
+import 'package:kobi/Mail/ThreadWidgets/condensed_message.dart';
+import 'package:kobi/Mail/ThreadWidgets/expanded_message.dart';
 import 'package:kobi/Mail/page_send.dart';
 
+import 'ThreadWidgets/thread_time.dart';
 import 'class_email.dart';
 import '../theme.dart';
 import 'methods/function_mail_date.dart';
@@ -20,20 +23,20 @@ class ThreadPage extends StatefulWidget {
 }
 
 class _ThreadPageState extends State<ThreadPage> {
-  RxList<Message> messageList = <Message>[].obs;
-  List<bool> isExpandedList = [];
   MailController mailController = Get.find();
   final ScrollController _scrollController = ScrollController();
   RecorderController recorderController = Get.find();
-  List<GlobalKey> keys = <GlobalKey>[].obs;
   String sentUsername = '';
+  RxList<Message> messageList = <Message>[].obs;
+  List<bool> isExpandedList = [];
+  List<GlobalKey> itemKeys = [];
 
   @override
   void initState() {
     super.initState();
     sentUsername = widget.thread.name;
     messageList = widget.thread.messages;
-    keys = List<GlobalKey>.generate(messageList.length, (index) => GlobalKey());
+    itemKeys = List.generate(messageList.length, (index) => GlobalKey());
     isExpandedList = List.filled(messageList.length, false);
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -50,6 +53,23 @@ class _ThreadPageState extends State<ThreadPage> {
     setState(() {
       isExpandedList[index] = !isExpandedList[index];
     });
+  }
+  Future<void> _scrollToIndex(int index) async {
+    print('dd');
+    final context = itemKeys[index].currentContext;
+
+    if (context != null) {
+      final box = context.findRenderObject() as RenderBox;
+      final position = box.localToGlobal(Offset.zero);
+
+      if (_scrollController.hasClients) {
+        await _scrollController.animateTo(
+          position.dy,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
   }
 
   @override
@@ -99,193 +119,21 @@ class _ThreadPageState extends State<ThreadPage> {
                 itemCount: messageList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {
+                    onTap: () async{
                       toggleExpansion(index);
-                      // final key = keys[index];
-                      // final RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
-                      // final Offset? position = box?.localToGlobal(Offset.zero);
-                      //
-                      // if (position != null) {
-                      //   _scrollController.animateTo(
-                      //     position.dy,
-                      //     duration: Duration(seconds: 1),
-                      //     curve: Curves.ease,
-                      //   );
-                      // }
                     },
-                    child: Padding(
-                      // key: keys[index],
+                    child: Container(
+                      key: itemKeys[index],
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 10.w),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: messageList[index].sentByUser
-                                ? MainAxisAlignment.end
-                                : MainAxisAlignment.start,
-                            children: [
-                              RichText(
-                                maxLines: 1,
-                                softWrap: true,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                    text: messageList[index].sentByUser
-                                        ? ''
-                                        : sentUsername,
-                                    style: textTheme()
-                                        .displayMedium
-                                        ?.copyWith(fontSize: 16.sp),
-                                  ),
-                                  WidgetSpan(
-                                    child: SizedBox(
-                                      width: 10.w,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                      text: threadDateString(
-                                          messageList[index].date),
-                                      style: textTheme().bodySmall?.copyWith(
-                                          color: Colors.grey, fontSize: 10.sp)),
-                                  WidgetSpan(
-                                    child: SizedBox(
-                                      width: 10.w,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: messageList[index].sentByUser
-                                        ? '나'
-                                        : '',
-                                    style: textTheme()
-                                        .displayMedium
-                                        ?.copyWith(fontSize: 16.sp),
-                                  ),
-                                ]),
-                              ),
-                            ],
-                          ),
+                          threadTime(messageList[index],sentUsername),
                           isExpandedList[index]
-                              ? Row(
-                                  mainAxisAlignment:
-                                      messageList[index].sentByUser
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 280.w,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w, vertical: 10.h),
-                                      decoration: BoxDecoration(
-                                        color: messageList[index].sentByUser
-                                            ? const Color(0xff759CCC)
-                                            : const Color(0xffD8EAF9),
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.sp)),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            (messageList[index]
-                                                        .subject
-                                                        .trim() ==
-                                                    '')
-                                                ? '(제목 없음)'
-                                                : messageList[index].subject,
-                                            style: textTheme()
-                                                .bodySmall
-                                                ?.copyWith(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: messageList[index]
-                                                          .sentByUser
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                ),
-                                          ),
-                                          SizedBox(height: 5.h),
-                                          Text(
-                                            messageList[index].body,
-                                            style: textTheme()
-                                                .bodySmall
-                                                ?.copyWith(
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: messageList[index]
-                                                          .sentByUser
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Row(
-                                  mainAxisAlignment:
-                                      messageList[index].sentByUser
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 280.w,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w, vertical: 10.h),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.sp)),
-                                        color: messageList[index].sentByUser
-                                            ? const Color(0xff759CCC)
-                                            : const Color(0xffD8EAF9),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            (messageList[index]
-                                                        .subject
-                                                        .trim() ==
-                                                    '')
-                                                ? '(제목 없음)'
-                                                : removeNewlines(
-                                                    messageList[index].subject),
-                                            style: textTheme()
-                                                .bodySmall
-                                                ?.copyWith(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: messageList[index]
-                                                          .sentByUser
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          SizedBox(height: 5.h),
-                                          Text(
-                                            removeNewlines(
-                                                messageList[index].body),
-                                            style: textTheme()
-                                                .bodySmall
-                                                ?.copyWith(
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: messageList[index]
-                                                          .sentByUser
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              ? expandedMessage(messageList[index])
+                              : condensedMessage(messageList[index])
                         ],
                       ),
                     ),
@@ -348,10 +196,5 @@ class _ThreadPageState extends State<ThreadPage> {
         ),
       ],
     );
-  }
-
-  String removeNewlines(String text) {
-    text = text.replaceAll('\r', '').replaceAll('\n', '');
-    return text;
   }
 }
