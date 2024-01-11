@@ -8,8 +8,8 @@ class TtsController extends GetxController {
 
   @override
   void dispose() {
-    flutterTts.stop().then((_) {super.dispose();});
-
+    // flutterTts.stop().then((_) {super.dispose();});
+    super.dispose();
   }
 
   @override
