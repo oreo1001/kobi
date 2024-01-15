@@ -4,7 +4,8 @@ import '../class_email.dart';
 
 List<Thread> loadThreadListFromJson(List<dynamic> jsonList) {
   var threadList = jsonList.map((json) {
-    RxList<Message> messageList = parsingMessageListFromThread(json['messages']).obs;
+    RxList<Message> messageList =
+        parsingMessageListFromThread(json['messages']).obs;
     return Thread(
       threadId: json['threadId'],
       emailAddress: json['emailAddress'],
@@ -30,17 +31,8 @@ List<Message> parsingMessageListFromThread(List<dynamic> jsonList) {
   return messageList;
 }
 
-List<String> unreadMessageIdList(List<Message> messageList) {
-  List<String> unreadMessageIdList = [];
-  for (var message in messageList) {
-    if (message.unread) {
-      unreadMessageIdList.add(message.messageId);
-    }
-  }
-  return unreadMessageIdList;
-}
-
-List<Thread> filterThreadListByFilter(RxList<Thread> threadList, String filter) {
+List<Thread> filterThreadListByFilter(
+    RxList<Thread> threadList, String filter) {
   List<Thread> filteredThreadList = [];
   for (var thread in threadList) {
     if (filter == '전체 메일함') {
@@ -49,7 +41,7 @@ List<Thread> filterThreadListByFilter(RxList<Thread> threadList, String filter) 
       if (thread.labelList.contains('WonMoMeeting')) {
         filteredThreadList.add(thread);
       }
-  } else if (filter == '프로모션 메일함') {
+    } else if (filter == '프로모션 메일함') {
       if (!thread.labelList.contains('WonMoMeeting')) {
         filteredThreadList.add(thread);
       }
@@ -59,7 +51,7 @@ List<Thread> filterThreadListByFilter(RxList<Thread> threadList, String filter) 
 }
 
 RxList<Message> markAllAsRead(List<Message> messages) {
-  List<Message> newMessages= [];
+  List<Message> newMessages = [];
   for (var message in messages) {
     if (message.unread) {
       message = Message(
@@ -75,16 +67,17 @@ RxList<Message> markAllAsRead(List<Message> messages) {
   }
   return newMessages.obs;
 }
-RxList<RxInt> countUnreadMessagesInThreads(List<Thread> threadList) {
-  RxList<RxInt> unreadCounts = <RxInt>[].obs;
+
+RxList<RxList<String>> unreadMessageIdListsInThreads(List<Thread> threadList) {
+  RxList<RxList<String>> unreadMessageIdLists = <RxList<String>>[].obs;
   for (var thread in threadList) {
-    RxInt count = 0.obs;
+    RxList<String> unreadMessageIdList = <String>[].obs;
     for (var message in thread.messages) {
       if (message.unread) {
-        count++;
+        unreadMessageIdList.add(message.messageId);
       }
     }
-    unreadCounts.add(count);
+    unreadMessageIdLists.add(unreadMessageIdList);
   }
-  return unreadCounts;
+  return unreadMessageIdLists;
 }
