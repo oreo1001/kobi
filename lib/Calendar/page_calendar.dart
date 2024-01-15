@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:kobi/Calendar/widget/share_calendar_dialog.dart';
 import 'package:kobi/Calendar/widget/widget_appointment_builder.dart';
 import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
@@ -74,7 +75,22 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                       ],
                     )),
-                SizedBox(width: 140.w),
+                SizedBox(width: 100.w),
+                TextButton(
+                    onPressed: () {
+                      Get.dialog(
+                        ShareCalendarDialog(),
+                          barrierDismissible: false
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero,
+                      foregroundColor: Colors.black87,
+                      padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Icon(Icons.share, color: Colors.black, size: 30.sp)),
+                SizedBox(width: 20.w,),
                 TextButton(
                     onPressed: () {
                       Get.bottomSheet(
