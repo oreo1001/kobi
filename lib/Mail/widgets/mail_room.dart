@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:kobi/Mail/class_email.dart';
 
 import '../../theme.dart';
@@ -8,11 +9,15 @@ import '../methods/function_mail_date.dart';
 import '../methods/match_email_to_color.dart';
 
 class MailRoom extends StatefulWidget {
-  final Thread thread;
+  Thread thread;
+  RxBool isLongPressed;
+  RxBool isSelected;
 
-  const MailRoom({
+  MailRoom(
+    this.thread,
+    this.isLongPressed,
+    this.isSelected, {
     Key? key,
-    required this.thread,
   }) : super(key: key);
 
   @override
@@ -26,31 +31,50 @@ class _MailRoomState extends State<MailRoom> {
   @override
   void initState() {
     super.initState();
-    profileColor = matchEmailToColor(widget.thread.emailAddress);
     messageList = widget.thread.messages;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    profileColor = matchEmailToColor(widget.thread.emailAddress);
+    messageList = widget.thread.messages;
+    return Obx(() => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 10.h, 15.w, 10.h),
-          child: CircleAvatar(
-            radius: 30.sp,
-            backgroundColor: profileColor,
-            child: Text(
-              widget.thread.name.isEmpty ? '' : widget.thread.name[0],
-              // 첫 번째 글자만 가져옴
-              style: const TextStyle(
-                fontSize: 24,
-                color: Colors.white,
+        widget.isLongPressed.value
+            ? Padding(
+                padding: EdgeInsets.fromLTRB(0, 10.h, 15.w, 10.h),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: widget.isSelected.value? Colors.white: Colors.grey, // 원하는 테두리 색상 설정
+                      width: 2.sp, // 원하는 테두리 두께 설정
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 28.sp,
+                    backgroundColor:
+                        widget.isSelected.value ? Colors.blue : Colors.white,
+                    child: widget.isSelected.value ? const Icon(Icons.check,color : Colors.white) : Container(),
+                  ),
+                ),
+              )
+            : Padding(
+                padding: EdgeInsets.fromLTRB(0, 10.h, 15.w, 10.h),
+                child: CircleAvatar(
+                  radius: 30.sp,
+                  backgroundColor: profileColor, // 선택되었을 때와 아닐 때의 배경색
+                  child: Text(
+                    widget.thread.name.isEmpty ? '' : widget.thread.name[0],
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
         Container(
           padding: EdgeInsets.only(right: 2.w),
           width: 280.w,
@@ -111,6 +135,6 @@ class _MailRoomState extends State<MailRoom> {
           ),
         ),
       ],
-    );
+    ));
   }
 }

@@ -22,32 +22,28 @@ class _UnreadMarkState extends State<UnreadMark> {
   }
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-        return Visibility(
-            visible: widget.unreadCount.value == 0 ? false : true,
-            child: Positioned(
-              bottom: 10.h,
-              right: 20.h,
-              child: Container(
-                width: 25.w,
-                height: 25.h,
-                padding: EdgeInsets.fromLTRB(7.w, 5.h, 7.w, 7.h),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    widget.unreadCount.value.toString(),
-                    style: textTheme()
-                        .displayLarge
-                        ?.copyWith(color: Colors.white, fontSize: 10.sp),
-                  ),
-                ),
+    return Obx(() =>
+    widget.unreadCount.value == 0 ? Container() : Positioned(
+          bottom: 10.h,
+          right: 20.h,
+          child: Container(
+            width: 25.w,
+            height: 25.h,
+            padding: EdgeInsets.fromLTRB(7.w, 5.h, 7.w, 7.h),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                widget.unreadCount.value.toString(),
+                style: textTheme()
+                    .displayLarge
+                    ?.copyWith(color: Colors.white, fontSize: 10.sp),
               ),
             ),
-          );
-      }
+          ),
+        )
     );
   }
 }

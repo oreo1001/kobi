@@ -39,16 +39,17 @@ dependencies:
   dotted_border: ^2.1.0
   collection: ^1.18.0
   siri_wave: ^2.0.0+1               #시리같은 스피커
-  intl: ^0.18.1
+  intl: ^0.18.1                     #DateString ->  DateTime
   wrapped_korean_text: ^0.0.3      #한글 띄어쓰기 라이브러리
   flutter_localization: ^0.2.0    #우리나라로 로컬화
   scroll_date_picker: ^3.7.3      #달력 년/월/일 스크롤로 선택
   url_launcher: ^6.2.2            #url로 보내주는 라이브러리
-  flutter_datetime_picker_plus: ^2.1.0
-  syncfusion_flutter_datepicker: ^24.1.43
-  flutter_launcher_icons: ^0.13.1
+  flutter_datetime_picker_plus: ^2.1.0     #time scroller
+  syncfusion_flutter_datepicker: ^24.1.43  #달력에서 선택하는 기능
+  flutter_launcher_icons: ^0.13.1         #플러터 시작 아이콘 설정
   infinite_scroll_pagination: ^4.0.0
-  scrollable_positioned_list: ^0.3.8
+  scrollable_positioned_list: ^0.3.8      #컨테이너 누르면 스크롤
+  mime: ^1.0.4                        #메일 mime 객체
 
 dev_dependencies:
   flutter_test:

@@ -10,6 +10,7 @@ import 'package:kobi/Mail/ThreadWidgets/expanded_message.dart';
 import 'package:kobi/Mail/page_send.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../Main/page_main.dart';
 import 'ThreadWidgets/thread_time.dart';
 import 'class_email.dart';
 import '../theme.dart';
@@ -45,7 +46,7 @@ class _ThreadPageState extends State<ThreadPage> {
     messageList = widget.thread.messages;
     itemKeys = List.generate(messageList.length, (index) => GlobalKey());
     isExpandedList = List.filled(messageList.length, false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {   //처음에 마지막 인덱스로 이동
       if (itemScrollController.isAttached) {
         itemScrollController.jumpTo(index: messageList.length - 1);
       }
@@ -85,6 +86,7 @@ class _ThreadPageState extends State<ThreadPage> {
                         constraints: BoxConstraints(),
                         onPressed: () {
                           Get.back();
+                          // Get.off(() => MainPage(2));
                         },
                         icon: Icon(Icons.arrow_back_ios, size: 25.sp)),
                     Container(
@@ -113,29 +115,7 @@ class _ThreadPageState extends State<ThreadPage> {
                   return InkWell(
                     onTap: () async{
                       toggleExpansion(index);
-                      Future.delayed(const Duration(milliseconds: 50), () {
-                        if (index == 0 && !isExpandedList[index]) {   // 첫 번째 항목 맨 위로 스크롤
-                          itemScrollController.scrollTo(
-                            index: index,
-                            alignment: 0.0,
-                            duration: const Duration(milliseconds: 200),
-                          );
-                        }
-                        else if (index == messageList.length - 1 && !isExpandedList[index]) {// 마지막 항목 맨 아래로 스크롤
-                          itemScrollController.scrollTo(
-                            index: index,
-                            alignment: 0.9,
-                            duration: const Duration(milliseconds: 200),
-                          );
-                        }
-                        else {
-                          itemScrollController.scrollTo(
-                            index: index,
-                            alignment: isExpandedList[index] ? 0.1 : 0.5,
-                            duration: const Duration(milliseconds: 200),
-                          );
-                        }
-                      });
+                      scrollToContainer(index);
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -210,5 +190,30 @@ class _ThreadPageState extends State<ThreadPage> {
         ),
       ],
     );
+  }
+  void scrollToContainer(int index){
+    Future.delayed(const Duration(milliseconds: 50), () {
+      if (index == 0 && !isExpandedList[index]) {   // 첫 번째 항목 맨 위로 스크롤
+        itemScrollController.scrollTo(
+          index: index,
+          alignment: 0.0,
+          duration: const Duration(milliseconds: 200),
+        );
+      }
+      else if (index == messageList.length - 1 && !isExpandedList[index]) {// 마지막 항목 맨 아래로 스크롤
+        itemScrollController.scrollTo(
+          index: index,
+          alignment: 0.9,
+          duration: const Duration(milliseconds: 200),
+        );
+      }
+      else {
+        itemScrollController.scrollTo(
+          index: index,
+          alignment: isExpandedList[index] ? 0.1 : 0.5,
+          duration: const Duration(milliseconds: 200),
+        );
+      }
+    });
   }
 }

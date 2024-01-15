@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -30,6 +32,8 @@ class _MailPageState extends State<MailPage> {
   RxString filter = 'WonMoMeeting 메일함'.obs;
   RxList<Thread> filterThreadList = <Thread>[].obs;
   RxList<RxInt> unreadList = <RxInt>[].obs;
+  RxBool isLongPressed = false.obs;
+  RxList<RxBool> selectedItems = List<RxBool>.generate(100, (index) => false.obs).obs; //임시로 100개로 초기화..
 
   @override
   void initState() {
@@ -42,9 +46,10 @@ class _MailPageState extends State<MailPage> {
 
   Future getThread() async {
     Map<String, dynamic> responseMap =
-    await httpResponse('/email/emailList', {});
+        await httpResponse('/email/emailList', {});
     mailController.threadList =
         loadThreadListFromJson(responseMap['emailList']).obs;
+    selectedItems = List<RxBool>.generate(mailController.threadList.length, (index) => false.obs).obs;
   }
 
   @override
@@ -54,9 +59,8 @@ class _MailPageState extends State<MailPage> {
         return const LoadingWidget();
       } else {
         filterThreadList =
-            filterThreadListByFilter(mailController.threadList, filter.value)
-                .obs;
-        unreadList = countUnreadMessagesInThreads(filterThreadList);
+            filterThreadListByFilter(mailController.threadList, filter.value).obs;
+        var unreadList = unreadMessageIdListsInThreads(filterThreadList);
         return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.white,
@@ -65,28 +69,52 @@ class _MailPageState extends State<MailPage> {
               title: Column(
                 children: [
                   SizedBox(height: 30.h),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                    child: Text(filter.value,
-                        style: textTheme()
-                            .displayMedium
-                            ?.copyWith(fontSize: 23.sp)),
-                  ),
+                  isLongPressed.value
+                      ? Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  isLongPressed.value = !isLongPressed.value;
+                                },
+                                icon: const Icon(Icons.arrow_back_ios)),
+                            Text(selectedItems
+                                .where((item) => item.value == true)
+                                .length
+                                .toString()),
+                          ],
+                        )
+                      : Padding(
+                          padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                          child: Text(filter.value,
+                              style: textTheme()
+                                  .displayMedium
+                                  ?.copyWith(fontSize: 23.sp)),
+                        ),
                 ],
               ),
               actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 30.h, 0.w, 0),
+                  child: IconButton(
+                      onPressed: () {
+                        mailController.deleteThread(
+                            selectedItems, filterThreadList);
+                        selectedItems = List<RxBool>.generate(filterThreadList.length-(selectedItems
+                            .where((item) => item.value == true)
+                            .length), (index) => false.obs).obs;
+                      },
+                      icon: const Icon(Icons.delete)),
+                ),
                 Builder(
-                  builder: (context) =>
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 30.h, 10.w, 0),
-                        child: IconButton(
-                          icon: Icon(Icons.menu, size: 30.sp),
-                          onPressed: () => Scaffold.of(context).openEndDrawer(),
-                          tooltip: MaterialLocalizations
-                              .of(context)
-                              .openAppDrawerTooltip,
-                        ),
-                      ),
+                  builder: (context) => Padding(
+                    padding: EdgeInsets.fromLTRB(0, 30.h, 10.w, 0),
+                    child: IconButton(
+                      icon: Icon(Icons.menu, size: 30.sp),
+                      onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -154,21 +182,29 @@ class _MailPageState extends State<MailPage> {
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () async {
-                    mailController.findThreadIndex(thread);
-                    mailController.readMessage(thread);
-                    Get.to(() => ThreadPage(thread));
-                    await httpResponse('/email/read',
-                        {
-                          "messageIdList": unreadMessageIdList(thread.messages)
-                        });
+                    if (isLongPressed.value) {
+                      selectedItems[index].value = !selectedItems[index].value;
+                    } else {
+                      filterThreadList.refresh();
+                      mailController.findThreadIndex(thread);
+                      mailController.readMessage(thread);
+                      Get.to(() => ThreadPage(thread));
+                      await httpResponse('/email/read', {
+                        "messageIdList": unreadList[index]
+                      });
+                    }
+                  },
+                  onLongPress: () {
+                    isLongPressed.value = !isLongPressed.value;
+                    selectedItems[index].value = !selectedItems[index].value;
                   },
                   child: Padding(
                     padding:
-                    EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
                     child: Stack(children: [
-                      MailRoom(thread: thread),
+                      MailRoom(thread, isLongPressed, selectedItems[index]),
                       /// 안 읽은 메일 개수
-                      UnreadMark(unreadList[index]),
+                      UnreadMark(unreadList[index].length.obs),
                     ]),
                   ),
                 );

@@ -7,7 +7,6 @@ import '../Mail/methods/function_thread_data.dart';
 class MailController extends GetxController {
   RxInt threadIndex = 0.obs;
   RxList<Thread> threadList =<Thread>[].obs;
-  RxList<int> unreadCounterList = <int>[].obs;
 
   void insertMessage(Message message) {
     int index = threadList.indexWhere((thread) => thread.threadId == threadList[threadIndex.value].threadId);
@@ -27,6 +26,17 @@ class MailController extends GetxController {
         threadList[i].messages = markAllAsRead(threadList[i].messages);
         break;
       }
+    }
+  }
+  void deleteThread(RxList<RxBool> selectedItems,List<Thread> filterThreadList){
+    List<int> indexesToRemove = <int>[];
+    for (var i = 0; i < selectedItems.length; i++) {
+      if (selectedItems[i].value) {
+        indexesToRemove.add(i);
+      }
+    }
+    for (var index in indexesToRemove) {
+      threadList.removeWhere((thread) => thread.threadId == filterThreadList[index].threadId);
     }
   }
 }
