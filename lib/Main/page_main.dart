@@ -9,6 +9,7 @@ import 'package:kobi/Calendar/page_calendar.dart';
 import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Main/microphone_button.dart';
+import 'package:kobi/Methods/handle_silent_event.dart';
 
 import '../Assistant/Class/API_response.dart';
 import '../Assistant/Class/assistant_enum.dart';
@@ -90,13 +91,18 @@ class _MainPageState extends State<MainPage> {
     switch (type) {
       case 'insert_event':
         showEventDialog(MyEvent.fromMap(data));
-        appointmentController.updateAppointmentFromMap(message.data);
+        appointmentController.addAppointmentFromMap(message.data);
         break;
       case 'update_event':
         showUpdateEventDialog(MyEvent.fromMap(jsonDecode(data["before_event"])), MyEvent.fromMap(jsonDecode(data["after_event"])));
         break;
       case 'delete_event':
         showDeleteDialog(MyEvent.fromMap(data));
+        break;
+      case 'silence_event':
+        /// TODO : 변경된 이벤트 객체 받아서 캘린더에 반영
+        List<dynamic> silentEvents = data.values.toList();
+        handleSilentEvent(silentEvents, appointmentController);
         break;
     }
   }
@@ -108,11 +114,12 @@ class _MainPageState extends State<MainPage> {
         _pageList.removeAt(0);
         _pageList.insert(0, AssistantPage(key: UniqueKey()));
       }
-      if (index == 1) {
-        // delete previous page
-        _pageList.removeAt(1);
-        _pageList.insert(1, CalendarPage(key: UniqueKey()));
-      }
+      /// TODO : 문제 발생 시 다시 주석 해제
+      // if (index == 1) {
+      //   // delete previous page
+      //   _pageList.removeAt(1);
+      //   _pageList.insert(1, CalendarPage(key: UniqueKey()));
+      // }
       if (index == 2) {
         _pageList.removeAt(2);
         _pageList.insert(2, MailPage(key: UniqueKey()));
