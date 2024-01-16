@@ -51,7 +51,7 @@ class AppointmentController extends GetxController {
     }).toList();
     return newAppointments;
   }
-  void updateAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
+  void addAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
     MyEvent myEvent = MyEvent.fromMap(map);
     Appointment newAppointment = Appointment(
       startTime: DateTime.parse(myEvent.startTime),
@@ -63,6 +63,39 @@ class AppointmentController extends GetxController {
       color: Colors.lightBlue, // 색상은 예시로 lightBlue
     );
     myAppointments.add(newAppointment);
+  }
+
+  void addAppointment(Appointment myAppointment) {
+    int index = myAppointments.indexWhere((appointment) => appointment.id == myAppointment.id);
+    if (index != -1) {
+      myAppointments[index] = Appointment(
+        startTime: myAppointment.startTime,
+        endTime: myAppointment.endTime,
+        subject: myAppointment.subject,
+        id: myAppointment.id,
+        location: myAppointment.location,
+        notes: myAppointment.notes,
+        color: Colors.lightBlue,
+      );
+    }
+  }
+
+  void deleteAppointment(Appointment myAppointment) {
+    myAppointments.removeWhere((appointment) => appointment.id == myAppointment.id);
+  }
+
+  void deleteAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
+    MyEvent myEvent = MyEvent.fromMap(map);
+    Appointment newAppointment = Appointment(
+      startTime: DateTime.parse(myEvent.startTime),
+      endTime: DateTime.parse(myEvent.endTime),
+      subject: myEvent.summary,
+      id: myEvent.eventId, //eventId -> id
+      location: myEvent.location,
+      notes: myEvent.description,
+      color: Colors.lightBlue, // 색상은 예시로 lightBlue
+    );
+    deleteAppointment(newAppointment);
   }
 
   void updateAppointment(Appointment myAppointment) {
@@ -80,7 +113,17 @@ class AppointmentController extends GetxController {
     }
   }
 
-  void deleteAppointment(Appointment myAppointment) {
-    myAppointments.removeWhere((appointment) => appointment.id == myAppointment.id);
+  void updateAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
+    MyEvent myEvent = MyEvent.fromMap(map);
+    Appointment newAppointment = Appointment(
+      startTime: DateTime.parse(myEvent.startTime),
+      endTime: DateTime.parse(myEvent.endTime),
+      subject: myEvent.summary,
+      id: myEvent.eventId, //eventId -> id
+      location: myEvent.location,
+      notes: myEvent.description,
+      color: Colors.lightBlue, // 색상은 예시로 lightBlue
+    );
+    updateAppointment(newAppointment);
   }
 }
