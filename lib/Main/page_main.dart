@@ -73,7 +73,7 @@ class _MainPageState extends State<MainPage> {
   // 저장할 AssistantController
   AssistantController assistantController = Get.put(AssistantController());
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   final List <Widget> _pageList =  [
     AssistantPage(),
     CalendarPage(),
@@ -84,9 +84,10 @@ class _MainPageState extends State<MainPage> {
   void _handleMessage(RemoteMessage message) {
     Map <String, dynamic> data = message.data;
     setState(() {
-      _selectedIndex = 0;
+      _selectedIndex = 2;
     });
     String type = data['type'];
+    print('test');
     switch (type) {
       case 'insert_event':
         showEventDialog(MyEvent.fromMap(data));

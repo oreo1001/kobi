@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Class/class_my_event.dart';
 import 'package:kobi/Dialog/delete_dialog.dart';
@@ -19,8 +20,7 @@ class _TestPageState extends State<TestPage> {
   }
 
   Future<String> _getMimeType() async {
-    final fileExtension = 'txt';
-    return lookupMimeType(fileExtension)!;
+    return lookupMimeType('assets/images/test.html')!;
   }
 
   @override

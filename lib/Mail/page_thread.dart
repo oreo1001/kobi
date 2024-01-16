@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -10,13 +9,13 @@ import 'package:kobi/Mail/ThreadWidgets/expanded_message.dart';
 import 'package:kobi/Mail/page_send.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../Main/page_main.dart';
 import 'ThreadWidgets/thread_time.dart';
 import 'class_email.dart';
 import '../theme.dart';
 
 class ThreadPage extends StatefulWidget {
   ThreadPage(this.thread, {super.key});
+
   Thread thread;
 
   @override
@@ -26,7 +25,8 @@ class ThreadPage extends StatefulWidget {
 class _ThreadPageState extends State<ThreadPage> {
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
-  ItemPositionsListener.create();
+      ItemPositionsListener.create();
+
   // final ScrollOffsetController scrollOffsetController =
   // ScrollOffsetController();
   // final ScrollOffsetListener scrollOffsetListener =
@@ -46,7 +46,8 @@ class _ThreadPageState extends State<ThreadPage> {
     messageList = widget.thread.messages;
     itemKeys = List.generate(messageList.length, (index) => GlobalKey());
     isExpandedList = List.filled(messageList.length, false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {   //처음에 마지막 인덱스로 이동
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //처음에 마지막 인덱스로 이동
       if (itemScrollController.isAttached) {
         itemScrollController.jumpTo(index: messageList.length - 1);
       }
@@ -113,23 +114,21 @@ class _ThreadPageState extends State<ThreadPage> {
                 itemCount: messageList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () async{
+                    onTap: () async {
                       toggleExpansion(index);
                       scrollToContainer(index);
                     },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 10.w),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          threadTime(messageList[index],sentUsername),
-                          isExpandedList[index]
-                              ? expandedMessage(messageList[index])
-                              : condensedMessage(messageList[index])
-                        ],
-                      ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.w),
+                          child: threadTime(messageList[index], sentUsername),
+                        ),
+                        isExpandedList[index]
+                            ? expandedMessage(messageList[index])
+                            : condensedMessage(messageList[index]),
+                      ],
                     ),
                   );
                 }),
@@ -148,23 +147,23 @@ class _ThreadPageState extends State<ThreadPage> {
                 SizedBox(
                   height: 10.h,
                 ),
-                // TextButton(
-                //   style: ButtonStyle(
-                //       minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
-                //       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.fromLTRB(0,0,0,10.h)),
-                //       side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
-                //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(10.sp)))),
-                //   onPressed: () {
-                //     recorderController.setTranscription('${widget.currentThread.emailAddress} 메일 주소로 메일 작성해서 보내줄래?');
-                //   },
-                //   child: Text('커리비에게 답장 추천받기',
-                //       style: textTheme().bodySmall?.copyWith(
-                //             fontSize: 13.sp,
-                //             fontWeight: FontWeight.w400,
-                //           )),
-                // ),
-                // SizedBox(height: 10.h),
+                TextButton(
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all<Size>(Size(300.w, 50.h)),
+                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.fromLTRB(0,0,0,10.h)),
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Colors.grey.shade200, width: 2.w)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.sp)))),
+                  onPressed: () {
+                    // recorderController.setTranscription('${widget.thread.emailAddress} 메일 주소로 메일 작성해서 보내줄래?');
+                  },
+                  child: Text('커리비에게 답장 추천받기',
+                      style: textTheme().bodySmall?.copyWith(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w400,
+                          )),
+                ),
+                SizedBox(height: 10.h),
                 TextButton(
                   style: ButtonStyle(
                       minimumSize:
@@ -191,23 +190,24 @@ class _ThreadPageState extends State<ThreadPage> {
       ],
     );
   }
-  void scrollToContainer(int index){
+
+  void scrollToContainer(int index) {
     Future.delayed(const Duration(milliseconds: 50), () {
-      if (index == 0 && !isExpandedList[index]) {   // 첫 번째 항목 맨 위로 스크롤
+      if (index == 0 && !isExpandedList[index]) {
+        // 첫 번째 항목 맨 위로 스크롤
         itemScrollController.scrollTo(
           index: index,
           alignment: 0.0,
           duration: const Duration(milliseconds: 200),
         );
-      }
-      else if (index == messageList.length - 1 && !isExpandedList[index]) {// 마지막 항목 맨 아래로 스크롤
+      } else if (index == messageList.length - 1 && !isExpandedList[index]) {
+        // 마지막 항목 맨 아래로 스크롤
         itemScrollController.scrollTo(
           index: index,
           alignment: 0.9,
           duration: const Duration(milliseconds: 200),
         );
-      }
-      else {
+      } else {
         itemScrollController.scrollTo(
           index: index,
           alignment: isExpandedList[index] ? 0.1 : 0.5,
