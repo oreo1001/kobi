@@ -50,6 +50,8 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   scrollable_positioned_list: ^0.3.8      #컨테이너 누르면 스크롤
   mime: ^1.0.4                        #메일 mime 객체
+  flutter_widget_from_html: ^0.14.11    #flutter에 html 위젯
+  flutter_linkify: ^6.0.0               #flutter text에 링크달기
 
 dev_dependencies:
   flutter_test:

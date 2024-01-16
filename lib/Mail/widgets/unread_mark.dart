@@ -25,7 +25,7 @@ class _UnreadMarkState extends State<UnreadMark> {
     return Obx(() =>
     widget.unreadCount.value == 0 ? Container() : Positioned(
           bottom: 10.h,
-          right: 20.h,
+          right: 10.h,
           child: Container(
             width: 25.w,
             height: 25.h,

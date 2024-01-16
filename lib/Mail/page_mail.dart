@@ -29,7 +29,8 @@ class _MailPageState extends State<MailPage> {
   String name = '';
   String email = '';
   String photoUrl = '';
-  RxString filter = 'WonMoMeeting 메일함'.obs;
+  // RxString filter = 'WonMoMeeting 메일함'.obs;
+  RxString filter = '전체 메일함'.obs;
   RxList<Thread> filterThreadList = <Thread>[].obs;
   RxList<RxInt> unreadList = <RxInt>[].obs;
   RxBool isLongPressed = false.obs;
@@ -88,7 +89,7 @@ class _MailPageState extends State<MailPage> {
                           child: Text(filter.value,
                               style: textTheme()
                                   .displayMedium
-                                  ?.copyWith(fontSize: 23.sp)),
+                                  ?.copyWith(fontSize: 20.sp)),
                         ),
                 ],
               ),
@@ -109,7 +110,7 @@ class _MailPageState extends State<MailPage> {
                   builder: (context) => Padding(
                     padding: EdgeInsets.fromLTRB(0, 30.h, 10.w, 0),
                     child: IconButton(
-                      icon: Icon(Icons.menu, size: 30.sp),
+                      icon: Icon(Icons.menu, size: 25.sp),
                       onPressed: () => Scaffold.of(context).openEndDrawer(),
                       tooltip: MaterialLocalizations.of(context)
                           .openAppDrawerTooltip,
@@ -143,16 +144,16 @@ class _MailPageState extends State<MailPage> {
                             fontSize: 12.sp, color: Colors.grey.shade500)),
                   ),
                   SizedBox(height: 17.h),
-                  ListTile(
-                    leading: Icon(Icons.folder_outlined, size: 25.sp),
-                    title: Text('WonMoMeeting 메일함',
-                        style: textTheme().bodySmall?.copyWith(
-                            fontSize: 15.sp, color: Colors.grey.shade800)),
-                    onTap: () {
-                      filter.value = 'WonMoMeeting 메일함';
-                      Navigator.pop(context);
-                    },
-                  ),
+                  // ListTile(
+                  //   leading: Icon(Icons.folder_outlined, size: 25.sp),
+                  //   title: Text('WonMoMeeting 메일함',
+                  //       style: textTheme().bodySmall?.copyWith(
+                  //           fontSize: 15.sp, color: Colors.grey.shade800)),
+                  //   onTap: () {
+                  //     filter.value = 'WonMoMeeting 메일함';
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
                   ListTile(
                       leading: Icon(Icons.folder_outlined, size: 25.sp),
                       title: Text('전체 메일함',

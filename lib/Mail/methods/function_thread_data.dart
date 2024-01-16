@@ -1,6 +1,8 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../class_email.dart';
+import 'package:html/parser.dart' show parse;
+
 
 List<Thread> loadThreadListFromJson(List<dynamic> jsonList) {
   var threadList = jsonList.map((json) {
@@ -26,6 +28,7 @@ List<Message> parsingMessageListFromThread(List<dynamic> jsonList) {
       body: json['body'],
       messageId: json['messageId'],
       unread: json['unread'],
+      mimeType: json['mimeType'],
     );
   }).toList();
   return messageList;
@@ -37,11 +40,12 @@ List<Thread> filterThreadListByFilter(
   for (var thread in threadList) {
     if (filter == '전체 메일함') {
       filteredThreadList.add(thread);
-    } else if (filter == 'WonMoMeeting 메일함') {
-      if (thread.labelList.contains('WonMoMeeting')) {
-        filteredThreadList.add(thread);
-      }
-    } else if (filter == '프로모션 메일함') {
+    }
+    //  else if (filter == 'WonMoMeeting 메일함') {
+    //   if (thread.labelList.contains('WonMoMeeting')) {
+    //     filteredThreadList.add(thread);
+    //   }
+    else if (filter == '프로모션 메일함') {
       if (!thread.labelList.contains('WonMoMeeting')) {
         filteredThreadList.add(thread);
       }
@@ -80,4 +84,20 @@ RxList<RxList<String>> unreadMessageIdListsInThreads(List<Thread> threadList) {
     unreadMessageIdLists.add(unreadMessageIdList);
   }
   return unreadMessageIdLists;
+}
+
+String firstSentenceFromHtml(Message message){
+  String firstSentence = '';
+  if (message.mimeType != "text/plain") {
+    var document = parse(message.body);
+    String parsedString = document.body!.text.trim();
+
+    RegExp exp = RegExp(r'[^.!?]*[.!?]');
+    Match? match = exp.firstMatch(parsedString);
+
+    if (match != null) {
+      firstSentence = match.group(0)!;
+    }
+  }
+  return firstSentence;
 }

@@ -29,6 +29,7 @@ class Message {
   final String body;
   final String messageId;
   bool unread;
+  String? mimeType;
 
   Message({
     required this.sentByUser,
@@ -37,11 +38,12 @@ class Message {
     required this.body,
     required this.messageId,
     required this.unread,
+    this.mimeType,
   });
 
   @override
   String toString() {
-    return 'Message(sentByUser: $sentByUser, date: $date, subject: $subject, body: $body, messageId: $messageId, unread: $unread)';
+    return 'Message(sentByUser: $sentByUser, date: $date, subject: $subject, body: $body, messageId: $messageId, unread: $unread, mimeType: $mimeType)';
   }
 }
 

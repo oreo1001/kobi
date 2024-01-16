@@ -67,7 +67,6 @@ class AppointmentController extends GetxController {
 
   void addAppointment(Appointment myAppointment) {
     int index = myAppointments.indexWhere((appointment) => appointment.id == myAppointment.id);
-    print(index);
     if (index != -1) {
       myAppointments[index] = Appointment(
         startTime: myAppointment.startTime,
@@ -80,11 +79,9 @@ class AppointmentController extends GetxController {
       );
     }
   }
+
   void deleteAppointment(Appointment myAppointment) {
-    int index = myAppointments.indexWhere((appointment) => appointment.id == myAppointment.id);
-    if (index != -1) {
-      myAppointments.removeAt(index);
-    }
+    myAppointments.removeWhere((appointment) => appointment.id == myAppointment.id);
   }
 
   void deleteAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
@@ -129,5 +126,4 @@ class AppointmentController extends GetxController {
     );
     updateAppointment(newAppointment);
   }
-  ///TODO  delete Appointment 구현
 }

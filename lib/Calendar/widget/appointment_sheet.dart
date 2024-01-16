@@ -79,8 +79,26 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       textTheme().displaySmall?.copyWith(fontSize: 17.sp),
                     ),
                   ),
+                  SizedBox(width:150.w),
                   TextButton(
-                    onPressed: () async{
+                    onPressed: () {
+                      AppointmentController appointmentController = Get.find();
+                      appointmentController.deleteAppointment(widget.appointment);
+                      Get.back();
+                      Get.snackbar(
+                        "일정",
+                        "삭제하였습니다!",
+                        snackPosition: SnackPosition.TOP,
+                      );
+                    },
+                    child: Text(
+                      '삭제',
+                      style:
+                      textTheme().displaySmall?.copyWith(fontSize: 17.sp,color:Colors.red),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
                       DateTime startTimeToBack = combineDate(startDate.value, selectedTime.value);
                       if(checkProperEndDate(endDate.value)) return;
                       DateTime endTimeToBack = combineDate(endDate.value, selectedTime2.value);
@@ -95,9 +113,9 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       // });
                       Get.back();
                       Get.snackbar(
-                        "일정", // 제목
-                        "수정하였습니다!", // 메시지
-                        snackPosition: SnackPosition.TOP, // 스낵바 위치
+                        "일정",
+                        "수정하였습니다!",
+                        snackPosition: SnackPosition.TOP,
                       );
                     },
                     child: Text(

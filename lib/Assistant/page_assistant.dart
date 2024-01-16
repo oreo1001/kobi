@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kobi/Assistant/HomeWidgets/extension_report.dart';
@@ -22,6 +24,7 @@ class _AssistantPageState extends State<AssistantPage> {
     Map<String, dynamic> responseMap =
         await httpResponse('/assistant/background', {});
     var background = loadBackgroundFromJson(responseMap);
+    background = Background(mailFiltering: MailFiltering(log: 'dd',date:DateTime.now().toString()), autoCalendarList: []);
     return background;
   }
 
@@ -31,9 +34,7 @@ class _AssistantPageState extends State<AssistantPage> {
       body: FutureBuilder(
           future: getBackground(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingWidget();
-            } else if (snapshot.hasError) {
+            if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError) {
               return const LoadingWidget();
             } else {
               var background = snapshot.data as Background;

@@ -6,6 +6,7 @@ import 'package:kobi/Mail/class_email.dart';
 
 import '../../theme.dart';
 import '../methods/function_mail_date.dart';
+import '../methods/function_thread_data.dart';
 import '../methods/match_email_to_color.dart';
 
 class MailRoom extends StatefulWidget {
@@ -54,7 +55,7 @@ class _MailRoomState extends State<MailRoom> {
                     ),
                   ),
                   child: CircleAvatar(
-                    radius: 28.sp,
+                    radius: 23.sp,
                     backgroundColor:
                         widget.isSelected.value ? Colors.blue : Colors.white,
                     child: widget.isSelected.value ? const Icon(Icons.check,color : Colors.white) : Container(),
@@ -64,12 +65,12 @@ class _MailRoomState extends State<MailRoom> {
             : Padding(
                 padding: EdgeInsets.fromLTRB(0, 10.h, 15.w, 10.h),
                 child: CircleAvatar(
-                  radius: 30.sp,
+                  radius: 23.sp,
                   backgroundColor: profileColor, // 선택되었을 때와 아닐 때의 배경색
                   child: Text(
                     widget.thread.name.isEmpty ? '' : widget.thread.name[0],
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: TextStyle(
+                      fontSize: 20.sp,
                       color: Colors.white,
                     ),
                   ),
@@ -87,12 +88,12 @@ class _MailRoomState extends State<MailRoom> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 215.w,
+                    width: 220.w,
                     child: Text(widget.thread.name,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme()
                             .displayLarge
-                            ?.copyWith(fontSize: 17.sp)),
+                            ?.copyWith(fontSize: 15.sp)),
                   ),
                   const Spacer(),
                   SizedBox(
@@ -108,7 +109,7 @@ class _MailRoomState extends State<MailRoom> {
                 ],
               ),
               SizedBox(
-                width: 225.w,
+                width: 260.w,
                 child: Text(
                   messageList.last.subject.trim().isEmpty
                       ? '(제목 없음)'
@@ -119,14 +120,14 @@ class _MailRoomState extends State<MailRoom> {
                 ),
               ),
               SizedBox(
-                width: 225.w,
+                width: 260.w,
                 child: Text(
-                  messageList.last.body,
+                  messageList.last.mimeType=="text/plain" ? messageList.last.body :firstSentenceFromHtml(messageList.last),
                   maxLines: 1,
                   softWrap: true,
                   style: textTheme().displaySmall?.copyWith(
                       fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       overflow: TextOverflow.ellipsis),
                 ),
               ),
