@@ -67,7 +67,6 @@ class AppointmentController extends GetxController {
 
   void updateAppointment(Appointment myAppointment) {
     int index = myAppointments.indexWhere((appointment) => appointment.id == myAppointment.id);
-    print(index);
     if (index != -1) {
       myAppointments[index] = Appointment(
         startTime: myAppointment.startTime,
@@ -80,5 +79,8 @@ class AppointmentController extends GetxController {
       );
     }
   }
-  ///TODO  delete Appointment 구현
+
+  void deleteAppointment(Appointment myAppointment) {
+    myAppointments.removeWhere((appointment) => appointment.id == myAppointment.id);
+  }
 }
