@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -130,11 +131,11 @@ class _MailPageState extends State<MailPage> {
                   ListTile(
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(30.sp),
-                      child: Image.network(
-                        photoUrl,
-                        fit: BoxFit.fill,
-                        scale: 0.3,
-                      ), // Text(key['title']),
+                      child: CachedNetworkImage(
+                        imageUrl: photoUrl,
+                        placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                     ),
                     title: Text(name,
                         style: textTheme().bodySmall?.copyWith(
