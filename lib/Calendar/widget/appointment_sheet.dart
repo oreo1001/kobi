@@ -81,9 +81,13 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                   ),
                   SizedBox(width:150.w),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async{
+                      MyEvent eventToBack = appointmentToMyEvent(widget.appointment);
                       AppointmentController appointmentController = Get.find();
                       appointmentController.deleteAppointment(widget.appointment);
+                      await httpResponse('/calendar/deleteEvent', {
+                        'event' : eventToBack.toJson()
+                      });
                       Get.back();
                       Get.snackbar(
                         "일정",
@@ -108,9 +112,9 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       MyEvent eventToBack = appointmentToMyEvent(myAppointment);
                       AppointmentController appointmentController = Get.find();
                       appointmentController.updateAppointment(myAppointment);
-                      // await httpResponse('/calendar/insertEvent', {
-                      //   'event' : eventToBack.toJson()
-                      // });
+                      await httpResponse('/calendar/patchEvent', {
+                        'event' : eventToBack.toJson()
+                      });
                       Get.back();
                       Get.snackbar(
                         "일정",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:kobi/Dialog/widget/schedule_widget.dart';
+import 'package:kobi/Dialog/widget/schedule_widget2.dart';
 import '../Class/class_my_event.dart';
 import '../theme.dart';
 
@@ -14,7 +14,7 @@ void showDeleteDialog(MyEvent event) {
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ScheduleWidget(myEvent : event),
+        ScheduleWidget2(myEvent : event),
         TextButton(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,

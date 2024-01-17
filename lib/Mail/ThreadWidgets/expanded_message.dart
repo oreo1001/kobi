@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:mime/mime.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme.dart';
@@ -59,15 +58,6 @@ Row expandedMessage(Message message) {
                       message.sentByUser ? Colors.white : Colors.red,
                     ),
                   ),
-                  // Text(
-                  //   message.body,
-                  //   style: textTheme().bodySmall?.copyWith(
-                  //         fontSize: 13.sp,
-                  //         fontWeight: FontWeight.w400,
-                  //         color:
-                  //             message.sentByUser ? Colors.white : Colors.black,
-                  //       ),
-                  // ),
                 ],
               ),
             )
