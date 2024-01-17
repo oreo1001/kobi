@@ -29,6 +29,7 @@ List<Message> parsingMessageListFromThread(List<dynamic> jsonList) {
       messageId: json['messageId'],
       unread: json['unread'],
       mimeType: json['mimeType'],
+      snippet : json['snippet'],
     );
   }).toList();
   return messageList;
@@ -65,6 +66,7 @@ RxList<Message> markAllAsRead(List<Message> messages) {
         body: message.body,
         messageId: message.messageId,
         unread: false,
+        snippet:message.snippet,
       );
     }
     newMessages.add(message);

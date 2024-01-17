@@ -51,7 +51,7 @@ Row condensedMessage(Message message) {
                     overflow: TextOverflow.ellipsis,
                   )
                 : Text(
-                    firstSentenceFromHtml(message),
+                    message.snippet,
                     style: textTheme().bodySmall?.copyWith(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,

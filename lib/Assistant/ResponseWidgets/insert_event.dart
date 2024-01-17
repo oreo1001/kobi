@@ -39,7 +39,7 @@ class InsertEventState extends State<InsertEvent> {
     ttsController.playTTS(ttsString ?? '');
     MyEvent event;
     if(arguments == null){
-      event = MyEvent(eventId : 'ddd', summary: 'hihihihi', startTime: '2024-02-23T14:00:00+09:00', endTime: '2024-02-24T14:00:00+09:00');
+      event = MyEvent(id : 'ddd', summary: 'hihihihi', startTime: '2024-02-23T14:00:00+09:00', endTime: '2024-02-24T14:00:00+09:00',isAllDay: false);
     }else{
       event = MyEvent.fromMap(arguments);
     }

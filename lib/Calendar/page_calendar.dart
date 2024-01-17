@@ -129,6 +129,9 @@ class _CalendarPageState extends State<CalendarPage> {
                       _headerText.value = DateFormat('yyyy년 M월')
                           .format(details.visibleDates[0]);
                     },
+                    // onTap: (CalendarTapDetails details){
+                    //   print(details.appointments);
+                    // },
                     selectionDecoration: BoxDecoration(
                       color: const Color(0x88ACCCFF),
                       borderRadius: BorderRadius.all(Radius.circular(4.sp)),
