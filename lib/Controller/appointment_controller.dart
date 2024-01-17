@@ -10,7 +10,7 @@ import '../Class/class_my_event.dart';
 import '../function_http_request.dart';
 
 class AppointmentController extends GetxController {
-  RxList<Appointment> myAppointments = <Appointment>[].obs;
+  RxList<Appointment> myAppointments = <Appointment>[Appointment(startTime: DateTime.utc(1998), endTime: DateTime.utc(1998))].obs;
 
   // @override
   // void onReady() {
