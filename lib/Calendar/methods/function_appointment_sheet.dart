@@ -68,6 +68,20 @@ MyEvent appointmentToMyEvent(Appointment appointment) {
     endTime: appointment.endTime.toString(),
     description: appointment.notes,
     location: appointment.location,
-    eventId: appointment.id.toString(),
+    id: appointment.id.toString(),
+    isAllDay: appointment.isAllDay,
+  );
+}
+
+Appointment myEventToAppointment(MyEvent myEvent) {
+  return Appointment(
+    startTime: DateTime.parse(myEvent.startTime),
+    endTime: DateTime.parse(myEvent.endTime),
+    subject: myEvent.summary,
+    id: myEvent.id, //eventId -> id
+    location: myEvent.location,
+    notes: myEvent.description,
+    color: Colors.lightBlue, // 색상은 예시로 lightBlue
+    isAllDay: myEvent.isAllDay,
   );
 }

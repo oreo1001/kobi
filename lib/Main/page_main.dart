@@ -92,7 +92,6 @@ class _MainPageState extends State<MainPage> {
     switch (type) {
       case 'insert_event':
         showEventDialog(MyEvent.fromMap(data));
-        appointmentController.addAppointmentFromMap(message.data);
         break;
       case 'update_event':
         showUpdateEventDialog(MyEvent.fromMap(jsonDecode(data["before_event"])), MyEvent.fromMap(jsonDecode(data["after_event"])));

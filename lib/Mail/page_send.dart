@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:kobi/Controller/auth_controller.dart';
 import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Dialog/invalid_email_dialog.dart';
-import 'package:kobi/Mail/page_thread.dart';
 import 'package:kobi/Mail/widgets/page_send_completed.dart';
 
 import '../User/class_contact.dart';
@@ -71,7 +70,7 @@ class _SendPageState extends State<SendPage> {
                         } else {
                           String messageId = generateRandomId(20);
                           String nowDate = DateFormat("EEE, dd MMM yyyy HH:mm:ss Z").format(DateTime.now());
-                          Message sendMessage = Message(sentByUser: true, date: nowDate, subject: titleController.text, body: bodyController.text, messageId: messageId, unread: false);
+                          Message sendMessage = Message(sentByUser: true, date: nowDate, subject: titleController.text, body: bodyController.text, messageId: messageId, unread: false, snippet: '');
                           mailController.insertMessage(sendMessage);
                           await httpResponse('/email/send', {
                             "messageId": messageId,

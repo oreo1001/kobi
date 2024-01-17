@@ -1,20 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kobi/Assistant/ResponseWidgets/create_email.dart';
-import 'package:kobi/Assistant/ResponseWidgets/describe_user_query.dart';
-import 'package:kobi/Assistant/ResponseWidgets/get_free_busy.dart';
-import 'package:kobi/Assistant/ResponseWidgets/message_creation.dart';
-import 'package:kobi/Assistant/ResponseWidgets/multiple_choice_query.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Assistant/ResponseWidgets/delete_event.dart';
-import '../Assistant/ResponseWidgets/insert_event.dart';
-import '../Assistant/ResponseWidgets/patch_event.dart';
 import '../Class/secure_storage.dart';
 import '../Controller/auth_controller.dart';
-import '../Test/test_page.dart';
-import '../in_app_notification/in_app_notification.dart';
 import '../theme.dart';
 import 'Widgets/my_info_button.dart';
 
@@ -64,10 +55,11 @@ class _UserPageState extends State<UserPage> {
                     child: ListTile(
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(30.sp),
-                        child: Image.network(
-                          photoUrl,
-                          fit: BoxFit.fill,
-                        ), // Text(key['title']),
+                        child: CachedNetworkImage(
+                          imageUrl: photoUrl,
+                          placeholder: (context, url) => CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
                       ),
                       title: Text(name,style: textTheme().bodySmall?.copyWith(fontSize: 20.sp, color: Colors.grey.shade800)),
                       subtitle: Text(email,style: textTheme().bodySmall?.copyWith(fontSize: 14.sp, color: Colors.grey.shade500)),

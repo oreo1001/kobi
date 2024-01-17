@@ -122,7 +122,7 @@ class _MailRoomState extends State<MailRoom> {
               SizedBox(
                 width: 260.w,
                 child: Text(
-                  messageList.last.mimeType=="text/plain" ? messageList.last.body :firstSentenceFromHtml(messageList.last),
+                  messageList.last.mimeType=="text/plain" ? messageList.last.body :  messageList.last.snippet,
                   maxLines: 1,
                   softWrap: true,
                   style: textTheme().displaySmall?.copyWith(

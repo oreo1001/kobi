@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:kobi/Calendar/methods/function_appointment_sheet.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../Calendar/methods/function_event_date.dart';
@@ -39,7 +40,7 @@ class AppointmentController extends GetxController {
         summary= json['summary'];
       }
       return Appointment(
-        // id : json['id'],
+        id : json['id'],
         startTime: DateTime.parse(appointKSTDate(json['startTime'])),
         endTime: DateTime.parse(appointKSTEndDate(json['endTime'])),
         subject: summary,
@@ -51,79 +52,22 @@ class AppointmentController extends GetxController {
     }).toList();
     return newAppointments;
   }
-  void addAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
-    MyEvent myEvent = MyEvent.fromMap(map);
-    Appointment newAppointment = Appointment(
-      startTime: DateTime.parse(myEvent.startTime),
-      endTime: DateTime.parse(myEvent.endTime),
-      subject: myEvent.summary,
-      id: myEvent.eventId, //eventId -> id
-      location: myEvent.location,
-      notes: myEvent.description,
-      color: Colors.lightBlue, // 색상은 예시로 lightBlue
-    );
-    myAppointments.add(newAppointment);
-  }
-
-  void addAppointment(Appointment myAppointment) {
-    int index = myAppointments.indexWhere((appointment) => appointment.id == myAppointment.id);
+  void updateAppointment(Appointment updateAppointment) {
+    int index = myAppointments.indexWhere((appointment) => appointment.id == updateAppointment.id);
     if (index != -1) {
       myAppointments[index] = Appointment(
-        startTime: myAppointment.startTime,
-        endTime: myAppointment.endTime,
-        subject: myAppointment.subject,
-        id: myAppointment.id,
-        location: myAppointment.location,
-        notes: myAppointment.notes,
+        startTime: updateAppointment.startTime,
+        endTime: updateAppointment.endTime,
+        subject: updateAppointment.subject,
+        id: updateAppointment.id,
+        location: updateAppointment.location,
+        notes: updateAppointment.notes,
         color: Colors.lightBlue,
+        isAllDay: updateAppointment.isAllDay,
       );
     }
   }
-
-  void deleteAppointment(Appointment myAppointment) {
-    myAppointments.removeWhere((appointment) => appointment.id == myAppointment.id);
-  }
-
-  void deleteAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
-    MyEvent myEvent = MyEvent.fromMap(map);
-    Appointment newAppointment = Appointment(
-      startTime: DateTime.parse(myEvent.startTime),
-      endTime: DateTime.parse(myEvent.endTime),
-      subject: myEvent.summary,
-      id: myEvent.eventId, //eventId -> id
-      location: myEvent.location,
-      notes: myEvent.description,
-      color: Colors.lightBlue, // 색상은 예시로 lightBlue
-    );
-    deleteAppointment(newAppointment);
-  }
-
-  void updateAppointment(Appointment myAppointment) {
-    int index = myAppointments.indexWhere((appointment) => appointment.id == myAppointment.id);
-    if (index != -1) {
-      myAppointments[index] = Appointment(
-        startTime: myAppointment.startTime,
-        endTime: myAppointment.endTime,
-        subject: myAppointment.subject,
-        id: myAppointment.id,
-        location: myAppointment.location,
-        notes: myAppointment.notes,
-        color: Colors.lightBlue,
-      );
-    }
-  }
-
-  void updateAppointmentFromMap(Map<String, dynamic> map){   //FirebaseMessaging
-    MyEvent myEvent = MyEvent.fromMap(map);
-    Appointment newAppointment = Appointment(
-      startTime: DateTime.parse(myEvent.startTime),
-      endTime: DateTime.parse(myEvent.endTime),
-      subject: myEvent.summary,
-      id: myEvent.eventId, //eventId -> id
-      location: myEvent.location,
-      notes: myEvent.description,
-      color: Colors.lightBlue, // 색상은 예시로 lightBlue
-    );
-    updateAppointment(newAppointment);
+  void deleteAppointment(Appointment deleteAppointment) {
+    myAppointments.removeWhere((appointment) => appointment.id == deleteAppointment.id);
   }
 }
