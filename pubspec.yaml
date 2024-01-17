@@ -49,10 +49,10 @@ dependencies:
   flutter_launcher_icons: ^0.13.1         #플러터 시작 아이콘 설정
   infinite_scroll_pagination: ^4.0.0
   scrollable_positioned_list: ^0.3.8      #컨테이너 누르면 스크롤
-  mime: ^1.0.4                        #메일 mime 객체
   flutter_widget_from_html: ^0.14.11    #flutter에 html 위젯
   flutter_linkify: ^6.0.0               #flutter text에 링크달기
-  carousel_slider: ^4.2.1
+  carousel_slider: ^4.2.1             #flutter carousel
+  cached_network_image: ^3.3.1     #image를 캐시하여 가져옴
 
 dev_dependencies:
   flutter_test:

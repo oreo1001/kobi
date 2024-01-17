@@ -89,7 +89,6 @@ class _MainPageState extends State<MainPage> {
       _selectedIndex = 0;
     });
     String type = data['type'];
-    print('test');
     switch (type) {
       case 'insert_event':
         showEventDialog(MyEvent.fromMap(data));
