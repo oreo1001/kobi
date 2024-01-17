@@ -108,52 +108,6 @@ class _AssistantPageState extends State<AssistantPage> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      // Container(
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       border: Border.all(color: Colors.white70),
-                      //       boxShadow: [
-                      //         BoxShadow(
-                      //           color: Colors.grey.withOpacity(0.2), // 그림자 색상
-                      //           spreadRadius: 2, // 그림자 확장 범위
-                      //           blurRadius: 1, // 그림자 흐림 정도
-                      //           offset: const Offset(0, 1), // 그림자 위치
-                      //         )
-                      //       ],
-                      //       borderRadius: BorderRadius.circular(10.0),
-                      //     ),
-                      //     child: Padding(
-                      //       padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      //       child: Column(
-                      //         children: [
-                      //           Row(
-                      //             children: [
-                      //               Container(
-                      //                   width: 39.5.w,
-                      //                   height: 39.5.h,
-                      //                   padding: EdgeInsets.all(6.5.sp),
-                      //                   decoration: BoxDecoration(
-                      //                       color: Color(0xFF965DD9),
-                      //                       shape: BoxShape.circle,
-                      //                       border: Border.all(
-                      //                           color: Colors.grey.withOpacity(0.2)
-                      //                       )
-                      //                   ),
-                      //                   child: Icon(Icons.search_outlined,color:Colors.white)
-                      //               ),
-                      //               SizedBox(width: 30.w,),
-                      //               Flexible(
-                      //                   child: Text('hihi',
-                      //                     style: textTheme().bodySmall!.copyWith(fontSize: 14.sp),
-                      //                   )
-                      //               )
-                      //             ],
-                      //           ),
-                      //           Text('sdmgjpsdjgopdsgsdpgdsgsdgdsddddsgdsgsdgsgdsgsdgsgdsgsdgsdg')
-                      //         ],
-                      //       ),
-                      //     )),
-                      // SizedBox(height: 100.h),
                       ExtensionReport(
                         extensionReportInfo: ExtensionReportInfo(
                             extensionDescription: ExtensionDescription(

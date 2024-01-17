@@ -26,6 +26,7 @@ import '../Assistant/ResponseWidgets/message_creation.dart';
 import '../Assistant/ResponseWidgets/multiple_choice_query.dart';
 import '../Assistant/ResponseWidgets/patch_event.dart';
 import '../Assistant/page_assistant.dart';
+import '../Assistant/page_assistant2.dart';
 import '../Class/class_my_event.dart';
 import '../Controller/assistant_controller.dart';
 import '../Controller/recorder_controller.dart';
@@ -74,9 +75,9 @@ class _MainPageState extends State<MainPage> {
   // 저장할 AssistantController
   AssistantController assistantController = Get.put(AssistantController());
 
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
   final List <Widget> _pageList =  [
-    AssistantPage(),
+    AssistantPage2(),
     CalendarPage(),
     MailPage(),
     const UserPage(),
@@ -85,7 +86,7 @@ class _MainPageState extends State<MainPage> {
   void _handleMessage(RemoteMessage message) {
     Map <String, dynamic> data = message.data;
     setState(() {
-      _selectedIndex = 2;
+      _selectedIndex = 0;
     });
     String type = data['type'];
     print('test');
@@ -113,7 +114,7 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       if (index == 0) {
         _pageList.removeAt(0);
-        _pageList.insert(0, AssistantPage(key: UniqueKey()));
+        _pageList.insert(0, AssistantPage2(key: UniqueKey()));
       }
       /// TODO : 문제 발생 시 다시 주석 해제
       // if (index == 1) {

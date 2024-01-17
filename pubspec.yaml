@@ -52,6 +52,7 @@ dependencies:
   mime: ^1.0.4                        #메일 mime 객체
   flutter_widget_from_html: ^0.14.11    #flutter에 html 위젯
   flutter_linkify: ^6.0.0               #flutter text에 링크달기
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

@@ -87,7 +87,6 @@ class _ThreadPageState extends State<ThreadPage> {
                         constraints: BoxConstraints(),
                         onPressed: () {
                           Get.back();
-                          // Get.off(() => MainPage(2));
                         },
                         icon: Icon(Icons.arrow_back_ios, size: 25.sp)),
                     Container(
