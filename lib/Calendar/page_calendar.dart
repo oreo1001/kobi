@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -113,7 +114,7 @@ class _CalendarPageState extends State<CalendarPage> {
           SizedBox(
             height: 550.h,
             child: Obx(() {
-              if (appointmentController.myAppointments.isEmpty) {
+              if (const ListEquality().equals(appointmentController.myAppointments, [Appointment(startTime: DateTime.utc(1998), endTime: DateTime.utc(1998))])) {
                 return const LoadingWidget();
               } else {
                 return SfCalendar(

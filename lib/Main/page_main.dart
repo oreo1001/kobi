@@ -102,7 +102,11 @@ class _MainPageState extends State<MainPage> {
         break;
       case 'silence_event':
         /// TODO : 변경된 이벤트 객체 받아서 캘린더에 반영
-        List<dynamic> silentEvents = data.values.toList();
+        String replacedString = data['eventList'].replaceAll("'", '"' )
+            .replaceAll('None', 'null')
+            .replaceAll('True', 'true')
+            .replaceAll('False', 'false');
+        List<Map<String, dynamic>> silentEvents = List<Map<String, dynamic>>.from(jsonDecode(replacedString));
         handleSilentEvent(silentEvents, appointmentController);
         break;
     }
@@ -156,11 +160,6 @@ class _MainPageState extends State<MainPage> {
               bool transcriptionChanged = !const ListEquality().equals(previousTranscription, transcription);
               /// mainPage 안의 Obx를 다시 실행시키기 위한 변수 :
               bool mainPageBuilder = recorderController.mainPageBuilder.value;
-              print(mainPageBuilder);
-
-              print('@@@@@@@@@@@@@@@@@@@@ Obx 내부 @@@@@@@@@@@@@@@@@@@@');
-              print('transcription : $transcription');
-              print('responseWidgets : $responseWidgets');
 
               if (responseWidgets.isNotEmpty) {
                 Future.delayed(Duration.zero).then((_) {
