@@ -5,8 +5,8 @@ import '../../Calendar/methods/function_event_date.dart';
 import '../../Class/class_my_event.dart';
 import '../../theme.dart';
 
-class ScheduleWidget extends StatelessWidget {
-  const ScheduleWidget({Key? key,required this.myEvent}) : super(key: key);
+class ScheduleWidget2 extends StatelessWidget {
+  const ScheduleWidget2({Key? key,required this.myEvent}) : super(key: key);
   final MyEvent myEvent;
 
   @override
@@ -21,13 +21,12 @@ class ScheduleWidget extends StatelessWidget {
     String endFormat = DateFormat('a h:mm', 'ko_KR').format(endTime);
 
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),
+        padding: EdgeInsets.fromLTRB(20.w,15.h,15.w,15.h),
         decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(15.sp),
           border: Border.all(
             width: 1.w,
-            color: Colors.white,
+            color: Colors.grey.shade200,
           ),
         ),
         child: Row(children: [
@@ -85,11 +84,11 @@ class ScheduleWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width:180.w,
+                width:160.w,
                 child: Text(myEvent.summary,
-                    style: textTheme()
-                        .displaySmall
-                        ?.copyWith(fontSize: 16.sp, color: Colors.black),maxLines:1,overflow: TextOverflow.ellipsis,
+                  style: textTheme()
+                      .displaySmall
+                      ?.copyWith(fontSize: 15.sp, color: Colors.black),maxLines:1,overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
