@@ -19,11 +19,9 @@ class GetFreeBusy extends StatefulWidget {
 class GetFreeBusyState extends State<GetFreeBusy> {
   final AssistantController assistantController = Get.find();
   AuthController authController = Get.find();
-  TtsController ttsController = Get.find<TtsController>();
 
   @override
   void initState() {
-    ttsController.dispose();
     super.initState();
   }
 

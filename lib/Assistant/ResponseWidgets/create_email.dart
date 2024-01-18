@@ -23,11 +23,13 @@ class CreateEmailState extends State<CreateEmail> {
   final AssistantController assistantController = Get.find();
   RecorderController recorderController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
+  bool isDisposed = false;
 
   @override
   void dispose() {
-    ttsController.dispose();
     textController.dispose();
+    // ttsController.dispose();
+    isDisposed = true;
     super.dispose();
   }
 
@@ -36,7 +38,9 @@ class CreateEmailState extends State<CreateEmail> {
     ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
-    ttsController.playTTS(ttsString ?? '');
+    if (!isDisposed) {
+      ttsController.playTTS(ttsString ?? '');
+    }
 
     String emailAddress;
     String title;

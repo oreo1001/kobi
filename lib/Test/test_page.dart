@@ -7,6 +7,7 @@ import 'package:kobi/Dialog/delete_dialog.dart';
 import 'package:kobi/Dialog/event_dialog.dart';
 import 'package:kobi/Dialog/update_event_dialog.dart';
 
+import '../Assistant/ResponseWidgets/create_email.dart';
 import '../Assistant/ResponseWidgets/delete_event.dart';
 import '../in_app_notification/in_app_notification.dart';
 
@@ -32,6 +33,7 @@ class _TestPageState extends State<TestPage> {
         endTime: '2024-02-24T14:00:00+09:00',
         isAllDay: false);
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
           child: Column(
         children: [
@@ -54,8 +56,8 @@ class _TestPageState extends State<TestPage> {
                       ),
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 10.h),
-                      child: DeleteEvent(index: 0)),
-                  duration: const Duration(seconds: 60),
+                      child: CreateEmail(index: 0,)),
+                  duration: const Duration(seconds: 30),
                   context: context);
             },
             child: Text('test2'),
