@@ -24,10 +24,11 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
   TtsController ttsController = Get.find<TtsController>();
   String selectedItem = '';
   Map<String, dynamic>? arguments;
+  bool isDisposed = false;
 
   @override
   void dispose() {
-    ttsController.dispose();
+    isDisposed = true;
     super.dispose();
   }
 
@@ -37,7 +38,9 @@ class _MultipleChoiceQueryState extends State<MultipleChoiceQuery> {
     ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
     arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
-    ttsController.playTTS(ttsString ?? '');
+    if (!isDisposed) {
+      ttsController.playTTS(ttsString ?? '');
+    }
   }
 
   @override

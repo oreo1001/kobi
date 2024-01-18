@@ -18,12 +18,8 @@ class EstablishStrategy extends StatefulWidget {
 }
 
 class EstablishStrategyState extends State<EstablishStrategy> {
-  final AssistantController assistantsController = Get.find();
-  TtsController ttsController = Get.find<TtsController>();
-
   @override
   void dispose() {
-    ttsController.dispose();
     super.dispose();
   }
 

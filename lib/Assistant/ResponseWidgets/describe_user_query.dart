@@ -21,10 +21,12 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
   final AssistantController assistantController = Get.find();
   RecorderController recorderController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
+  bool isDisposed = false;
 
   @override
   void dispose() {
-    ttsController.dispose();
+  isDisposed = true;
+    // ttsController.dispose();
     textController.dispose();
     super.dispose();
   }
@@ -34,7 +36,10 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
     ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
-    ttsController.playTTS(ttsString ?? '');
+    if (!isDisposed) {
+      ttsController.playTTS(ttsString ?? '');
+    }
+
     String query;
     if(arguments==null){
       query = '제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목';

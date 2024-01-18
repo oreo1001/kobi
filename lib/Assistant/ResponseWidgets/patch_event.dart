@@ -23,10 +23,12 @@ class PatchEventState extends State<PatchEvent> {
   final AssistantController assistantController = Get.find();
   RecorderController recorderController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
+  bool isDisposed = false;
+
 
   @override
   dispose() {
-    ttsController.dispose();
+  isDisposed = true;
     super.dispose();
   }
 
@@ -34,7 +36,9 @@ class PatchEventState extends State<PatchEvent> {
   Widget build(BuildContext context) {
     ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
     String? ttsString = toolCall?.tts;
-    ttsController.playTTS(ttsString ?? '');
+    if (!isDisposed) {
+      ttsController.playTTS(ttsString ?? '');
+    }
     Map<String, dynamic>? beforeEventMap = toolCall?.function.arguments['before_event'];
     Map<String, dynamic>? afterEventMap = toolCall?.function.arguments['after_event'];
     Map<String, dynamic>? testBeforeEventMap = {

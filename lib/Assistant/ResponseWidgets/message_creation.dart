@@ -20,17 +20,20 @@ class _MessageCreationUIState extends State<MessageCreationUI> {
 
   final AssistantController assistantController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
+  bool isDisposed = false;
 
   @override
   void dispose() {
-    ttsController.dispose();
+  isDisposed = true;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     for (MessageCreation messageCreation in assistantController.stepDetails.value?.messageCreation ?? []) {
-      ttsController.playTTS(messageCreation.tts);
+      if (!isDisposed) {
+        ttsController.playTTS(messageCreation.tts);
+      }
     }
     List<MessageCreation> messageCreationList = assistantController.stepDetails.value?.messageCreation ?? [];
     return Column(

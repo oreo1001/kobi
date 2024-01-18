@@ -24,10 +24,11 @@ class InsertEventState extends State<InsertEvent> {
   final AssistantController assistantController = Get.find();
   TtsController ttsController = Get.find<TtsController>();
   String? eventId = '';
+  bool isDisposed = false;
 
   @override
   void dispose() {
-    ttsController.dispose();
+  isDisposed = true;
     super.dispose();
   }
 
@@ -36,7 +37,9 @@ class InsertEventState extends State<InsertEvent> {
     ToolCall? toolCall = assistantController.stepDetails.value?.toolCalls?[0];
     Map<String, dynamic>? arguments = toolCall?.function.arguments;
     String? ttsString = toolCall?.tts;
-    ttsController.playTTS(ttsString ?? '');
+    if (!isDisposed) {
+      ttsController.playTTS(ttsString ?? '');
+    }
     MyEvent event;
     if(arguments == null){
       event = MyEvent(id : 'ddd', summary: 'hihihihi', startTime: '2024-02-23T14:00:00+09:00', endTime: '2024-02-24T14:00:00+09:00',isAllDay: false);
