@@ -26,7 +26,7 @@ dependencies:
   flutter_sound: ^9.2.13
   permission_handler: ^11.1.0
 #  flutter_snowboy: ^0.1.2+1       #시리
-  audiofileplayer: ^2.1.1
+  audiofileplayer: ^2.1.1      #시리랑 연동?
   flutter_native_splash: ^2.3.8    #splash 라이브러리
   firebase_core: ^2.24.2          #firebase
   firebase_messaging: ^14.7.9     #firebase 푸시알림
@@ -36,8 +36,6 @@ dependencies:
   animated_text_kit: ^4.2.2         #텍스트 애니메이션
   loading_animation_widget: ^1.2.0+4  #로딩 애니메이션
   audioplayers: ^5.2.1
-  dotted_border: ^2.1.0
-  collection: ^1.18.0
   siri_wave: ^2.0.0+1               #시리같은 스피커
   intl: ^0.18.1                     #DateString ->  DateTime
   wrapped_korean_text: ^0.0.3      #한글 띄어쓰기 라이브러리
@@ -47,7 +45,6 @@ dependencies:
   flutter_datetime_picker_plus: ^2.1.0     #time scroller
   syncfusion_flutter_datepicker: ^24.1.43  #달력에서 선택하는 기능
   flutter_launcher_icons: ^0.13.1         #플러터 시작 아이콘 설정
-  infinite_scroll_pagination: ^4.0.0
   scrollable_positioned_list: ^0.3.8      #컨테이너 누르면 스크롤
   flutter_widget_from_html: ^0.14.11    #flutter에 html 위젯
   flutter_linkify: ^6.0.0               #flutter text에 링크달기
