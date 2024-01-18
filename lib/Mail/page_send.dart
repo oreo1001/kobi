@@ -16,7 +16,8 @@ import '../theme.dart';
 import 'class_email.dart';
 
 class SendPage extends StatefulWidget {
-  SendPage({super.key});
+  SendPage({this.testMail, Key? key}) : super(key: key);
+  TestMail? testMail;
 
   @override
   State<SendPage> createState() => _SendPageState();
@@ -25,27 +26,35 @@ class SendPage extends StatefulWidget {
 class _SendPageState extends State<SendPage> {
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
+  final emailController = TextEditingController();
   MailController mailController = Get.find();
   AuthController authController = Get.find();
   List<Contact> contactList = [];
   Contact? selectedContact;
   String sendMailAddress = '';
   bool _showDropdown = false;
+  OverlayEntry? overlayEntry;
 
   @override
   void initState() {
     super.initState();
     contactList = authController.contactList;
-    sendMailAddress = mailController.threadList[mailController.threadIndex.value].emailAddress;
+    sendMailAddress =
+        mailController.threadList[mailController.threadIndex.value]
+            .emailAddress;
+    if (widget.testMail != null) {
+      titleController.text = widget.testMail!.title;
+      bodyController.text = widget.testMail!.body;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.h),
+          preferredSize: Size.fromHeight(70.h),
           child: Container(
-            padding: EdgeInsets.fromLTRB(0, 50.h, 0, 10.h),
+            padding: EdgeInsets.fromLTRB(0, 40.h, 0, 10.h),
             child: AppBar(
               backgroundColor: Colors.white,
               surfaceTintColor: Colors.white,
@@ -100,7 +109,7 @@ class _SendPageState extends State<SendPage> {
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
                       child: Text('받는사람',
                           style: textTheme().bodySmall?.copyWith(
-                                fontSize: 15.sp,
+                                fontSize: 13.sp,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black87,
                               ))),
@@ -167,9 +176,9 @@ class _SendPageState extends State<SendPage> {
                     ),
                   if (!_showDropdown)
                     Container(
-                        height: 40.h,
+                        height: 30.h,
                         padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 10.h),
+                            horizontal: 10.w, vertical: 3.h),
                         decoration: BoxDecoration(
                           color: const Color(0xffD8EAF9),
                           shape: BoxShape.rectangle,
@@ -180,7 +189,7 @@ class _SendPageState extends State<SendPage> {
                           children: [
                             Text(sendMailAddress,
                                 style: textTheme().bodySmall?.copyWith(
-                                      fontSize: 13.sp,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black,
                                     )),
@@ -209,6 +218,11 @@ class _SendPageState extends State<SendPage> {
               TextFormField(
                 cursorColor: const Color(0xff759CCC),
                 controller: titleController,
+                style:textTheme().bodySmall?.copyWith(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -218,7 +232,7 @@ class _SendPageState extends State<SendPage> {
                     isDense: true,
                     contentPadding: EdgeInsets.fromLTRB(15.w, 7.h, 15.w, 7.h),
                     hintStyle: textTheme().bodySmall?.copyWith(
-                          fontSize: 15.sp,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey.shade600,
                         ),
@@ -239,6 +253,11 @@ class _SendPageState extends State<SendPage> {
                       cursorColor: const Color(0xff759CCC),
                       controller: bodyController,
                       maxLines: null,
+                      style:textTheme().bodySmall?.copyWith(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
@@ -249,7 +268,7 @@ class _SendPageState extends State<SendPage> {
                           contentPadding:
                               EdgeInsets.fromLTRB(15.w, 0.h, 15.w, 0.h),
                           hintStyle: textTheme().bodySmall?.copyWith(
-                                fontSize: 15.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.grey.shade600,
                               ),
