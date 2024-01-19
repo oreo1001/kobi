@@ -3,7 +3,6 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import '../class_email.dart';
 import 'package:html/parser.dart' show parse;
 
-
 List<Thread> loadThreadListFromJson(List<dynamic> jsonList) {
   var threadList = jsonList.map((json) {
     RxList<Message> messageList =
@@ -29,7 +28,7 @@ List<Message> parsingMessageListFromThread(List<dynamic> jsonList) {
       messageId: json['messageId'],
       unread: json['unread'],
       mimeType: json['mimeType'],
-      snippet : json['snippet'],
+      snippet: json['snippet'],
     );
   }).toList();
   return messageList;
@@ -39,15 +38,26 @@ List<Thread> filterThreadListByFilter(
     RxList<Thread> threadList, String filter) {
   List<Thread> filteredThreadList = [];
   for (var thread in threadList) {
-    if (filter == '전체 메일함') {
+    if (filter == 'All') {
       filteredThreadList.add(thread);
-    }
-    //  else if (filter == 'WonMoMeeting 메일함') {
-    //   if (thread.labelList.contains('WonMoMeeting')) {
-    //     filteredThreadList.add(thread);
-    //   }
-    else if (filter == '프로모션 메일함') {
-      if (!thread.labelList.contains('WonMoMeeting')) {
+    } else if (filter == 'Business') {
+      if (thread.labelList.contains('careebee_Business')) {
+        filteredThreadList.add(thread);
+      }
+    } else if (filter == 'Notifications') {
+      if (thread.labelList.contains('careebee_Notifications')) {
+        filteredThreadList.add(thread);
+      }
+    } else if (filter == 'Newsletters') {
+      if (!thread.labelList.contains('careebee_Newsletters')) {
+        filteredThreadList.add(thread);
+      }
+    } else if (filter == 'Finance') {
+      if (!thread.labelList.contains('careebee_Finance')) {
+        filteredThreadList.add(thread);
+      }
+    } else if (filter == 'Unknown') {
+      if (!thread.labelList.contains('careebee_Unknown')) {
         filteredThreadList.add(thread);
       }
     }
@@ -66,7 +76,7 @@ RxList<Message> markAllAsRead(List<Message> messages) {
         body: message.body,
         messageId: message.messageId,
         unread: false,
-        snippet:message.snippet,
+        snippet: message.snippet,
       );
     }
     newMessages.add(message);
@@ -88,7 +98,7 @@ RxList<RxList<String>> unreadMessageIdListsInThreads(List<Thread> threadList) {
   return unreadMessageIdLists;
 }
 
-String firstSentenceFromHtml(Message message){
+String firstSentenceFromHtml(Message message) {
   String firstSentence = '';
   if (message.mimeType != "text/plain") {
     var document = parse(message.body);
