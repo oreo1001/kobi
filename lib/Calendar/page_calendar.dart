@@ -77,22 +77,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                       ],
                     )),
-                SizedBox(width: 100.w),
-                TextButton(
-                    onPressed: () {
-                      Get.dialog(
-                        ShareCalendarDialog(),
-                          barrierDismissible: false
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      minimumSize: Size.zero,
-                      foregroundColor: Colors.black87,
-                      padding: EdgeInsets.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    child: Icon(UniconsLine.share_alt, color: Colors.black, size: 30.sp)),
-                SizedBox(width: 20.w,),
+                SizedBox(width: 140.w),
                 TextButton(
                     onPressed: () {
                       Get.bottomSheet(
