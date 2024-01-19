@@ -60,7 +60,10 @@ class DescribeUserQueryState extends State<DescribeUserQuery> {
           height: 150.h,
           //margin: EdgeInsets.symmetric(horizontal: 10.w),
           padding: EdgeInsets.symmetric(horizontal: 10.w),
-          color: Colors.white,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15.sp),
+          ),
           child: TextFormField(
             style: textTheme().displayLarge!.copyWith(color: Colors.black),
             minLines: 1,

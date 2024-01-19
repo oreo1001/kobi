@@ -37,6 +37,7 @@ class _SendPageState extends State<SendPage> {
   bool _showDropdown = false;
 
   String query = '';
+  bool isReply = false;
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _SendPageState extends State<SendPage> {
     if (widget.testMail != null) {
       titleController.text = widget.testMail!.title;
       bodyController.text = widget.testMail!.body;
+      isReply = widget.testMail!.reply;
     }
   }
 
@@ -56,6 +58,7 @@ class _SendPageState extends State<SendPage> {
         contact.name.toLowerCase().contains(query.toLowerCase()) ||
         contact.emailAddress.toLowerCase().contains(query.toLowerCase()));
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: SendAppBar(() async {
           if (sendMailAddress == '') {
             showInvalidEmailDialog();
@@ -73,7 +76,7 @@ class _SendPageState extends State<SendPage> {
                 snippet: '');
             mailController.insertMessage(sendMessage);
             await httpResponse('/email/send', {
-              "reply": true,
+              "reply": isReply,
               "title": titleController.text,
               "body": bodyController.text,
               "emailAddress": sendMailAddress
@@ -154,9 +157,10 @@ class _SendPageState extends State<SendPage> {
       child: Column(
         children: [
           Divider(color: Colors.grey.shade200),
-          SizedBox(
+          Container(
             height: 500.h,
             child: ListView(
+              shrinkWrap: true,
               children: results.map((Contact contact) {
                 return GestureDetector(
                   onTap: () {
@@ -224,7 +228,47 @@ class _SendPageState extends State<SendPage> {
     return Column(
       children: [
         Divider(color: Colors.grey.shade300),
-        titleField(titleController),
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: isReply? Colors.grey.shade100 : Colors.white,
+                borderRadius: BorderRadius.circular(5.sp),
+              ),
+              margin: EdgeInsets.fromLTRB(0,0,10.w,0),
+                height: 30.h,
+                width: 270.w,
+                child: titleField(isReply,titleController)),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0,0, 0, 5.h),
+              child: Text('답장',
+                  style: textTheme().bodySmall?.copyWith(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
+                      )),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0,0, 0, 2.h),
+              child: Checkbox(
+                value: isReply,
+                overlayColor: MaterialStatePropertyAll(Colors.white),
+                splashRadius: 24,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: Color(0xff4A90FF),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    isReply = value!;
+                    titleController.text = '';
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
         Divider(color: Colors.grey.shade300),
         bodyField(context, bodyController),
       ],

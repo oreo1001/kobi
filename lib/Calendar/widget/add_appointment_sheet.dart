@@ -72,11 +72,10 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // 버튼들을 양쪽 끝으로 배치
                 children: [
                   TextButton(
                     onPressed: () {
-                      Get.back(); // '취소' 버튼을 누르면 모달 시트를 닫음
+                      Get.back();
                     },
                     child: Text(
                       '취소',

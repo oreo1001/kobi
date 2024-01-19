@@ -31,9 +31,10 @@ class _LoginPageState extends State<LoginPage> {
 
   static const List<String> scopes = <String>[
     'https://www.googleapis.com/auth/calendar',
-    'https://mail.google.com/',
+    'https://www.googleapis.com/auth/gmail.modify',
     // 'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile',
+    //'https://mail.google.com/',
   ];
 
   Future<void> _handleSignIn() async {
