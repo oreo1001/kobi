@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kobi/Mail/methods/function_thread_data.dart';
 
 import '../../theme.dart';
 import '../class_email.dart';

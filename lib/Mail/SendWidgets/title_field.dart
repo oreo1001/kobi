@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../theme.dart';
 
-TextFormField titleField(TextEditingController titleController){
+TextFormField titleField(bool isReply, TextEditingController titleController){
   return TextFormField(
     cursorColor: const Color(0xff759CCC),
     controller: titleController,
@@ -23,9 +23,11 @@ TextFormField titleField(TextEditingController titleController){
         hintStyle: textTheme().bodySmall?.copyWith(
           fontSize: 13.sp,
           fontWeight: FontWeight.w600,
-          color: Colors.grey.shade600,
+          color: isReply? Colors.grey.shade300 : Colors.grey.shade600,
         ),
         hintText: "제목"),
+    enabled: !isReply,
+    readOnly: isReply,
     onTap: () {},
   );
 }

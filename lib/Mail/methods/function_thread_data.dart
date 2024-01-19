@@ -62,7 +62,6 @@ List<Thread> filterThreadListByFilter(
       }
     }
   }
-  print(filteredThreadList);
   return filteredThreadList;
 }
 

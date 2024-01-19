@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:kobi/Assistant/ResponseWidgets/describe_user_query.dart';
+import 'package:kobi/Assistant/ResponseWidgets/email_query.dart';
 import 'package:kobi/Mail/page_send.dart';
 import 'package:unicons/unicons.dart';
 
+import '../../in_app_notification/in_app_notification.dart';
 import '../../theme.dart';
-import '../class_email.dart';
 
 class MyAnimatedButton extends StatefulWidget {
   @override
@@ -57,9 +59,21 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
         width:150.w,
         child: FloatingActionButton(
           onPressed: (){
-            Get.to(() => SendPage(testMail: TestMail(emailAddress :'jungwon01234512345@gmail.com',
-                title :'[미래에셋증권] [2024 Outlook] 글로벌 소프트웨어, 24년 투자전략: 생성AI 실전편 “고민하면 늦어요”',body:testBody,reply: true),));
-            //recorderController.setTranscription('${widget.thread.emailAddress} 메일 주소로 메일 작성해서 보내줄래?');
+            _animationController.value = 1.0;
+            Future.delayed(Duration.zero).then((_) {
+              InAppNotification.show(
+                  child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.r),
+                        border: Border.all(color: Colors.grey[100]!),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                      child : EmailQuery(context),
+                  ),
+                  duration: const Duration(seconds: 60), context: context);
+            });
           },
           backgroundColor: Colors.white,
           foregroundColor: Colors.white,
@@ -83,9 +97,10 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
     return FadeTransition(
       opacity: _animateFade,
       child: Container(
-        width:130.w,
+        width: 130.w,
         child: FloatingActionButton(
           onPressed: (){
+            _animationController.value = 1.0;
             Get.to(() => SendPage());
           },
           backgroundColor: Colors.white,
