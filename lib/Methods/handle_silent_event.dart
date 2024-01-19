@@ -12,17 +12,17 @@ void handleSilentEvent(List<Map<String, dynamic>> silentEvents, AppointmentContr
     if (silentEvent['status'] == 'canceled') {
       MyEvent thisEvent = MyEvent.fromMap(silentEvent);
       appointmentController.deleteAppointment(myEventToAppointment(thisEvent));
-      showDeleteDialog(thisEvent);
+      // showDeleteDialog(thisEvent);
     } else {
       MyEvent thisEvent = MyEvent.fromMap(silentEvent);
       int index = appointmentController.myAppointments.indexWhere((appointment) => appointment.id == thisEvent.id);
       if (index == -1) {
         appointmentController.myAppointments.add(myEventToAppointment(thisEvent));
-        showEventDialog(thisEvent);
+        // showEventDialog(thisEvent);
       } else {
         Appointment beforeAppointment = appointmentController.myAppointments[index];  //업데이트 전 이벤트 불러오기
         appointmentController.updateAppointment(myEventToAppointment(thisEvent));
-        showUpdateEventDialog(appointmentToMyEvent(beforeAppointment), thisEvent);
+        // showUpdateEventDialog(appointmentToMyEvent(beforeAppointment), thisEvent);
       }
     }
   }
