@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Mail/page_send.dart';
+import 'package:unicons/unicons.dart';
 
 import '../../theme.dart';
 import '../class_email.dart';
@@ -95,7 +96,7 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
             children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(10.w,0,5.w,0),
-                child: Icon(Icons.edit,color: Colors.black),
+                child: const Icon(UniconsLine.edit,color: Colors.black),
               ),
               Text('직접 작성하기',style: textTheme().bodySmall?.copyWith(color:Colors.black),)
             ],
@@ -126,7 +127,7 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
                     opacity: _animateFade.value < 0.5
                         ? 1.0-(_animateFade.value)
                         : 1.0 - (_animateFade.value - 0.5),
-                    child: Icon(_animateFade.value < 0.5 ? Icons.mail : Icons.close , color: Colors.black,)),
+                    child: Icon(_animateFade.value < 0.5 ? UniconsLine.envelope : Icons.close , color: Colors.black,)),
                 );
               },
             ),

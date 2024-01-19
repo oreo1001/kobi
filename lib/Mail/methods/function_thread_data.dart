@@ -49,19 +49,20 @@ List<Thread> filterThreadListByFilter(
         filteredThreadList.add(thread);
       }
     } else if (filter == 'Newsletters') {
-      if (!thread.labelList.contains('careebee_Newsletters')) {
+      if (thread.labelList.contains('careebee_Newsletters')) {
         filteredThreadList.add(thread);
       }
     } else if (filter == 'Finance') {
-      if (!thread.labelList.contains('careebee_Finance')) {
+      if (thread.labelList.contains('careebee_Finance')) {
         filteredThreadList.add(thread);
       }
     } else if (filter == 'Unknown') {
-      if (!thread.labelList.contains('careebee_Unknown')) {
+      if (thread.labelList.contains('careebee_Unknown')) {
         filteredThreadList.add(thread);
       }
     }
   }
+  print(filteredThreadList);
   return filteredThreadList;
 }
 
