@@ -38,21 +38,18 @@ class _MailPageState extends State<MailPage> {
   void initState() {
     super.initState();
     getThread();
-    print("1:" +mailController.threadList.length.toString());
   }
 
   Future getThread() async {
     Map<String, dynamic> responseMap =
         await httpResponse('/email/emailList', {});
-    mailController.threadList =
+    mailController.threadList.value =
          loadThreadListFromJson(responseMap['emailList']).obs;
     selectedItems = List<RxBool>.generate(mailController.threadList.length, (index) => false.obs).obs;
-    print("2:" +mailController.threadList.length.toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    print("3:" +mailController.threadList.length.toString());
     return Obx(() {
       if (mailController.threadList.isEmpty) {
         return const LoadingWidget();

@@ -86,9 +86,9 @@ class _MainPageState extends State<MainPage> {
 
   void _handleMessage(RemoteMessage message) {
     Map <String, dynamic> data = message.data;
-    setState(() {
-      _selectedIndex = 0;
-    });
+    // setState(() {
+    //   _selectedIndex = 0;
+    // });
     String type = data['type'];
     switch (type) {
       case 'insert_event':
