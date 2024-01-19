@@ -10,6 +10,7 @@ import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Main/microphone_button.dart';
 import 'package:kobi/Methods/handle_silent_event.dart';
+import 'package:unicons/unicons.dart';
 
 import '../Assistant/Class/API_response.dart';
 import '../Assistant/Class/assistant_enum.dart';
@@ -213,11 +214,11 @@ class _MainPageState extends State<MainPage> {
 
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(UniconsLine.estate),
             label: 'home'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
+            icon: Icon(UniconsLine.calender),
             label: 'calendar',
           ),
           BottomNavigationBarItem(
@@ -227,7 +228,7 @@ class _MainPageState extends State<MainPage> {
             label: 'mail',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outlined),
+            icon: Icon(UniconsLine.user_circle),
             label: 'myInfo',
           ),
         ],

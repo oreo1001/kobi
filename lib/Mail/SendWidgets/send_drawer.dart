@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:unicons/unicons.dart';
 
 import '../../Controller/auth_controller.dart';
 import '../../theme.dart';
@@ -52,7 +53,7 @@ class _MailPageState extends State<SendDrawer> {
           ),
           SizedBox(height: 17.h),
           ListTile(
-              leading: Icon(Icons.folder_outlined, size: 25.sp),
+              leading: Icon(UniconsLine.envelope, size: 25.sp),
               title: Text('All',
                   style: textTheme().bodySmall?.copyWith(
                       fontSize: 15.sp, color: Colors.grey.shade800)),
@@ -61,7 +62,7 @@ class _MailPageState extends State<SendDrawer> {
                 Navigator.pop(context);
               }),
           ListTile(
-            leading: Icon(Icons.folder_outlined, size: 25.sp),
+            leading: Icon(UniconsLine.bell, size: 25.sp),
             title: Text('Notifications',
                 style: textTheme().bodySmall?.copyWith(
                     fontSize: 15.sp, color: Colors.grey.shade800)),
@@ -71,7 +72,7 @@ class _MailPageState extends State<SendDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.folder_outlined, size: 25.sp),
+            leading: Icon(UniconsLine.newspaper, size: 25.sp),
             title: Text('Newsletters',
                 style: textTheme().bodySmall?.copyWith(
                     fontSize: 15.sp, color: Colors.grey.shade800)),
@@ -81,7 +82,7 @@ class _MailPageState extends State<SendDrawer> {
             },
           ),
           ListTile(
-            leading: Image.asset('/images/business.png',width: 25.w,height: 25.h,),
+            leading: Icon(UniconsLine.briefcase_alt, size: 25.sp),
             title: Text('Business',
                 style: textTheme().bodySmall?.copyWith(
                     fontSize: 15.sp, color: Colors.grey.shade800)),
@@ -91,7 +92,7 @@ class _MailPageState extends State<SendDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.folder_outlined, size: 25.sp),
+            leading: Icon(UniconsLine.coins, size: 25.sp),
             title: Text('Finance',
                 style: textTheme().bodySmall?.copyWith(
                     fontSize: 15.sp, color: Colors.grey.shade800)),
@@ -101,7 +102,7 @@ class _MailPageState extends State<SendDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.folder_outlined, size: 25.sp),
+            leading: Icon(UniconsLine.envelope_question, size: 25.sp),
             title: Text('Unknown',
                 style: textTheme().bodySmall?.copyWith(
                     fontSize: 15.sp, color: Colors.grey.shade800)),

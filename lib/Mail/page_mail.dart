@@ -10,6 +10,7 @@ import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Mail/page_thread.dart';
 import 'package:kobi/Mail/widgets/mail_room.dart';
 import 'package:kobi/Mail/widgets/unread_mark.dart';
+import 'package:unicons/unicons.dart';
 
 import '../Loading/loading_widget.dart';
 import '../function_http_request.dart';
@@ -98,7 +99,7 @@ class _MailPageState extends State<MailPage> {
                             .where((item) => item.value == true)
                             .length), (index) => false.obs).obs;
                       },
-                      icon: const Icon(Icons.delete)),
+                      icon: const Icon(UniconsLine.trash_alt)),
                 ),
                 Builder(
                   builder: (context) => Padding(

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Assistant/AssistantWidgets/background_calendar.dart';
@@ -36,12 +37,12 @@ class _AssistantPage2State extends State<AssistantPage2> {
                     icon: const Icon(Icons.person, color: Color(0xff4A90FF))))
           ]),
           blurContainer('이메일을 카테고리로 자동 분류', '카테고리를 직접 설정할 수도 있어요',
-              Icons.sort_by_alpha, Container(height:30.h)),
+              Icon(FontAwesomeIcons.filter,color: const Color(0xff4A90FF), size: 25.sp), Container(height:30.h)),
           SizedBox(height: 30.h),
           blurContainer(
               '이메일로 자동으로 일정 추가',
               '메일을 읽고 내 캘린더에 일정을 추가해줘요',
-              Icons.calendar_month,
+            Icon(Icons.calendar_month,color: const Color(0xff4A90FF), size: 30.sp),
             Column(
               children: [
                 backgroundCalendar('정원과 영화보기', '2024.01.20 22:34', '수정된 일정'),
@@ -66,22 +67,23 @@ class _AssistantPage2State extends State<AssistantPage2> {
                 children: [
                   voiceCarousel('일정 조회', '커리비에게 이번주 일정 물어보기', Icons.schedule),
                   SizedBox(width: 20.w),
-                  voiceCarousel('일정 추가', '커리비야 일정 추가해줘', Icons.calendar_today),
+                  voiceCarousel('일정 추가', '커리비야 일정 추가해줘', FontAwesomeIcons.calendarPlus),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  voiceCarousel('일정 삭제', '커리비야 일정 삭제해줘', FontAwesomeIcons.calendarMinus),
+                  SizedBox(width: 20.w),
+                  voiceCarousel(
+                      '일정 변경', '커리비에게 이번주 일정 변경해달라고 하기', Icons.edit_calendar),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   voiceCarousel(
-                      '일정 변경', '커리비에게 이번주 일정 변경해달라고 하기', Icons.edit_calendar),
-                  SizedBox(width: 20.w),
-                  voiceCarousel('일정 삭제', '커리비야 일정 삭제해줘', Icons.delete_forever),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  voiceCarousel('일정 삭제', '커리비야 일정 삭제해줘', Icons.delete_forever),
+                      '일정 변경', '커리비에게 이번주 일정 변경해달라고 하기',Icons.edit_calendar),
                   SizedBox(width: 20.w),
                   tempCarousel()
                 ],
