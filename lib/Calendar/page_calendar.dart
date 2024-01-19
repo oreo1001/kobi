@@ -8,6 +8,7 @@ import 'package:kobi/Calendar/widget/widget_appointment_builder.dart';
 import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:unicons/unicons.dart';
 
 import '../Loading/loading_widget.dart';
 import '../theme.dart';
@@ -90,7 +91,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       padding: EdgeInsets.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    child: Icon(Icons.share, color: Colors.black, size: 30.sp)),
+                    child: Icon(UniconsLine.share_alt, color: Colors.black, size: 30.sp)),
                 SizedBox(width: 20.w,),
                 TextButton(
                     onPressed: () {

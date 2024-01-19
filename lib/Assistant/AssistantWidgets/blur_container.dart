@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../theme.dart';
 
-Container blurContainer(String title, String body, IconData iconData, Widget widget){
+Container blurContainer(String title, String body, Icon icon, Widget widget){
   return Container(
       width: 350.w,
       margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -47,8 +47,7 @@ Container blurContainer(String title, String body, IconData iconData, Widget wid
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(0.w, 20.h, 10.w, 5.h),
-                child: Icon(iconData,
-                    color: const Color(0xff4A90FF), size: 30.sp),
+                child: icon,
               )
             ],
           ),

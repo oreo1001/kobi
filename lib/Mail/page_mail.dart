@@ -10,10 +10,12 @@ import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Mail/page_thread.dart';
 import 'package:kobi/Mail/widgets/mail_room.dart';
 import 'package:kobi/Mail/widgets/unread_mark.dart';
+import 'package:unicons/unicons.dart';
 
 import '../Loading/loading_widget.dart';
 import '../function_http_request.dart';
 import '../theme.dart';
+import 'SendWidgets/send_drawer.dart';
 import 'class_email.dart';
 import 'methods/function_thread_data.dart';
 
@@ -25,13 +27,8 @@ class MailPage extends StatefulWidget {
 }
 
 class _MailPageState extends State<MailPage> {
-  AuthController authController = Get.find();
   MailController mailController = Get.find();
-  String name = '';
-  String email = '';
-  String photoUrl = '';
-  // RxString filter = 'WonMoMeeting 메일함'.obs;
-  RxString filter = '전체 메일함'.obs;
+  RxString filter = 'All'.obs;
   RxList<Thread> filterThreadList = <Thread>[].obs;
   RxList<RxInt> unreadList = <RxInt>[].obs;
   RxBool isLongPressed = false.obs;
@@ -40,9 +37,6 @@ class _MailPageState extends State<MailPage> {
   @override
   void initState() {
     super.initState();
-    name = authController.name.value;
-    email = authController.email.value;
-    photoUrl = authController.photoUrl.value;
     getThread();
   }
 
@@ -105,7 +99,7 @@ class _MailPageState extends State<MailPage> {
                             .where((item) => item.value == true)
                             .length), (index) => false.obs).obs;
                       },
-                      icon: const Icon(Icons.delete)),
+                      icon: const Icon(UniconsLine.trash_alt)),
                 ),
                 Builder(
                   builder: (context) => Padding(
@@ -120,63 +114,7 @@ class _MailPageState extends State<MailPage> {
                 ),
               ],
             ),
-            endDrawer: Drawer(
-              width: 300.w,
-              backgroundColor: Colors.white,
-              elevation: 0,
-              child: ListView(
-                padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
-                children: [
-                  SizedBox(height: 30.h),
-                  ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(30.sp),
-                      child: CachedNetworkImage(
-                        imageUrl: photoUrl,
-                        placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-                    ),
-                    title: Text(name,
-                        style: textTheme().bodySmall?.copyWith(
-                            fontSize: 15.sp, color: Colors.grey.shade800)),
-                    subtitle: Text(email,
-                        style: textTheme().bodySmall?.copyWith(
-                            fontSize: 12.sp, color: Colors.grey.shade500)),
-                  ),
-                  SizedBox(height: 17.h),
-                  // ListTile(
-                  //   leading: Icon(Icons.folder_outlined, size: 25.sp),
-                  //   title: Text('WonMoMeeting 메일함',
-                  //       style: textTheme().bodySmall?.copyWith(
-                  //           fontSize: 15.sp, color: Colors.grey.shade800)),
-                  //   onTap: () {
-                  //     filter.value = 'WonMoMeeting 메일함';
-                  //     Navigator.pop(context);
-                  //   },
-                  // ),
-                  ListTile(
-                      leading: Icon(Icons.folder_outlined, size: 25.sp),
-                      title: Text('전체 메일함',
-                          style: textTheme().bodySmall?.copyWith(
-                              fontSize: 15.sp, color: Colors.grey.shade800)),
-                      onTap: () {
-                        filter.value = '전체 메일함';
-                        Navigator.pop(context);
-                      }),
-                  ListTile(
-                    leading: Icon(Icons.folder_outlined, size: 25.sp),
-                    title: Text('프로모션 메일함',
-                        style: textTheme().bodySmall?.copyWith(
-                            fontSize: 15.sp, color: Colors.grey.shade800)),
-                    onTap: () {
-                      filter.value = '프로모션 메일함';
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
+            endDrawer: SendDrawer(filter),
             body: ListView.builder(
               itemCount: filterThreadList.length,
               itemBuilder: (context, index) {
