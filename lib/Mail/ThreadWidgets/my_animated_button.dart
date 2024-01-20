@@ -70,7 +70,13 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
                         border: Border.all(color: Colors.grey[100]!),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                      child : EmailQuery(context),
+                      child : Column(
+                          children: [
+                            EmailQuery(context),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10.h),
+                                child: Icon(Icons.mic, size: 50.sp,)) /// TODO : 마이크 완성
+                          ]),
                   ),
                   duration: const Duration(seconds: 60), context: context);
             });
