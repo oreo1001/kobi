@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:kobi/Assistant/ResponseWidgets/describe_user_query.dart';
 import 'package:kobi/Assistant/ResponseWidgets/email_query.dart';
 import 'package:kobi/Mail/page_send.dart';
 import 'package:unicons/unicons.dart';
 
+import '../../Controller/mail_assistant_controller.dart';
 import '../../in_app_notification/in_app_notification.dart';
 import '../../theme.dart';
 
@@ -22,6 +22,8 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
   late AnimationController _animationController;
   late Animation<double> _animateIcon;
   late Animation<double> _animateFade;
+
+  MailAssistantController mailAssistantController = Get.put(MailAssistantController()); /// TODO : 일단 put으로 해놨는데, 나중에 Get.find()로 바꿔야함
 
   @override
   initState() {
@@ -70,7 +72,38 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
                         border: Border.all(color: Colors.grey[100]!),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                      child : EmailQuery(context),
+                      child : Column(
+                          children: [
+                            EmailQuery(context),
+                            Obx(() {
+                              bool isRecording = mailAssistantController.isRecording.value;
+
+                              return InkWell(
+                                onTap: () async {
+                                  // toggle recording
+                                  if (isRecording == true) {
+                                    await mailAssistantController.stopRecording();
+                                  } else {
+                                    mailAssistantController.transcription.value = '';
+                                    mailAssistantController.startRecording();
+                                  }
+
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10.h),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w, vertical: 8.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: isRecording == true ? Colors.red : const Color(0xFFACCCFF),
+                                      border: Border.all(
+                                          color: Colors.grey[100]!),
+                                    ),
+                                    child: isRecording ? const Icon(Icons.stop, size: 50, color: Colors.white,) : const Icon(Icons.mic, size:50, color: Colors.white)),
+                              );
+                            }
+                            )
+                          ]),
                   ),
                   duration: const Duration(seconds: 60), context: context);
             });

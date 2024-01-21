@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:kobi/Calendar/methods/function_appointment_sheet.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../Calendar/methods/function_event_date.dart';
-import '../Class/class_my_event.dart';
 import '../function_http_request.dart';
 
 class AppointmentController extends GetxController {
@@ -69,5 +67,9 @@ class AppointmentController extends GetxController {
   }
   void deleteAppointment(Appointment deleteAppointment) {
     myAppointments.removeWhere((appointment) => appointment.id == deleteAppointment.id);
+  }
+
+  void deleteAppointmentById(String id) {
+    myAppointments.removeWhere((appointment) => appointment.id == id);
   }
 }

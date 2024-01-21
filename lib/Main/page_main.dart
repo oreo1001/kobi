@@ -26,7 +26,6 @@ import '../Assistant/ResponseWidgets/insert_event.dart';
 import '../Assistant/ResponseWidgets/message_creation.dart';
 import '../Assistant/ResponseWidgets/multiple_choice_query.dart';
 import '../Assistant/ResponseWidgets/patch_event.dart';
-import '../Assistant/page_assistant.dart';
 import '../Assistant/page_assistant2.dart';
 import '../Class/class_my_event.dart';
 import '../Controller/assistant_controller.dart';
@@ -86,9 +85,6 @@ class _MainPageState extends State<MainPage> {
 
   void _handleMessage(RemoteMessage message) {
     Map <String, dynamic> data = message.data;
-    // setState(() {
-    //   _selectedIndex = 0;
-    // });
     String type = data['type'];
     switch (type) {
       case 'insert_event':
