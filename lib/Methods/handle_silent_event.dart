@@ -1,17 +1,14 @@
 import 'package:kobi/Calendar/methods/function_appointment_sheet.dart';
 import 'package:kobi/Controller/appointment_controller.dart';
-import 'package:kobi/Dialog/delete_dialog.dart';
-import 'package:kobi/Dialog/event_dialog.dart';
-import 'package:kobi/Dialog/update_event_dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../Class/class_my_event.dart';
 
 void handleSilentEvent(List<Map<String, dynamic>> silentEvents, AppointmentController appointmentController) {
   for (Map<String, dynamic> silentEvent in silentEvents) {
-    if (silentEvent['status'] == 'canceled') {
-      MyEvent thisEvent = MyEvent.fromMap(silentEvent);
-      appointmentController.deleteAppointment(myEventToAppointment(thisEvent));
+    print('@@@@@@@@@@ status : ${silentEvent['status']} @@@@@@@@@@');
+    if (silentEvent['status'] == 'cancelled') {
+      appointmentController.deleteAppointmentById(silentEvent['id']);
       // showDeleteDialog(thisEvent);
     } else {
       MyEvent thisEvent = MyEvent.fromMap(silentEvent);

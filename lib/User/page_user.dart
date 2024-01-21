@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kobi/in_app_notification/in_app_notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Class/secure_storage.dart';
 import '../Controller/auth_controller.dart';
@@ -121,21 +122,21 @@ class _UserPageState extends State<UserPage> {
                     fontWeight: FontWeight.w500)),
             myInfoButton(
                     () {
-                      // Future.delayed(Duration.zero).then((_) {
-                      //   InAppNotification.show(
-                      //       child: Container(
-                      //           margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                      //           decoration: BoxDecoration(
-                      //             color: Colors.grey[200],
-                      //             borderRadius: BorderRadius.circular(10.r),
-                      //             border: Border.all(color: Colors.grey[100]!),
-                      //           ),
-                      //           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                      //           child : MultipleChoiceQuery(index: 0,)
-                      //       ),
-                      //       duration: const Duration(seconds: 60), context: context);
-                      // });
-                      Get.toNamed('/test');
+                      Future.delayed(Duration.zero).then((_) {
+                        InAppNotification.show(
+                            child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  border: Border.all(color: Colors.grey[100]!),
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                                child : Text('메일을 작성 중이에요 ...', style: textTheme().displaySmall,)
+                            ),
+                            duration: const Duration(seconds: 60), context: context);
+                      });
+                      // Get.toNamed('/test');
                 },
                 "테스트",
                 textTheme().displaySmall!.copyWith(

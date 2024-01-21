@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kobi/Calendar/widget/share_calendar_dialog.dart';
 import 'package:kobi/Calendar/widget/widget_appointment_builder.dart';
 import 'package:kobi/Controller/appointment_controller.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:unicons/unicons.dart';
 
 import '../Loading/loading_widget.dart';
 import '../theme.dart';
@@ -103,6 +101,7 @@ class _CalendarPageState extends State<CalendarPage> {
               if (const ListEquality().equals(appointmentController.myAppointments, [Appointment(startTime: DateTime.utc(1998), endTime: DateTime.utc(1998))])) {
                 return const LoadingWidget();
               } else {
+                print('calendar changed!!');
                 return SfCalendar(
                     controller: _calendarController,
                     initialSelectedDate: DateTime.now(),
