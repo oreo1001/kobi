@@ -140,7 +140,7 @@ class _MailPageState extends State<MailPage> {
                   },
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                        EdgeInsets.symmetric(vertical: 2.h, horizontal: 20.w),
                     child: Stack(children: [
                       MailRoom(thread, isLongPressed, selectedItems[index]),
                       /// 안 읽은 메일 개수
