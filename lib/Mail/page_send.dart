@@ -63,6 +63,7 @@ class _SendPageState extends State<SendPage> {
           if (sendMailAddress == '') {
             showInvalidEmailDialog();
           } else {
+            print('send');
             String messageId = generateRandomId(20);
             String nowDate = DateFormat("EEE, dd MMM yyyy HH:mm:ss Z")
                 .format(DateTime.now());

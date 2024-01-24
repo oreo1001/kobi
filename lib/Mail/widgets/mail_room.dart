@@ -92,7 +92,7 @@ class _MailRoomState extends State<MailRoom> {
                     child: Text(widget.thread.name,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme()
-                            .displayLarge
+                            .bodySmall
                             ?.copyWith(fontSize: 15.sp)),
                   ),
                   const Spacer(),
