@@ -99,7 +99,7 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
       ),
     );
   }
-
+#
   Widget buttonDirect() {
     return FadeTransition(
       opacity: _animateFade,
