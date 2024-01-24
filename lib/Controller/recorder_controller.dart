@@ -86,12 +86,13 @@ class RecorderController extends GetxController {
     // stream으로 decibel 정보 받아올 주기 : 100 ms
     await _recorder.setSubscriptionDuration(const Duration(milliseconds: 100));
     _recorder.onProgress?.listen((event) {
+      print('event decibel : ${event.decibels}');
       decibels.value = event.decibels == null ? 0.0 : event.decibels! < 0 ? 0.0 : event.decibels!;
 
       if (!recordingStarted) {
-        if (decibels > 55) recordingStarted = true;
+        if (decibels > 60) recordingStarted = true;
       } else {
-        if (decibels < 55) {
+        if (decibels < 60) {
           _startSilenceTimer();
         } else {
           _resetSilenceTimer();
