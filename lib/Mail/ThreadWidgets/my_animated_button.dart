@@ -5,12 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:kobi/Assistant/ResponseWidgets/email_query.dart';
+import 'package:kobi/Controller/mail_controller.dart';
 import 'package:kobi/Mail/page_send.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../Controller/mail_assistant_controller.dart';
 import '../../in_app_notification/in_app_notification.dart';
 import '../../theme.dart';
+import '../class_email.dart';
 
 class MyAnimatedButton extends StatefulWidget {
   @override
@@ -22,7 +24,9 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
   late AnimationController _animationController;
   late Animation<double> _animateIcon;
   late Animation<double> _animateFade;
+  List<Message> messageList = [];
 
+  MailController mailController = Get.find();
   MailAssistantController mailAssistantController = Get.put(MailAssistantController()); /// TODO : 일단 put으로 해놨는데, 나중에 Get.find()로 바꿔야함
 
   @override
@@ -37,12 +41,17 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
     _animateFade =
         Tween<double>(begin: 1.0, end: 0.0).animate(_animationController);
     super.initState();
+    messageList = mailController.threadList[mailController.threadIndex.value].messages;
   }
 
   @override
   dispose() {
     _animationController.dispose();
     super.dispose();
+  }
+
+  int countMyMail(List<Message> messageList) {
+    return messageList.where((message) => message.sentByUser).length;
   }
 
   animate() {
@@ -62,51 +71,16 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
         child: FloatingActionButton(
           onPressed: (){
             _animationController.value = 1.0;
-            Future.delayed(Duration.zero).then((_) {
-              InAppNotification.show(
-                  child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: Border.all(color: Colors.grey[100]!),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                      child : Column(
-                          children: [
-                            EmailQuery(context),
-                            Obx(() {
-                              bool isRecording = mailAssistantController.isRecording.value;
-
-                              return InkWell(
-                                onTap: () async {
-                                  // toggle recording
-                                  if (isRecording == true) {
-                                    await mailAssistantController.stopRecording();
-                                  } else {
-                                    mailAssistantController.transcription.value = '';
-                                    mailAssistantController.startRecording();
-                                  }
-
-                                },
-                                child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10.h),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 8.w, vertical: 8.h),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: isRecording == true ? Colors.red : const Color(0xFFACCCFF),
-                                      border: Border.all(
-                                          color: Colors.grey[100]!),
-                                    ),
-                                    child: isRecording ? const Icon(Icons.stop, size: 50, color: Colors.white,) : const Icon(Icons.mic, size:50, color: Colors.white)),
-                              );
-                            }
-                            )
-                          ]),
-                  ),
-                  duration: const Duration(seconds: 60), context: context);
-            });
+            if(countMyMail(messageList)<1){
+              Get.snackbar(
+                "AI 답장을 사용하시려면",
+                "고객님이 보낸 메일이 있어야 합니다.",
+                snackPosition: SnackPosition.TOP,
+              );
+            }
+            else{
+              mailRequiredNotification();
+            }
           },
           backgroundColor: Colors.white,
           foregroundColor: Colors.white,
@@ -216,6 +190,53 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
         toggle(),
       ],
     );
+  }
+  void mailRequiredNotification(){
+    Future.delayed(Duration.zero).then((_) {
+      InAppNotification.show(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10.r),
+              border: Border.all(color: Colors.grey[100]!),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            child : Column(
+                children: [
+                  EmailQuery(context),
+                  Obx(() {
+                    bool isRecording = mailAssistantController.isRecording.value;
+
+                    return InkWell(
+                      onTap: () async {
+                        // toggle recording
+                        if (isRecording == true) {
+                          await mailAssistantController.stopRecording();
+                        } else {
+                          mailAssistantController.transcription.value = '';
+                          mailAssistantController.startRecording();
+                        }
+
+                      },
+                      child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 8.h),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isRecording == true ? Colors.red : const Color(0xFFACCCFF),
+                            border: Border.all(
+                                color: Colors.grey[100]!),
+                          ),
+                          child: isRecording ? const Icon(Icons.stop, size: 50, color: Colors.white,) : const Icon(Icons.mic, size:50, color: Colors.white)),
+                    );
+                  }
+                  )
+                ]),
+          ),
+          duration: const Duration(seconds: 60), context: context);
+    });
   }
 }
 
