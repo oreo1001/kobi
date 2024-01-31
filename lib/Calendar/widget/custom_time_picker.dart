@@ -21,9 +21,9 @@ class CustomPicker extends picker.CommonPickerModel {
   @override
   String? leftStringAtIndex(int index) {
     if (index == 0) {
-      return '오전';
+      return 'AM';
     } else if (index == 1) {
-      return '오후';
+      return 'PM';
     } else {
       return null;
     }

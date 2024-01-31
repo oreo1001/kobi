@@ -78,7 +78,7 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
                       Get.back();
                     },
                     child: Text(
-                      '취소',
+                      'cancel',
                       style:
                           textTheme().displaySmall?.copyWith(fontSize: 17.sp),
                     ),
@@ -95,19 +95,19 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
 
                       AppointmentController appointmentController = Get.find();
                       appointmentController.myAppointments.add(newAppointment);
-                      await httpResponse('/calendar/insertEvent', {
-                        'event' : eventToBack.toJson()
-                      });
+                      // await httpResponse('/calendar/insertEvent', {
+                      //   'event' : eventToBack.toJson()
+                      // });
                       Get.back();
                       Get.snackbar(
-                        "일정", // 제목
-                        "추가하였습니다!", // 메시지
+                        "schedule", // 제목
+                        "was added!", // 메시지
                         snackPosition: SnackPosition.TOP, // 스낵바 위치
                       );
                       setState(() {});
                     },
                     child: Text(
-                      '저장',
+                      'save',
                       style:
                           textTheme().displaySmall?.copyWith(fontSize: 17.sp),
                     ),
@@ -129,7 +129,7 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
                         disabledBorder: InputBorder.none,
                         contentPadding:
                             EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
-                        hintText: "제목"),
+                        hintText: "subject"),
                     onTap: () {
                       isVisible.value = false;
                     },
@@ -203,7 +203,7 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
                         disabledBorder: InputBorder.none,
                         contentPadding:
                             EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
-                        hintText: "장소"),
+                        hintText: "location"),
                     onTap: () {
                       isVisible.value = false;
                     },
@@ -223,7 +223,7 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
                       disabledBorder: InputBorder.none,
                       contentPadding:
                           EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
-                      hintText: "메모",
+                      hintText: "memo",
                     ),
                     onTap: () {
                       isVisible.value = false;
@@ -277,7 +277,7 @@ class _AddAppointmentSheetState extends State<AddAppointmentSheet> {
                     print(selectedTime.value);
                   },
                       pickerModel: CustomPicker(currentTime: DateTime.now().add(Duration(hours:9))),
-                      locale: picker.LocaleType.ko);
+                      locale: picker.LocaleType.en);
                 },
                 child: Text(formatTime(selectedTime.value),
                     style: textTheme().bodySmall?.copyWith(fontSize: 15.sp))))

@@ -92,7 +92,7 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
                 padding: EdgeInsets.fromLTRB(10.w,0,5.w,0),
                 child: Icon(Icons.assistant_outlined,color: Colors.black),
               ),
-              Text('커리비에게 맡겨보기',style: textTheme().bodySmall?.copyWith(color:Colors.black),)
+              Text('Assign to careebee',style: textTheme().bodySmall?.copyWith(color:Colors.black),)
             ],
           ),
         ),
@@ -120,7 +120,7 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
                 padding: EdgeInsets.fromLTRB(10.w,0,5.w,0),
                 child: const Icon(UniconsLine.edit,color: Colors.black),
               ),
-              Text('직접 작성하기',style: textTheme().bodySmall?.copyWith(color:Colors.black),)
+              Text('Write yourself',style: textTheme().bodySmall?.copyWith(color:Colors.black),)
             ],
           ),
         ),
@@ -154,8 +154,8 @@ class _MyAnimatedButtonState extends State<MyAnimatedButton> with SingleTickerPr
               },
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(8.w,0,10.w,2.h),
-              child: Text('메일쓰기',style: textTheme().bodySmall?.copyWith(color:Colors.black),),
+              padding: EdgeInsets.fromLTRB(0.w,0,0.w,2.h),
+              child: Text('Writing mail',style: textTheme().bodySmall?.copyWith(color:Colors.black),),
             )
           ],
         ),

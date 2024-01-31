@@ -74,29 +74,30 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       Get.back(); // '취소' 버튼을 누르면 모달 시트를 닫음
                     },
                     child: Text(
-                      '취소',
+                      'cancel',
                       style:
                       textTheme().displaySmall?.copyWith(fontSize: 17.sp),
                     ),
                   ),
-                  SizedBox(width:150.w),
+                  SizedBox(width:130.w),
                   TextButton(
                     onPressed: () async{
                       MyEvent eventToBack = appointmentToMyEvent(widget.appointment);
                       AppointmentController appointmentController = Get.find();
                       appointmentController.deleteAppointment(widget.appointment);
-                      await httpResponse('/calendar/deleteEvent', {
-                        'event' : eventToBack.toJson()
-                      });
+                      // await httpResponse('/calendar/deleteEvent', {
+                      //   'event' : eventToBack.toJson()
+                      // });
                       Get.back();
                       Get.snackbar(
-                        "일정",
-                        "삭제하였습니다!",
+                        "schedule",
+                        "was deleted!",
+                        duration: Duration(seconds: 5),
                         snackPosition: SnackPosition.TOP,
                       );
                     },
                     child: Text(
-                      '삭제',
+                      'delete',
                       style:
                       textTheme().displaySmall?.copyWith(fontSize: 17.sp,color:Colors.red),
                     ),
@@ -112,18 +113,18 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       MyEvent eventToBack = appointmentToMyEvent(myAppointment);
                       AppointmentController appointmentController = Get.find();
                       appointmentController.updateAppointment(myAppointment);
-                      await httpResponse('/calendar/patchEvent', {
-                        'event' : eventToBack.toJson()
-                      });
+                      // await httpResponse('/calendar/patchEvent', {
+                      //   'event' : eventToBack.toJson()
+                      // });
                       Get.back();
                       Get.snackbar(
-                        "일정",
-                        "수정하였습니다!",
+                        "schedule",
+                        "was modified!",
                         snackPosition: SnackPosition.TOP,
                       );
                     },
                     child: Text(
-                      '저장',
+                      'save',
                       style:
                       textTheme().displaySmall?.copyWith(fontSize: 17.sp),
                     ),
@@ -145,7 +146,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         disabledBorder: InputBorder.none,
                         contentPadding:
                         EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
-                        hintText: "제목"),
+                        hintText: "subject"),
                     onTap: () {
                       isVisible.value = false;
                     },
@@ -219,7 +220,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         disabledBorder: InputBorder.none,
                         contentPadding:
                         EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
-                        hintText: "장소"),
+                        hintText: "location"),
                     onTap: () {
                       isVisible.value = false;
                     },
@@ -239,7 +240,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                       disabledBorder: InputBorder.none,
                       contentPadding:
                       EdgeInsets.fromLTRB(15.w, 11.h, 11.w, 15.h),
-                      hintText: "메모",
+                      hintText: "memo",
                     ),
                     onTap: () {
                       isVisible.value = false;
@@ -293,7 +294,7 @@ class _AppointmentSheetState extends State<AppointmentSheet> {
                         print(selectedTime.value);
                       },
                       pickerModel: CustomPicker(currentTime: DateTime.now().add(Duration(hours:9))),
-                      locale: picker.LocaleType.ko);
+                      locale: picker.LocaleType.en);
                 },
                 child: Text(formatTime(selectedTime.value),
                     style: textTheme().bodySmall?.copyWith(fontSize: 15.sp))))

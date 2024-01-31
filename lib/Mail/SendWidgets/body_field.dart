@@ -38,7 +38,7 @@ SingleChildScrollView bodyField (BuildContext context, TextEditingController bod
                 fontWeight: FontWeight.w400,
                 color: Colors.grey.shade600,
               ),
-              hintText: "내용 작성"),
+              hintText: "content"),
         ),
       ),
     ),

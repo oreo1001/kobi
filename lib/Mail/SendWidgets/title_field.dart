@@ -25,7 +25,7 @@ TextFormField titleField(bool isReply, TextEditingController titleController){
           fontWeight: FontWeight.w600,
           color: isReply? Colors.grey.shade300 : Colors.grey.shade600,
         ),
-        hintText: "제목"),
+        hintText: "title"),
     enabled: !isReply,
     readOnly: isReply,
     onTap: () {},

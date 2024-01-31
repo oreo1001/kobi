@@ -66,7 +66,7 @@ class MyAppState extends State<MyApp> {
             Locale('ko'),
             Locale('en'),
           ],
-          locale: const Locale('ko'),
+          locale: const Locale('en'),
             title: 'WonMo Calendar',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(

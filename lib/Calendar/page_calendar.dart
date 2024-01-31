@@ -32,7 +32,7 @@ class _CalendarPageState extends State<CalendarPage> {
   void initState() {
     super.initState();
     var now = DateTime.now();
-    _headerText.value = DateFormat('yyyy년 M월').format(now);
+    _headerText.value = DateFormat('yyyy MMM').format(now);
     appointmentController.getAppointments();
   }
 
@@ -41,7 +41,7 @@ class _CalendarPageState extends State<CalendarPage> {
     _calendarController.displayDate = _selectedDate; //달력 보여주는 날짜
     _calendarController.selectedDate = _selectedDate; //달력에서 선택된 날짜
     _headerText.value =
-        DateFormat('yyyy년 M월').format(_selectedDate); //2023년 12월
+        DateFormat('yyyy MMM').format(_selectedDate); //2023년 12월
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -111,7 +111,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       // CalendarView.day,
                     ],
                     onViewChanged: (ViewChangedDetails details) {
-                      _headerText.value = DateFormat('yyyy년 M월')
+                      _headerText.value = DateFormat('yyyy MMM')
                           .format(details.visibleDates[0]);
                     },
                     // onTap: (CalendarTapDetails details){

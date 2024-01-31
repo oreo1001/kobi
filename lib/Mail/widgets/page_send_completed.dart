@@ -17,11 +17,11 @@ class SentCompleted extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('메일을 성공적으로 보냈습니다.',style: textTheme().bodySmall!.copyWith(
+        Text('Message was sent successfully.',style: textTheme().bodySmall!.copyWith(
             fontWeight: FontWeight.w500,color:Colors.black, fontSize: 17.sp
         )),
         SizedBox(height:30.h),
-        TextButton(onPressed: (){ Get.off(() => MainPage(2));}, child: Text('목록으로 돌아가기',style: textTheme().bodySmall!.copyWith(
+        TextButton(onPressed: (){ Get.off(() => MainPage(2));}, child: Text('Go to mailList',style: textTheme().bodySmall!.copyWith(
             fontWeight: FontWeight.w700,color:const Color(0xff4A90FF), fontSize: 15.sp
         )))
       ],

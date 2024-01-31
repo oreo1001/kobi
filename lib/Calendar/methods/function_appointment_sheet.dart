@@ -12,7 +12,7 @@ String formatTime(String dateString) {
   DateTime date = utcDate.add(Duration(hours: 9));
   int hour = date.hour;
   int minute = date.minute;
-  String period = hour >= 12 ? "오후" : "오전";
+  String period = hour >= 12 ? "PM" : "AM";
   hour = hour % 12;
   if (hour == 0) {
     hour = 12;
@@ -21,11 +21,11 @@ String formatTime(String dateString) {
 }
 String getMonthAndDay(String dateString){
   if(dateString==''){
-    return '미선택';
+    return 'Unselected';
   }else{
     DateTime utcDate = DateTime.parse(dateString).toUtc();
     DateTime date = utcDate.add(Duration(hours: 9));
-    String formatDay = DateFormat('M월 d일').format(date);
+    String formatDay = DateFormat('M / d').format(date);
     return formatDay;
   }
 }

@@ -95,7 +95,7 @@ class _SendPageState extends State<SendPage> {
                   SizedBox(width: 10.w),
                   Container(
                       padding: EdgeInsets.fromLTRB(5.w, 0, 5.w, 2.h),
-                      child: Text('받는사람',
+                      child: Text('Recipient',
                           style: textTheme().bodySmall?.copyWith(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w500,
@@ -115,7 +115,7 @@ class _SendPageState extends State<SendPage> {
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: 20.w, vertical: 0),
-                          hintText: '이메일 검색',
+                          hintText: 'search email',
                           hintStyle: TextStyle(color: Colors.black),
                           border: InputBorder.none,
                         ),
@@ -242,7 +242,7 @@ class _SendPageState extends State<SendPage> {
                 child: titleField(isReply,titleController)),
             Padding(
               padding: EdgeInsets.fromLTRB(0,0, 0, 5.h),
-              child: Text('답장',
+              child: Text('reply',
                   style: textTheme().bodySmall?.copyWith(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600,
